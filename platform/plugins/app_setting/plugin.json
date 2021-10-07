@@ -1,0 +1,9 @@
+{
+    "name": "App setting",
+    "namespace": "Botble\\App_setting\\",
+    "provider": "Botble\\App_setting\\Providers\\App_settingServiceProvider",
+    "author": "Nawaf Asag",
+    "url": "",
+    "version": "1.0",
+    "description": "app  setting"
+}

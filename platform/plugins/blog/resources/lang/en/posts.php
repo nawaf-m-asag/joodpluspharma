@@ -1,0 +1,30 @@
+<?php
+
+return [
+    'create'              => 'انشاء مقالة جديدة',
+    'edit'                => 'تحرير مقالةt',
+    'form'                => [
+        'name'                    => 'الاسم',
+        'name_placeholder'        => 'Post\'s name (Maximum :c characters)',
+        'description'             => 'الوصف',
+        'description_placeholder' => 'Short description for post (Maximum :c characters)',
+        'categories'              => 'التصنيفات',
+        'tags'                    => 'العلامات',
+        'tags_placeholder'        => 'العلامات',
+        'content'                 => 'المحتوئ',
+        'is_featured'             => 'مميزة',
+        'note'                    => 'محتوى الملاحظات',
+        'format_type'             => 'التنسيق',
+    ],
+    'cannot_delete'       => 'لا يمكن حذف المقالة',
+    'post_deleted'        => 'تم حذف مقالة ',
+    'posts'               => 'المقالات',
+    'post'                => 'المقالة',
+    'edit_this_post'      => 'تحرير المقالة',
+    'no_new_post_now'     => 'لا توجد مقالة جديدة الآن!',
+    'menu_name'           => 'المقالات',
+    'widget_posts_recent' => 'المقالات الأخيرة',
+    'categories'          => 'التصنيفات',
+    'category'            => 'التصنيف',
+    'author'              => 'الكاتب',
+];

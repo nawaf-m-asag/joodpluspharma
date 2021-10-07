@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'name'                           => 'الويدجات',
+    'create'                         => 'ويدجت جديد',
+    'edit'                           => 'تحرير',
+    'delete'                         => 'حذف',
+    'available'                      => 'الويدجات المتاحة',
+    'instruction'                    => 'لتنشيط عنصر ، اسحبه إلى شريط جانبي أو انقر فوقه. لإلغاء تنشيط عنصر وحذف إعداداته ، اسحبه مرة أخرى.',
+    'number_tag_display'             => 'عدد العلامات المعروظة',
+    'number_post_display'            => 'عدد المقالات المعروضة',
+    'select_menu'                    => 'حدد قائمة',
+    'widget_text'                    => 'نص',
+    'widget_text_description'        => 'Arbitrary text or HTML.',
+    'widget_recent_post'             => 'اخر المقالات',
+    'widget_recent_post_description' => 'ويدجت اخر المقالات.',
+    'widget_custom_menu'             => 'قائمة مخصصة',
+    'widget_custom_menu_description' => 'إضافة قائمة مخصصة إلى منطقة الويدجت الخاصة بك.',
+    'widget_tag'                     => 'العلامات',
+    'widget_tag_description'         => 'العلامات الاكثر شعبية',
+    'save_success'                   => 'تم حفظ الويدجت بنجاح!',
+    'delete_success'                 => 'تم حذف الويدجت بنجاح!',
+    'primary_sidebar_name'           => 'السلايدر الاساسي',
+    'primary_sidebar_description'    => 'قسم السلايدر الاساسي',
+];
