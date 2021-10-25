@@ -211,6 +211,13 @@ public static function is_exist($where, $table, $update_id = null)
                 return "0";
             }
     }
+    public static function  getLabelById($id){
+        
+        $query= DB::table('ec_product_label_products as plp')->where('product_id',$id)
+        ->join('ec_product_labels as pl','plp.product_label_id','=','pl.id')->where('pl.status','published')->select('name','color')->get();
+       
+       return $query;
+    }
 
     
    

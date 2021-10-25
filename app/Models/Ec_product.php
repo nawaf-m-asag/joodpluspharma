@@ -227,6 +227,7 @@ public static function get_products_By_ids($products_ids,$user_id=null){
         /*static*/  'cod_allowed'=>"0",
                     'row_order'=>"$value->order",
                     "rating"=>"$rating",
+                    "label"=>Fun::getLabelById($value->id),
                     "no_of_ratings"=>"$no_of_ratings",
                     "image"=>RvMedia::getImageUrl($default_imag,null, false, RvMedia::getDefaultImage()),
         /*static*/  "is_returnable"=>"0",
