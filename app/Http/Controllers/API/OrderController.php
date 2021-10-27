@@ -22,6 +22,7 @@ class OrderController extends Controller
             'quantity'=>'required',
             'final_total'=>'required|numeric',
             'promo_code'=>'',
+            'promo_discount'=>'',
             'is_wallet_used'=>'required|numeric',
             'latitude'=>'numeric',    
             'longitude'=>'numeric',

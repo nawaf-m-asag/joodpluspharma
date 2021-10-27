@@ -9,7 +9,7 @@ use Botble\App_setting\Repositories\Interfaces\TimeInterface;
 use Botble\Base\Http\Controllers\BaseController;
 use Illuminate\Http\Request;
 use Exception;
-use Botble\App_setting\Tables\timeTable;
+use Botble\App_setting\Tables\TimeTable;
 use Botble\Base\Events\CreatedContentEvent;
 use Botble\Base\Events\DeletedContentEvent;
 use Botble\Base\Events\UpdatedContentEvent;

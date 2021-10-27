@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\Fun;
 use App\Models\Ec_product;
-
+use Botble\Ecommerce\Services\HandleApplyCouponService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 class CartController extends Controller
@@ -217,6 +217,7 @@ class CartController extends Controller
 
     public function validatePromo(Request $request)
     {
+        
         /*
             promo_code:'NEWOFF10'
             user_id:28
@@ -235,6 +236,7 @@ class CartController extends Controller
             return response()->json($this->response);
 
         } else {
+           
             return response()->json(Cart::validate_promo_code($request->promo_code, $request->user_id, $request->final_total));
         }
     }

@@ -172,7 +172,7 @@ class Ec_Order extends Model
                     'currency_id'=>isset($currency[0]->id)?$currency[0]->id:'0',
                     'shipping_amount' => $delivery_charge,
                     'coupon_code' =>(isset($data['promo_code'])) ? $data['promo_code'] :'',
-                    'discount_amount' =>(isset($promo_code_discount) && $promo_code_discount != NULL) ? $promo_code_discount : '0',
+                    'discount_amount' =>(isset($data['promo_discount']) && $data['promo_discount'] != NULL) ? $data['promo_discount'] : '0',
                     'description'=>'',
                     'address_id'=>$data['address_id'],
                     'delivery_date'=>date('Y-m-d', strtotime($data['delivery_date'])),

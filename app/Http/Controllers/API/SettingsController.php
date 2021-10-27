@@ -10,6 +10,7 @@ use App\Models\Ec_customer;
 use App\Models\Cart;
 use App\Models\Fun;
 use RvMedia;
+use DateTime;
 class SettingsController extends Controller
 {
     public function getSetting(Request $request)
@@ -61,7 +62,7 @@ class SettingsController extends Controller
                     if (!empty($time_slots)) {
                         for ($i = 0; $i < count($time_slots); $i++) {
 
-                            $datetime = DateTime::createFromFormat("h:i:s a", $time_slots[$i]['from_time']);
+                            $datetime = DateTime::createFromFormat("h:i:s a", $time_slots[$i]->from_time);
 
                             // if ($datetime <= date('h:i:s a', time()) || date('h:i:s a', time()) > $datetime) {
                             //     unset($time_slots[$i]);

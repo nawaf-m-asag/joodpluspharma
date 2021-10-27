@@ -90,7 +90,7 @@ class TimeTable extends TableAbstract
                'to_time',
                'last_order_time',
                'from_time',
-               'status'
+            
                
            ]);
 

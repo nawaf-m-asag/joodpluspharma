@@ -389,46 +389,165 @@ class Cart extends Model
             if (isset($promo_code_res[0]->id)) {
 
                 if (intval($promo_code_res[0]->total_used) < intval($promo_code_res[0]->quantity)||$promo_code_res[0]->quantity==null) {
-
+                   
                     if ($final_total >= intval($promo_code_res[0]->min_order_price)) {
-                        if($promo_code_res[0]->type_option=='amount'&&$promo_code_res[0]->target=='all-orders'){
-                            $res_final_total=$final_total-$promo_code_res[0]->value;
-                            $res_final_discount=$promo_code_res[0]->value;
-                        }
-                        else if($promo_code_res[0]->type_option=='percentage' &&$promo_code_res[0]->value!=0 &&($promo_code_res[0]->target=='all-orders'|| $promo_code_res[0]->target=='amount-minimum-order')){
-                            $res_final_total=$final_total-($final_total*($promo_code_res[0]->value/100));
-                            $res_final_discount=$final_total*($promo_code_res[0]->value/100);
+                        
+                        if($promo_code_res[0]->type_option=='amount'){
+                            
+                            if($promo_code_res[0]->target=='all-orders'||$promo_code_res[0]->target=='amount-minimum-order'){
+                                $res_final_total=$final_total-$promo_code_res[0]->value;
+                                $res_final_discount=$promo_code_res[0]->value;
+                            }
+                            else if($promo_code_res[0]->target=='specific-product'){
+                               $count= DB::table('ec_discount_products as dp')->where('discount_id',$promo_code_res[0]->id)
+                                ->join('cart as c','c.product_variant_id','=','dp.product_id')
+                                ->where('c.user_id', $user_id)->where('is_saved_for_later',0)->where('qty','>',0)->count();
+                                
+                                if($count>0){
+                                    $res_final_total=$final_total-$promo_code_res[0]->value;
+                                    $res_final_discount=$promo_code_res[0]->value;
+                                }else{
+                                    $count= DB::table('ec_discount_products as dp')->where('discount_id',$promo_code_res[0]->id)
+                                    ->join('ec_product_variations as pv','pv.configurable_product_id','=','dp.product_id')
+                                    ->join('cart as c','c.product_variant_id','=','pv.product_id')
+                                    ->where('c.user_id', $user_id)->where('is_saved_for_later',0)->where('qty','>',0)->count();
+
+                                    if($count>0){
+                                        $res_final_total=$final_total-$promo_code_res[0]->value;
+                                        $res_final_discount=$promo_code_res[0]->value;
+                                    }
+                                    else{
+                                        
+                                            $response['error'] = true;
+                                            $response['message'] = "This promo code is applicable only for product specific";
+                                            $response['data'] = array();
+                                            return $response;
+                                           
+                                    }
+                                }
+                               
+                            }else if($promo_code_res[0]->target=='product-variant'){
+                                $count= DB::table('ec_discount_products as dp')->where('discount_id',$promo_code_res[0]->id)
+                                ->join('cart as c','c.product_variant_id','=','dp.product_id')
+                                ->where('c.user_id', $user_id)->where('is_saved_for_later',0)->where('qty','>',0)->count();
+                                if($count>0){
+                                    $res_final_total=$final_total-$promo_code_res[0]->value;
+                                    $res_final_discount=$promo_code_res[0]->value;
+                               }
+                               else{
+                                $response['error'] = true;
+                                $response['message'] = "This promo code is applicable only for product variant specific";
+                                $response['data'] = array();
+                                return $response;
+                               }
+                             }
+                        
+                            else if($promo_code_res[0]->target=='customer'){
+                            
+                            $count= DB::table('ec_discount_customers')->where('discount_id',$promo_code_res[0]->id)->where('customer_id',$user_id)->count();
+                                if($count>0){
+                                    $res_final_total=$final_total-$promo_code_res[0]->value;
+                                    $res_final_discount=$promo_code_res[0]->value;
+                                }
+                                else{
+                                    
+                                        $response['error'] = true;
+                                        $response['message'] = "This promo code is applicable only for customer  specific";
+                                        $response['data'] = array();
+                                        return $response;
+        
+                                }
+                        }   }
+                        else if($promo_code_res[0]->type_option=='percentage' && $promo_code_res[0]->value!=0 ){
+                            
+                            if($promo_code_res[0]->target=='all-orders'||$promo_code_res[0]->target=='amount-minimum-order'){
+                                $res_final_total=$final_total-($final_total*($promo_code_res[0]->value/100));
+                                $res_final_discount=$final_total*($promo_code_res[0]->value/100);
+                            }
+                            else if($promo_code_res[0]->target=='specific-product'){
+                                
+                                $count= DB::table('ec_discount_products as dp')->where('discount_id',$promo_code_res[0]->id)
+                                ->join('cart as c','c.product_variant_id','=','dp.product_id')
+                                ->where('c.user_id', $user_id)->where('is_saved_for_later',0)->where('qty','>',0)->count();
+                                
+                                if($count>0){
+                                    $res_final_total=$final_total-($final_total*($promo_code_res[0]->value/100));
+                                    $res_final_discount=$final_total*($promo_code_res[0]->value/100);
+                                }else{
+                                    $count= DB::table('ec_discount_products as dp')->where('discount_id',$promo_code_res[0]->id)
+                                    ->join('ec_product_variations as pv','pv.configurable_product_id','=','dp.product_id')
+                                    ->join('cart as c','c.product_variant_id','=','pv.product_id')
+                                    ->where('c.user_id', $user_id)->where('is_saved_for_later',0)->where('qty','>',0)->count();
+
+                                    if($count>0){
+                                        $res_final_total=$final_total-($final_total*($promo_code_res[0]->value/100));
+                                        $res_final_discount=$final_total*($promo_code_res[0]->value/100);
+                                    }
+                                    else{
+                                        
+                                            $response['error'] = true;
+                                            $response['message'] = "This promo code is applicable only for product specific";
+                                            $response['data'] = array();
+                                            return $response;
+                                           
+                                    }
+                                 }    
+                            }
+                            else if($promo_code_res[0]->target=='product-variant'){
+                                $count= DB::table('ec_discount_products as dp')->where('discount_id',$promo_code_res[0]->id)
+                                ->join('cart as c','c.product_variant_id','=','dp.product_id')
+                                ->where('c.user_id', $user_id)->where('is_saved_for_later',0)->where('qty','>',0)->count();
+                                if($count>0){
+                                    $res_final_total=$final_total-($final_total*($promo_code_res[0]->value/100));
+                                     $res_final_discount=$final_total*($promo_code_res[0]->value/100);
+                               }
+                               else{
+                                $response['error'] = true;
+                                $response['message'] = "This promo code is applicable only for product variant specific";
+                                $response['data'] = array();
+                                return $response;
+                               }
+                            }
+                            else if($promo_code_res[0]->target=='customer'){
+                                $count= DB::table('ec_discount_customers')->where('discount_id',$promo_code_res[0]->id)->where('customer_id',$user_id)->count();
+                                if($count>0){
+                                    $res_final_total=$final_total-($final_total*($promo_code_res[0]->value/100));
+                                    $res_final_discount=$final_total*($promo_code_res[0]->value/100);
+                                }
+                                else{
+                                    
+                                        $response['error'] = true;
+                                        $response['message'] = "This promo code is applicable only for customer  specific";
+                                        $response['data'] = array();
+                                        return $response;
+        
+                                }
+                            }
+                
                         }
 
                         
-                        // if($res_final_discount>0){
-                        //     $data[]=[
-                        //         "final_total" =>strval($res_final_total),
-                        //         "final_discount"=>strval($res_final_discount) 
-                        //     ];
-                        //     $response['error'] = false;
-                        //     $response['message'] = 'The promo code is valid';
-                        //     $response['data']=$data;
-                        //     return $response;
-                        // }
-                        // else{
-                            
-                            $response['error'] = true;
-                            $response['message'] = ' التطبيق لا يدعم  الكوبون في هذا الاصدار';
-                            $response['data'] = array();
-                                return $response;
-                            
-                        //}
-                        // else if($promo_code_res[0]->type_option=='same-price'){
-                        //     if($promo_code_res[0]->target=='group-products'){
-                        //         DB::table('ec_discounts as ed')->where('ed.id',$promo_code_res[0]->id)
-                        //         ->join('ec_discount_product_collections as dpc','spc.discount_id','=','ed.id')
-                        //         ->join('ec_product_collection_products as pcp','pcp.product_collection_id','=','dpc.product_collection_id');
+                        if($res_final_discount>0){
+                            $data[]=[
+                                "final_total" =>strval($res_final_total),
+                                "final_discount"=>strval($res_final_discount) 
+                            ];
+                            $response['error'] = false;
+                            $response['message'] = 'The promo code is valid';
+                            $response['data']=$data;
+                            return $response;
+                        }
+                        
+                        else if($promo_code_res[0]->type_option=='same-price'){
+                            if($promo_code_res[0]->target=='group-products'){
+                                DB::table('ec_discounts as ed')->where('ed.id',$promo_code_res[0]->id)
+                                ->join('ec_discount_product_collections as dpc','spc.discount_id','=','ed.id')
+                                ->join('ec_product_collection_products as pcp','pcp.product_collection_id','=','dpc.product_collection_id');
                              
-                        //     }
-                        //     $res_final_total=$final_total-$promo_code_res[0]->value;
-                        //     $res_final_discount=$final_total*($promo_code_res[0]->value/100);
-                        // }
+                            }
+                            $res_final_total=$final_total-$promo_code_res[0]->value;
+                            $res_final_discount=$final_total*($promo_code_res[0]->value/100);
+                        }
 
 
                 
