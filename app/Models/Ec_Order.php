@@ -109,33 +109,18 @@ class Ec_Order extends Model
                     ));
                 
                 }
-                // $system_settings = get_settings('system_settings', true);
 
-                /* Calculating Promo Discount */
-                // if (isset($data['promo_code']) && !empty($data['promo_code'])) {
+                if (isset($data['promo_code']) && !empty($data['promo_code'])) {
 
-                //     $promo_code = validate_promo_code($data['promo_code'], $data['user_id'], $data['final_total']);
+               
+                        $data['final_total']=$data['final_total']-$data['promo_discount'];
+                     
+                      
+                    
+  
+                 }
 
-                //     if ($promo_code['error'] == false) {
-
-                //         if ($promo_code['data'][0]['discount_type'] == 'percentage') {
-                //             $promo_code_discount =  floatval($total  * $promo_code['data'][0]['discount'] / 100);
-                //         } else {
-                //             $promo_code_discount = $promo_code['data'][0]['discount'];
-                //             // $promo_code_discount = floatval($total - $promo_code['data'][0]['discount']);
-                //         }
-                //         if ($promo_code_discount <= $promo_code['data'][0]['max_discount_amount']) {
-                //             $total = floatval($total) - $promo_code_discount;
-                //         } else {
-                //             $total = floatval($total) - $promo_code['data'][0]['max_discount_amount'];
-                //             $promo_code_discount = $promo_code['data'][0]['max_discount_amount'];
-                //         }
-                //     } else {
-                //         return $promo_code;
-                //     }
-                // }
-
-                $final_total = $total + $delivery_charge;
+                $final_total = $data['final_total'];
                 $final_total = round($final_total, 2);
 
                 /* Calculating Wallet Balance */
@@ -390,7 +375,7 @@ class Ec_Order extends Model
             $already_returned_count = 0;
             $already_cancelled_count = 0;
             $return_request_submitted_count = 0;
-            $total_tax_percent = $total_tax_amount = 0;
+            $total_tax_percent = $total_tax_amount=0;
 
             for ($k = 0; $k < count($order_item_data); $k++) {
                 if (!empty($order_item_data)) {
@@ -417,6 +402,7 @@ class Ec_Order extends Model
                     $attributes=Ec_product::getProAttributes($order_item_data[$k]->product_id);
                     $order_item_data[$k]->type=(!empty($attributes)&& $sales>1)?"variable_product":"simple_product";
                     $order_item_data[$k]->tax_percent= ($order_item_data[$k]->tax_amount!=0) ?strval(round($order_item_data[$k]->price/$order_item_data[$k]->tax_amount)):'0';
+                    $total_tax_amount=0;
                     if (!in_array($order_item_data[$k]->active_status, ['returned', 'cancelled'])) {
                         
                         $total_tax_percent = $total_tax_percent + Cart::get_tax_percentage($order_item_data[$k]->product_variant_id);
@@ -462,9 +448,9 @@ class Ec_Order extends Model
             } else {
                 $order_details[$i]->return_request_submitted= ($return_request_submitted_count == count($order_item_data)) ? '1' : '0';
             }
-            $order_details[$i]->total= strval($order_details[$i]->total- $total_tax_amount);
+            $order_details[$i]->total= strval($order_details[$i]->total);
             $order_details[$i]->username= Fun::output_escaping($order_details[$i]->username);
-            $order_details[$i]->total_tax_percent= strval($total_tax_percent);
+            $order_details[$i]->total_tax_percent="0";
             $order_details[$i]->total_tax_amount = strval($total_tax_amount);
             if ($download_invoice == true or $download_invoice == 1) {
                 //use order Model for web 

@@ -523,6 +523,21 @@ class Cart extends Model
         
                                 }
                             }
+                            else if($promo_code_res[0]->target=='group-products'){
+                                $count= DB::table('ec_discount_customers')->where('discount_id',$promo_code_res[0]->id)->where('customer_id',$user_id)->count();
+                                if($count>0){
+                                    $res_final_total=$final_total-($final_total*($promo_code_res[0]->value/100));
+                                    $res_final_discount=$final_total*($promo_code_res[0]->value/100);
+                                }
+                                else{
+                                    
+                                        $response['error'] = true;
+                                        $response['message'] = "This promo code is applicable only for customer  specific";
+                                        $response['data'] = array();
+                                        return $response;
+        
+                                }
+                            }
                 
                         }
 
@@ -530,7 +545,8 @@ class Cart extends Model
                         if($res_final_discount>0){
                             $data[]=[
                                 "final_total" =>strval($res_final_total),
-                                "final_discount"=>strval($res_final_discount) 
+                                "final_discount"=>strval($res_final_discount),
+                                "promo_code"=>$promo_code  
                             ];
                             $response['error'] = false;
                             $response['message'] = 'The promo code is valid';
