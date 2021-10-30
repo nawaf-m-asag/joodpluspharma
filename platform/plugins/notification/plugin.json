@@ -1,0 +1,10 @@
+{
+    "name": "Notification",
+    "namespace": "Botble\\Notification\\",
+    "provider": "Botble\\Notification\\Providers\\NotificationServiceProvider",
+    "author": "Nawaf Asag",
+    "url": "",
+    "version": "1.0",
+    "description": "sand notification to app"
+}
+

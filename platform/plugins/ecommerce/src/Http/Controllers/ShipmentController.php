@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use OrderHelper;
+use Botble\Ecommerce\Http\Controllers\OrderController;
 
 class ShipmentController extends BaseController
 {
@@ -117,7 +118,7 @@ class ShipmentController extends BaseController
                 ]);
                 break;
         }
-
+        
         return $response->setMessage(trans('plugins/ecommerce::shipping.update_shipping_status_success'));
     }
 

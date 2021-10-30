@@ -46,13 +46,15 @@ class Ec_customer extends Model
          }
         return false;
     }
-    public static function get_customer_data_by_id($customer_id=null,$phone=null)
+    public static function get_customer_data_by_id($customer_id=null,$phone=null,$email=null)
     {
         $user_details =DB::table('ec_customers as ec')->selectRaw('ec.id,ec.ip_address,ec.name as username,ec.email,ec.phone as mobile,ec.avatar as image,ec.balance,ec.activation_selector,ec.activation_code,ec.forgotten_password_selector,ec.forgotten_password_code,ec.forgotten_password_time,ec.remember_selector,ec.remember_code,ec.created_on,ec.last_login,ec.active,ec.company,ec.address,ec.bonus,ec.dob,ec.country_code,c.name as city_name,a.name as area_name,ec.street,ec.pincode,ec.apikey,ec.referral_code,ec.friends_code,ec.fcm_id,ec.latitude,ec.longitude,ec.created_at');
         if($customer_id!=null)
         $user_details->where('ec.id',$customer_id);
         if($phone!=null)
         $user_details->where('ec.phone',$phone);
+        if($email!=null)
+        $user_details->where('ec.email',$email);
 		$user_details=$user_details->leftJoin('cities as c', 'c.id','=','ec.city')
         ->leftJoin('areas as a', 'a.id','=','ec.area')
 		->get();
@@ -79,20 +81,27 @@ class Ec_customer extends Model
         return request()->ip(); // it will return server ip when no client ip found
     }
 
-    public static function login($identity ,$now_password, $remember=FALSE)
+    public static function login($identity,$email,$now_password, $remember=FALSE)
 	{
 		
 		
-		if (empty($identity) || empty($now_password))
+		if ((empty($identity) &&empty($email))|| empty($now_password))
 		{
 			return FALSE;
 		}	
 		else{
 			
-			$rse=Ec_customer::select('password')->where('phone',$identity)->get();
+            $rse=Ec_customer::select('password');
+            if(!empty($identity)){
+                $rse->where('phone',$identity);
+            }
+            if(!empty($email)){
+                $rse->where('email',$email);
+            }
+            $rse=$rse->get();
 			if(isset($rse[0])){
 
-					if(Hash::check($now_password,$rse[0]->password)){
+				    if(Hash::check($now_password,$rse[0]->password)){
 					
 						return TRUE;
 					}

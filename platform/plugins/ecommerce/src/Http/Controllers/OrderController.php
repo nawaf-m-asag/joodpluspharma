@@ -46,7 +46,8 @@ use OrderHelper;
 use RvMedia;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Throwable;
-
+use Illuminate\Support\Facades\DB;
+use App\Models\Setting;
 class OrderController extends BaseController
 {
     /**
@@ -424,6 +425,9 @@ class OrderController extends BaseController
         $order->is_confirmed = 1;
         if ($order->status == OrderStatusEnum::PENDING) {
             $order->status = OrderStatusEnum::PROCESSING;
+            
+           
+
         }
 
         $this->orderRepository->createOrUpdate($order);
@@ -450,7 +454,7 @@ class OrderController extends BaseController
                 $order->user->email ?: $order->address->email
             );
         }
-
+        $this->postSendNot($request->input('order_id'),trans('plugins/ecommerce::order.confirm_order_success'));
         return $response->setMessage(trans('plugins/ecommerce::order.confirm_order_success'));
     }
 
@@ -580,6 +584,7 @@ class OrderController extends BaseController
 
         switch ($request->input('method')) {
             default:
+            $this->postSendNot($id,trans('plugins/ecommerce::order.order_was_sent_to_shipping_team'));
                 $result = $result->setMessage(trans('plugins/ecommerce::order.order_was_sent_to_shipping_team'));
                 break;
         }
@@ -617,7 +622,7 @@ class OrderController extends BaseController
                 'user_id'     => Auth::id(),
             ]);
         }
-
+       
         return $result;
     }
 
@@ -637,7 +642,7 @@ class OrderController extends BaseController
             'order_id'    => $shipment->order_id,
             'user_id'     => Auth::id(),
         ]);
-
+       
         return $response
             ->setData([
                 'status'      => ShippingStatusEnum::CANCELED,
@@ -734,7 +739,7 @@ class OrderController extends BaseController
         $this->orderRepository->createOrUpdate($order);
 
         OrderHelper::confirmPayment($order);
-
+        $this->postSendNot($id,trans('plugins/ecommerce::order.confirm_payment_success'));
         return $response->setMessage(trans('plugins/ecommerce::order.confirm_payment_success'));
     }
 
@@ -1075,5 +1080,58 @@ class OrderController extends BaseController
                 ->setError()
                 ->setMessage(trans('plugins/ecommerce::order.error_when_sending_email'));
         }
+    }
+    public function postSendNot($id,$message){
+       
+    $fcm_ids[]=null;
+    $user_id=DB::table('ec_orders')->select('user_id')->where('id',$id)->get();
+
+    $res=DB::table('ec_customers')->select('fcm_id','name')->where('id', $user_id[0]->user_id)->get();
+    foreach ($res as $fcm_id) {
+        if (!empty($fcm_id)) {
+            $fcm_ids[] = $fcm_id->fcm_id;
+        }
+    }
+   
+    $res=$this->sendNotification($fcm_ids,[
+        'title' => "(".$id." )حالة الطلب رقم",
+        'body' =>  strval(" مرحباً ".$res[0]->name." لقد تم ".$message),  
+        'type' => "order",
+    ]);
+    }
+    public function sendNotification($device_token,$message)
+    {
+
+ 
+        $SERVER_API_KEY = Setting::get_settings('fcm_server_key');
+        
+        // payload data, it will vary according to requirement
+        $data = [
+            "registration_ids" =>$device_token,
+            "notification" => $message
+                
+            
+        ];
+    
+        $dataString = json_encode($data);
+       
+        $headers = [
+            'Authorization: key=' . $SERVER_API_KEY,
+            'Content-Type: application/json',
+        ];
+   
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+    
+        $response = curl_exec($ch);
+      
+        curl_close($ch);
+        return $response;
+         
     }
 }

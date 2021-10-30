@@ -63,10 +63,14 @@ class Ec_product extends Model
            
         /* || filter product by tags name ||*/
             if (!empty($filter['tags'])) {
-              
-                
                 $tags= explode(" ", $filter['tags']);
-                $query->whereIn('pt.name',$tags); 
+                $query->whereIn('pt.name',$tags);
+                $brand=DB::table('ec_brands')->where('name',$tags)->get();
+                
+                if(isset($brand[0])){
+                  
+                    $query->orWhere('p.brand_id',$brand[0]->id);
+                }
                
             } 
 
@@ -85,8 +89,7 @@ class Ec_product extends Model
         }
         if (($sort == 'p.date_added'|| $sort == 'p.id') && !empty($sort) && $sort != NULL) {
             $products=$query->orderBy('p.id',$order);
-        }
-        
+        }    
         /* || filter product by category id ||*/
         if (isset($category_id) && !empty($category_id)) 
         {
@@ -280,8 +283,17 @@ public static function get_products_By_ids($products_ids,$user_id=null){
         $tags=[];
         $query= DB::table('ec_product_tag_product as ptp')->where('ptp.product_id',$id)
             ->join('ec_product_tags as pt','pt.id','=','ptp.tag_id')->select('pt.name')->get();
+        $key=0;
         foreach ($query as $key => $value) {
             $tags[$key]=$value->name;
+            
+        }
+      $brand=DB::table('ec_products as p')->where('p.id',$id)
+        ->join('ec_brands as b','b.id','=','p.brand_id')->select('b.name')->get();
+       
+        if(isset($brand[0])){
+            $tags[$key]=$brand[0]->name;
+           
         }
 
       return $tags;

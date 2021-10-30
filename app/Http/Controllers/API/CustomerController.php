@@ -302,8 +302,8 @@ class CustomerController extends Controller
     //   }
        
         $validator = Validator::make($request->all(), [
-               
-            'mobile_no'=>'required|numeric',
+            'mobile_no'=>'required_without:email|numeric',
+            'email'=>'required_without:mobile_no|email',
             'new'=>'required',
         ]);
         if ($validator->fails()) {
@@ -311,11 +311,14 @@ class CustomerController extends Controller
             $this->response['message'] = $validator->errors()->first();
             return response()->json($this->response);
         }
-
+        if(isset($request->mobile_no)&&$request->mobile_no!=null)
         $res = Fun::fetch_details(['phone' => $request->mobile_no], 'ec_customers');
+        else if(isset($request->email)&&$request->email!=null)
+        $res = Fun::fetch_details(['email' => $request->email], 'ec_customers');
+
         if (!empty($res)) {
           
-            if (!Fun::reset_password($request->mobile_no, $request->new)) {
+            if (!Fun::reset_password(isset($request->mobile_no)?$request->mobile_no:null,isset($request->email)?$request->email:null, $request->new)) {
                 $response['error'] = true;
                 $response['message'] = 'post change password unsuccessful';
                 $response['data'] = array();
@@ -360,13 +363,13 @@ class CustomerController extends Controller
             return response()->json($this->response);
         }
         
-    $login = Ec_customer::login($request->mobile,$request->password, false);
+    $login = Ec_customer::login($request->mobile,$request->email,$request->password, false);
        
         if ($login) {
             if (isset($request->fcm_id) && !empty($request->fcm_id)) {
                 Fun::update_details(['fcm_id' => $request->fcm_id], ['mobile' => $request->mobile], 'ec_customers');
             }
-            $data=Ec_customer::get_customer_data_by_id(null,$request->mobile);
+            $data=Ec_customer::get_customer_data_by_id(null,isset($request->mobile)?$request->mobile:null,isset($request->mobile)?$request->mobile:null);
 
             //if the login is successful
             $this->response['error'] = false;

@@ -1,0 +1,8 @@
+{
+    "name": "botble/notification",
+    "description": "Notification plugin",
+    "type": "package",
+    "require": {
+        "symfony/var-exporter": "^5.0"
+    }
+}

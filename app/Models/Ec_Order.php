@@ -34,12 +34,12 @@ class Ec_Order extends Model
         'address_id',
         'otp',
         'delivery_date',
-        'delivery_time',
+        'delivery_time'
         
 
 
    
-];
+        ];
     public static function place_order($data)
     {
         
@@ -112,16 +112,18 @@ class Ec_Order extends Model
 
                 if (isset($data['promo_code']) && !empty($data['promo_code'])) {
 
-               
-                        $data['final_total']=$data['final_total']-$data['promo_discount'];
-                     
-                      
-                    
-  
+                        $res=Cart::validate_promo_code($data['promo_code'],$data['user_id'],$data['final_total']);
+                        
+                        if($res['error']==false){
+                           
+                            $data['final_total']=$data['final_total']-$data['promo_discount'];
+                            DB::table('ec_discounts')->where('code',$data['promo_code'])->increment('total_used', 1);
+                       
+                        }
+                       
                  }
 
-                $final_total = $data['final_total'];
-                $final_total = round($final_total, 2);
+                $final_total = round($data['final_total'], 2);
 
                 /* Calculating Wallet Balance */
                 $total_payable = $final_total;
@@ -300,8 +302,6 @@ class Ec_Order extends Model
 
     public static function fetch_orders($order_id = NULL, $user_id = NULL, $status = NULL, $delivery_boy_id = NULL, $limit = NULL, $offset = NULL, $sort = NULL, $order = NULL, $download_invoice = false, $start_date = null, $end_date = null, $search = null)
     {
-
-      
         $where = [];     
         if (isset($order_id) && $order_id != null) {
             $where['o.id'] = $order_id;
@@ -326,7 +326,7 @@ class Ec_Order extends Model
             $search_res->on('op.order_id','=','o.id');
             $search_res->where('op.product_name','like','%'.trim($search).'%')->limit(1);
         });
-            
+      
         }
         if (empty($sort)) {
             $sort = `o.created_at`;

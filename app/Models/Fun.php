@@ -122,11 +122,17 @@ public static function is_exist($where, $table, $update_id = null)
 
 
 
-    public static function reset_password($identity, $new) {
+    public static function reset_password($identity,$email, $new) {
 	
-		
+        $res =DB::table('ec_customers');
+        if(!empty($identity))
+        $res->where('phone',$identity);
+        if(!empty($email))
+        $res->where('email',$email);
 
-        if($res =DB::table('ec_customers')->where('phone',$identity)->update(['password'=>bcrypt($new)]))
+        $res=$res->update(['password'=>bcrypt($new)]);
+
+        if($res )
         {
             return true;
         }
