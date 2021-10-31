@@ -65,7 +65,7 @@ class Ec_product extends Model
             if (!empty($filter['tags'])) {
                 $tags= explode(" ", $filter['tags']);
                 $query->whereIn('pt.name',$tags);
-                $brand=DB::table('ec_brands')->where('name',$tags)->get();
+                $brand=DB::table('ec_brands')->where('name',$filter['tags'])->get();
                 
                 if(isset($brand[0])){
                   

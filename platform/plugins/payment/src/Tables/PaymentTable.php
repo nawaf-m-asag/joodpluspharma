@@ -61,6 +61,9 @@ class PaymentTable extends TableAbstract
             ->editColumn('amount', function ($item) {
                 return $item->amount . ' ' . $item->currency;
             })
+            ->editColumn('description', function ($item) {
+                return $item->description;
+            })
             ->editColumn('created_at', function ($item) {
                 return BaseHelper::formatDate($item->created_at);
             })
@@ -87,6 +90,7 @@ class PaymentTable extends TableAbstract
             'payment_channel',
             'created_at',
             'status',
+            'description'
         ]);
 
         return $this->applyScopes($query);
@@ -108,6 +112,10 @@ class PaymentTable extends TableAbstract
             ],
             'amount'          => [
                 'title' => trans('plugins/payment::payment.amount'),
+                'class' => 'text-left',
+            ],
+            'description'          => [
+                'title' => trans('plugins/payment::payment.refunds.description'),
                 'class' => 'text-left',
             ],
             'payment_channel' => [

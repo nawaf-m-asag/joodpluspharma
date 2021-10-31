@@ -504,6 +504,16 @@
                 <div class="flexbox-layout-section-secondary mt20">
                     <div class="ui-layout__item">
                         <div class="wrapper-content mb20">
+                            @if (!empty($order->delivery_time))
+                            <div class="next-card-section p-none-b">
+                                <div class="flexbox-auto-content-left">
+                                    <label class="text-no-bold">{{$order->delivery_time}}:{{ trans('plugins/ecommerce::order.delivery_time') }}</label>
+                                </div>
+                                <div class="flexbox-auto-content-left">
+                                    <label class="text-no-bold">{{$order->delivery_date}}:{{ trans('plugins/ecommerce::order.delivery_date') }}</label>
+                                </div>
+                            </div> 
+                            @endif   
                             <div class="next-card-section p-none-b">
                                 <div class="flexbox-grid-default flexbox-align-items-center">
                                     <div class="flexbox-auto-content-left">

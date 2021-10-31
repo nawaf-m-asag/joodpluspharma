@@ -169,11 +169,7 @@ class Ec_Order extends Model
            
                 $address_data = Address::get_address(null, $data['address_id'], false);
  
-                if (isset($data['delivery_date']) && !empty($data['delivery_date']) && !empty($data['delivery_time']) && isset($data['delivery_time'])) {
-                    $order_data['description'].=" delivery date:".date('Y-m-d', strtotime($data['delivery_date']));
-                    $order_data['description'].=" delivery time:".$data['delivery_time'];
-                    $order_data['description'] .=isset($data['remittance_no'])?" رقم الحوالة:".$data['remittance_no']:'';
-                }
+
                 if ($system_settings['is_delivery_boy_otp_setting_on'] == '1') {
                     $order_data['otp'] = $otp;
                 } else {
@@ -190,6 +186,7 @@ class Ec_Order extends Model
                         'payment_channel'=>($data['payment_method']=='Remittance')?'bank_transfer':strtolower($data['payment_method']),
                         'amount'=>$final_total,
                         'order_id'=> $last_order_id->id,
+                        'description'=>isset($data['remittance_no'])?$data['remittance_no']:'',
                         'customer_type'=>'Botble\Ecommerce\Models\Customer',
                         'created_at'=>date('Y-m-d H:i:s'),
                         'updated_at'=>date('Y-m-d H:i:s'),
