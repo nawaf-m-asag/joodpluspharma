@@ -27,6 +27,16 @@ Route::group(['namespace' => 'Botble\Notification\Http\Controllers', 'middleware
                     'uses'       => 'NotificationController@destroy',
                     'permission' => 'notification.destroy',
                 ]);
+                Route::get('/one-notification', [
+                    'as'         => 'one-notification',
+                    'uses'       => 'NotificationController@OneNotification',
+                    'permission' => 'notification.edit',
+                ]);
+                Route::post('/one-notification', [
+                    'as'         => 'one-notification',
+                    'uses'       => 'NotificationController@SendOneNotification',
+                    'permission' => 'notification.edit',
+                ]);
               
             
         });
