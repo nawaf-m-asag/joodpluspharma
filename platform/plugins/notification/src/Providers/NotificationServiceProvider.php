@@ -52,9 +52,25 @@ class NotificationServiceProvider extends ServiceProvider
                 'parent_id'   => null,
                 'name'        => 'plugins/notification::notification.name',
                 'icon'        => 'fas fa-paper-plane',
+                'url'         => null,
+                'permissions' => ['notification.index'],
+            ])->registerItem([
+                'id'          => 'cms-plugins-notification-all-user',
+                'priority'    => 1,
+                'parent_id'   => 'cms-plugins-notification',
+                'name'        => 'plugins/notification::notification.all-user',
+                'icon'        => null,
                 'url'         => route('notification.index'),
                 'permissions' => ['notification.index'],
-            ]);
+            ])->registerItem([
+                'id'          => 'cms-plugins-notification-one-user',
+                'priority'    => 2,
+                'parent_id'   => 'cms-plugins-notification',
+                'name'        => 'plugins/notification::notification.one-user',
+                'icon'        => null,
+                'url'         => route('notification.one-notification'),
+                'permissions' => ['notification.index'],
+            ]);;;
         });
     }
 }

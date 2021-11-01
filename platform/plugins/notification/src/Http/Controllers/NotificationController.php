@@ -3,6 +3,7 @@ namespace Botble\Notification\Http\Controllers;
 use Assets;
 use Botble\Base\Events\BeforeEditContentEvent;
 use Botble\Notification\Http\Requests\NotificationRequest;
+use Botble\Notification\Http\Requests\OneNotificationRequest;
 use Botble\Notification\Repositories\Interfaces\NotificationInterface;
 use Botble\Base\Http\Controllers\BaseController;
 use Illuminate\Http\Request;
@@ -13,6 +14,7 @@ use Botble\Base\Events\DeletedContentEvent;
 use Botble\Base\Events\UpdatedContentEvent;
 use Botble\Base\Http\Responses\BaseHttpResponse;
 use Botble\Notification\Forms\NotificationForm;
+use Botble\Notification\Forms\OneNotificationForm;
 use Botble\Base\Forms\FormBuilder;
 use Illuminate\Support\Facades\DB;
 use App\Models\Setting;
@@ -45,7 +47,35 @@ class NotificationController extends BaseController
 
         return $table->renderTable();
     }
+    public function OneNotification(FormBuilder $formBuilder)
+    {
+        page_title()->setTitle(trans('plugins/notification::notification.one-user'));
 
+        return $formBuilder->create(OneNotificationForm::class, ['model'=>null])->renderForm();
+    }
+    public function SendOneNotification (OneNotificationRequest $request, BaseHttpResponse $response)
+    {
+        $fcm_ids[]=null;
+        $res=DB::table('ec_customers')->select('fcm_id')->where('id','=',$request->customer_id)->get();
+        foreach ($res as $fcm_id) {
+            if (!empty($fcm_id)) {
+                $fcm_ids[] = $fcm_id->fcm_id;
+            }
+        }
+        $image=(isset($request->image)&&$request->image!=null)?RvMedia::getImageUrl($request->image,'small', false):'null';
+        $res=$this->sendNotification($fcm_ids,[
+            'content_available' => true,
+            'title' => strval($request->title),
+            'body' =>  strval($request->message),
+            'image' => $image,
+            'click_action' => 'FLUTTER_NOTIFICATION_CLICK',
+        ]);
+     
+        return $response
+            ->setPreviousUrl(route('notification.one-notification'))
+            ->setNextUrl('#')
+            ->setMessage(trans('core/base::notices.create_success_message'));
+    }
     /**
      * @param FormBuilder $formBuilder
      * @return string

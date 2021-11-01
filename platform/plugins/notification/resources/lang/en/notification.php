@@ -8,5 +8,8 @@ return [
     'message'=>'Message',
     'type'=>'Type',
     'category'=>'Category',
-    'product'=>'Product'
+    'product'=>'Product',
+    'all-user'=>'اشعار جماعي',
+    'one-user'=>'اشعار مخصص',
+    'customers'=>'العميل'
 ];
