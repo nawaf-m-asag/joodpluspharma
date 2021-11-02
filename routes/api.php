@@ -67,6 +67,7 @@ Route::post('update_order_status',App\Http\Controllers\API\OrderController::clas
 Route::post('transactions',App\Http\Controllers\API\PaymentController::class . '@getTransaction');
 Route::post('payment_bank_transfer_description',App\Http\Controllers\API\PaymentController::class . '@payment_bank_transfer_description');
 Route::post('get_shipping_method',App\Http\Controllers\API\ShippingController::class . '@getShippingMethod');
+Route::post('get_brands',App\Http\Controllers\API\BrandController::class . '@getBrands');
 
 
     

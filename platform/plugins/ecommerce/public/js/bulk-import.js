@@ -1,1 +1,166 @@
-$((function(){var e=document.getElementById("custom-file-label").innerHTML,t="";$(document).on("change",".custom-file-input",(function(e){var a=e.target;t=t||a.nextElementSibling.innerText,a.files[0]?a.nextElementSibling.innerText=a.files[0].name:a.nextElementSibling.innerText=t}));var a=$(".alert.alert-warning");a.length>0&&_.map(a,(function(e){var t=localStorage.getItem("storage-alerts");if(t=t?JSON.parse(t):{},$(e).data("alert-id")){if(t[$(e).data("alert-id")])return void $(e).alert("close");$(e).removeClass("hidden")}})),a.on("closed.bs.alert",(function(e){var t=$(e.target).data("alert-id");if(t){var a=localStorage.getItem("storage-alerts");(a=a?JSON.parse(a):{})[t]=!0,localStorage.setItem("storage-alerts",JSON.stringify(a))}}));var n=!1;$(document).on("click",".download-template",(function(e){if(e.preventDefault(),!n){var t=$(e.currentTarget),a=t.data("extension"),r=t.html();$.ajax({url:t.data("url"),method:"POST",data:{extension:a},xhrFields:{responseType:"blob"},beforeSend:function(){t.html(t.data("downloading")),t.addClass("text-secondary"),n=!0},success:function(e){var a=document.createElement("a"),n=window.URL.createObjectURL(e);a.href=n,a.download=t.data("filename"),document.body.append(a),a.click(),a.remove(),window.URL.revokeObjectURL(n)},error:function(e){Botble.handleError(e)},complete:function(){setTimeout((function(){t.html(r),t.removeClass("text-secondary"),n=!1}),2e3)}})}})),$(document).on("submit",".form-import-data",(function(t){t.preventDefault();var a=$(this),n=new FormData(a.get(0)),r=a.find("button[type=submit]");r.prop("disabled",!0).addClass("button-loading");var o=$("#imported-message"),l=$("#imported-listing"),s=$(".show-errors");$.ajax({url:a.attr("action"),type:a.attr("method")||"POST",data:n,cache:!1,processData:!1,contentType:!1,dataType:"json",beforeSend:function(){$(".main-form-message").addClass("hidden"),o.html("")},success:function(t){if(t.error)Botble.showError(t.message);else{Botble.showSuccess(t.message);var a="";t.data.failures&&_.map(t.data.failures,(function(e){var t="Row: "+e.row+" -  Attribute: "+e.attribute+" - Errors: "+e.errors.join(", ");a+="<li>"+t+"</li>"}));var n="alert alert-success";t.data.total_failed?(n=t.data.total_success?"alert alert-warning":"alert alert-danger",s.removeClass("hidden")):s.addClass("hidden"),o.removeClass().addClass(n).html(t.message),l.removeClass("hidden").html(a),document.getElementById("input-group-file").value="",document.getElementById("custom-file-label").innerHTML=e}r.prop("disabled",!1),r.removeClass("button-loading")},error:function(e){r.prop("disabled",!1),r.removeClass("button-loading"),Botble.handleError(e)},complete:function(){r.prop("disabled",!1),r.removeClass("button-loading"),$(".main-form-message").removeClass("hidden")}})}))}));
+/******/ (() => { // webpackBootstrap
+var __webpack_exports__ = {};
+/*!***********************************************************************!*\
+  !*** ./platform/plugins/ecommerce/resources/assets/js/bulk-import.js ***!
+  \***********************************************************************/
+$(function () {
+  var txtFileLabel = document.getElementById('custom-file-label').innerHTML;
+  var txtFileInput = '';
+  $(document).on('change', '.custom-file-input', function (e) {
+    var $this = e.target;
+    txtFileInput = txtFileInput || $this.nextElementSibling.innerText;
+
+    if ($this.files[0]) {
+      $this.nextElementSibling.innerText = $this.files[0].name;
+    } else {
+      $this.nextElementSibling.innerText = txtFileInput;
+    }
+  });
+  var alertWarning = $('.alert.alert-warning');
+
+  if (alertWarning.length > 0) {
+    _.map(alertWarning, function (el) {
+      var storageAlert = localStorage.getItem('storage-alerts');
+      storageAlert = storageAlert ? JSON.parse(storageAlert) : {};
+
+      if ($(el).data('alert-id')) {
+        if (storageAlert[$(el).data('alert-id')]) {
+          $(el).alert('close');
+          return;
+        }
+
+        $(el).removeClass('hidden');
+      }
+    });
+  }
+
+  alertWarning.on('closed.bs.alert', function (el) {
+    var storage = $(el.target).data('alert-id');
+
+    if (storage) {
+      var storageAlert = localStorage.getItem('storage-alerts');
+      storageAlert = storageAlert ? JSON.parse(storageAlert) : {};
+      storageAlert[storage] = true;
+      localStorage.setItem('storage-alerts', JSON.stringify(storageAlert));
+    }
+  });
+  var isDownloadingTemplate = false;
+  $(document).on('click', '.download-template', function (event) {
+    event.preventDefault();
+
+    if (isDownloadingTemplate) {
+      return;
+    }
+
+    var $this = $(event.currentTarget);
+    var extension = $this.data('extension');
+    var $content = $this.html();
+    $.ajax({
+      url: $this.data('url'),
+      method: 'POST',
+      data: {
+        extension: extension
+      },
+      xhrFields: {
+        responseType: 'blob'
+      },
+      beforeSend: function beforeSend() {
+        $this.html($this.data('downloading'));
+        $this.addClass('text-secondary');
+        isDownloadingTemplate = true;
+      },
+      success: function success(data) {
+        var a = document.createElement('a');
+        var url = window.URL.createObjectURL(data);
+        a.href = url;
+        a.download = $this.data('filename');
+        document.body.append(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+      },
+      error: function error(data) {
+        Botble.handleError(data);
+      },
+      complete: function complete() {
+        setTimeout(function () {
+          $this.html($content);
+          $this.removeClass('text-secondary');
+          isDownloadingTemplate = false;
+        }, 2000);
+      }
+    });
+  });
+  $(document).on('submit', '.form-import-data', function (event) {
+    event.preventDefault();
+    var $form = $(this);
+    var formData = new FormData($form.get(0));
+    var $button = $form.find('button[type=submit]');
+    $button.prop('disabled', true).addClass('button-loading');
+    var $message = $('#imported-message');
+    var $listing = $('#imported-listing');
+    var $show = $('.show-errors');
+    $.ajax({
+      url: $form.attr('action'),
+      type: $form.attr('method') || 'POST',
+      data: formData,
+      cache: false,
+      processData: false,
+      contentType: false,
+      dataType: 'json',
+      beforeSend: function beforeSend() {
+        $('.main-form-message').addClass('hidden');
+        $message.html('');
+      },
+      success: function success(data) {
+        if (data.error) {
+          Botble.showError(data.message);
+        } else {
+          Botble.showSuccess(data.message);
+          var result = '';
+
+          if (data.data.failures) {
+            _.map(data.data.failures, function (val) {
+              var txt = 'Row: ' + val.row + ' -  Attribute: ' + val.attribute + ' - Errors: ' + val.errors.join(', ');
+              result += '<li>' + txt + '</li>';
+            });
+          }
+
+          var $class = 'alert alert-success';
+
+          if (data.data.total_failed) {
+            if (data.data.total_success) {
+              $class = 'alert alert-warning';
+            } else {
+              $class = 'alert alert-danger';
+            }
+
+            $show.removeClass('hidden');
+          } else {
+            $show.addClass('hidden');
+          }
+
+          $message.removeClass().addClass($class).html(data.message);
+          $listing.removeClass('hidden').html(result);
+          document.getElementById('input-group-file').value = '';
+          document.getElementById('custom-file-label').innerHTML = txtFileLabel;
+        }
+
+        $button.prop('disabled', false);
+        $button.removeClass('button-loading');
+      },
+      error: function error(data) {
+        $button.prop('disabled', false);
+        $button.removeClass('button-loading');
+        Botble.handleError(data);
+      },
+      complete: function complete() {
+        $button.prop('disabled', false);
+        $button.removeClass('button-loading');
+        $('.main-form-message').removeClass('hidden');
+      }
+    });
+  });
+});
+/******/ })()
+;

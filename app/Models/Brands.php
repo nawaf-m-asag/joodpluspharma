@@ -20,8 +20,7 @@ class Brands extends Model
     $where = (isset($id) && !empty($id)) ? ['id' => $id,'status' => 'published'] : ['status' =>'published'];
         
     $query=DB::table('ec_brands')->select('id','name','status','order as row_order','logo as image')
-    ->where($where)
-    ->orWhere(['is_featured'=>1]);
+    ->where($where);
     
   
       

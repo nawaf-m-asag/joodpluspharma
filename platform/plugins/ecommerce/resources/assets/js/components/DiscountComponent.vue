@@ -21,19 +21,13 @@
                         <select class="ui-select" id="select-promotion" name="type" v-model="type"
                                 @change="changeDiscountType()">
                             <option value="coupon">{{ __('discount.coupon_code')}}</option>
-                            <option value="promotion">{{ __('discount.promotion')}}</option>
+                            
                         </select>
                         <svg class="svg-next-icon svg-next-icon-size-16">
                             <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#select-chevron"></use>
                         </svg>
                     </div>
-                    <div class="form-group mt15 mb0" v-show="!is_promotion">
-                        <label class="next-label">
-                            <input type="checkbox" class="hrv-checkbox" value="1" name="can_use_with_promotion"
-                                   v-model="can_use_with_promotion">
-                            <span class="pre-line">{{ __('discount.can_be_used_with_promotion')}}</span>
-                        </label>
-                    </div>
+                   
                     <div class="form-group mb0 mt15" v-show="!is_promotion">
                         <label>
                             <input type="checkbox" class="hrv-checkbox" name="is_unlimited" value="1"
@@ -56,8 +50,7 @@
                                     @change="handleChangeTypeOption()">
                                 <option value="amount">{{ currency }}</option>
                                 <option value="percentage">{{ __('discount.percentage_discount')}}</option>
-                                <option value="shipping" v-if="!is_promotion">{{ __('discount.free_shipping')}}</option>
-                                <option value="same-price">{{ __('discount.same_price') }}</option>
+                           
                             </select>
                             <svg class="svg-next-icon svg-next-icon-size-16">
                                 <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#select-chevron"></use>

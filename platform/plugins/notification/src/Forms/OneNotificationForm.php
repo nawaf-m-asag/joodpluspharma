@@ -17,10 +17,10 @@ class OneNotificationForm extends FormAbstract
     public function buildForm()
     {
        
-        $id=isset($_GET['id'])?$_GET['id']:null;
+        $id=isset($_GET['friends_code'])?$_GET['friends_code']:null;
         $list_customers = DB::table('ec_customers')->where('fcm_id','!=',null);
         if($id!=null)
-        $list_customers->where('id',$id);
+        $list_customers->where('referral_code',$friends_code);
         $list_customers= $list_customers->get();
 
         $customers = [];

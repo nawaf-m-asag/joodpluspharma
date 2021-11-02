@@ -200,5 +200,6 @@ return [
     'cancel'                                                                                                                => 'الغاء',
     'create_a_new_order'                                                                                                    => 'أنشئ طلبًا جديدًا',
     'delivery_time'=>'وقت التسليم',
-    'delivery_date'=>'تاريخ التسليم'
+    'delivery_date'=>'تاريخ التسليم',
+    'friends_code'=>'كود الصديق'
 ];

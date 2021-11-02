@@ -507,10 +507,10 @@
                             @if (!empty($order->delivery_time))
                             <div class="next-card-section p-none-b">
                                 <div class="flexbox-auto-content-left">
-                                    <label class="text-no-bold">{{$order->delivery_time}}:{{ trans('plugins/ecommerce::order.delivery_time') }}</label>
+                                    <label class="text-no-bold">{{ trans('plugins/ecommerce::order.delivery_time') }}:{{$order->delivery_time}}</label>
                                 </div>
                                 <div class="flexbox-auto-content-left">
-                                    <label class="text-no-bold">{{$order->delivery_date}}:{{ trans('plugins/ecommerce::order.delivery_date') }}</label>
+                                    <label class="text-no-bold">{{ trans('plugins/ecommerce::order.delivery_date') }}:{{$order->delivery_date}}</label>
                                 </div>
                             </div> 
                             @endif   
@@ -538,6 +538,7 @@
                                     @else
                                         <li><div>{{ trans('plugins/ecommerce::order.dont_have_an_account_yet') }}</div></li>
                                     @endif
+                                    <li class="overflow-ellipsis">{{trans('plugins/ecommerce::order.friends_code') }}:<a href="{{route('notification.one-notification','friends_code='.$order->user->friends_code)}}" class="hover-underline"> {{ $order->user->friends_code}}</a></li>
                                 </ul>
                             </div>
                             <div class="next-card-section">
