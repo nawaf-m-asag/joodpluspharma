@@ -363,13 +363,13 @@ class CustomerController extends Controller
             return response()->json($this->response);
         }
         
-    $login = Ec_customer::login($request->mobile,$request->email,$request->password, false);
+    $login = Ec_customer::login(isset($request->mobile)?$request->mobile:null,isset($request->email)?$request->email:null,$request->password, false);
        
         if ($login) {
             if (isset($request->fcm_id) && !empty($request->fcm_id)) {
                 Fun::update_details(['fcm_id' => $request->fcm_id], ['mobile' => $request->mobile], 'ec_customers');
             }
-            $data=Ec_customer::get_customer_data_by_id(null,isset($request->mobile)?$request->mobile:null,isset($request->mobile)?$request->mobile:null);
+            $data=Ec_customer::get_customer_data_by_id(null,isset($request->mobile)?$request->mobile:null,isset($request->email)?$request->email:null);
 
             //if the login is successful
             $this->response['error'] = false;
