@@ -1,0 +1,10 @@
+{
+    "name": "Medical",
+    "namespace": "Botble\\Medical\\",
+    "provider": "Botble\\Medical\\Providers\\MedicalServiceProvider",
+    "author": "Nawaf Asag",
+    "url": "",
+    "version": "1.0",
+    "description": "Medical Serves"
+}
+

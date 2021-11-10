@@ -1,0 +1,8 @@
+{
+    "name": "botble/medical",
+    "description": "Medical plugin",
+    "type": "package",
+    "require": {
+        "symfony/var-exporter": "^5.0"
+    }
+}
