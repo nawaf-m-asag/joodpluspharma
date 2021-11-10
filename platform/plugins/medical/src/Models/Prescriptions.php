@@ -17,7 +17,7 @@ class Prescriptions extends BaseModel
      *
      * @var string
      */
-    protected $table = 'prescriptions';
+    protected $table = 'med_prescriptions';
 
     /**
      * @var array

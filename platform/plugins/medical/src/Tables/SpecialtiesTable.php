@@ -4,12 +4,12 @@ namespace Botble\Medical\Tables;
 
 use Illuminate\Support\Facades\Auth;
 use BaseHelper;
-use Botble\Medical\Repositories\Interfaces\ServiceInterface;
+use Botble\Medical\Repositories\Interfaces\SpecialtiesInterface;
 use Botble\Table\Abstracts\TableAbstract;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Yajra\DataTables\DataTables;
 use Html;
-class ServiceTable extends TableAbstract
+class SpecialtiesTable extends TableAbstract
 {
 
     /**
@@ -26,15 +26,15 @@ class ServiceTable extends TableAbstract
      * notificationTable constructor.
      * @param DataTables $table
      * @param UrlGenerator $urlGenerator
-     * @param ServiceInterface ${+name}Repository
+     * @param SpecialtiesInterface ${+name}Repository
      */
-    public function __construct(DataTables $table, UrlGenerator $urlGenerator, ServiceInterface $serviceRepository)
+    public function __construct(DataTables $table, UrlGenerator $urlGenerator, SpecialtiesInterface $SpecialtiesRepository)
     {
         parent::__construct($table, $urlGenerator);
 
-        $this->repository = $serviceRepository;
+        $this->repository = $SpecialtiesRepository;
 
-        if (!Auth::user()->hasAnyPermission(['services.edit', 'services.destroy'])) {
+        if (!Auth::user()->hasAnyPermission(['specialties.edit', 'specialties.destroy'])) {
             $this->hasOperations = false;
             $this->hasActions = false;
         }
@@ -48,10 +48,10 @@ class ServiceTable extends TableAbstract
         $data = $this->table
             ->eloquent($this->query())
             ->editColumn('name', function ($item) {
-                if (!Auth::user()->hasPermission('services.edit')) {
+                if (!Auth::user()->hasPermission('specialties.edit')) {
                     return $item->name;
                 }
-                return Html::link(route('service.edit', $item->id), $item->name);
+                return Html::link(route('specialties.edit', $item->id), $item->name);
             })
             ->editColumn('checkbox', function ($item) {
                 return $this->getCheckbox($item->id);
@@ -63,7 +63,7 @@ class ServiceTable extends TableAbstract
                 return $item->status->toHtml();
             })
             ->addColumn('operations', function ($item) {
-                return $this->getOperations('service.edit', 'service.destroy', $item);
+                return $this->getOperations('specialties.edit', 'specialties.destroy', $item);
             });
 
             
@@ -97,7 +97,7 @@ class ServiceTable extends TableAbstract
                 'width' => '20px',
             ],
             'name' => [
-                'title' =>trans('plugins/medical::medical.service-name'),
+                'title' =>trans('plugins/medical::medical.specialties-name'),
                 'class' => 'text-left',
             ],
             'status'      => [
@@ -118,7 +118,7 @@ class ServiceTable extends TableAbstract
      */
     public function buttons()
     {
-        return $this->addCreateButton(route('service.create'), 'service.create');
+        return $this->addCreateButton(route('specialties.create'), 'specialties.create');
     }
 
     /**
@@ -126,7 +126,7 @@ class ServiceTable extends TableAbstract
      */
     public function bulkActions(): array
     {
-        return $this->addDeleteAction(route('service.deletes'), 'service.deletes', parent::bulkActions());
+        return $this->addDeleteAction(route('specialties.deletes'), 'specialties.deletes', parent::bulkActions());
     }
 
     /**
@@ -136,7 +136,7 @@ class ServiceTable extends TableAbstract
     {
         return [
             'name' => [
-                'title'    => trans('plugins/medical::medical.service-name'),
+                'title'    => trans('plugins/medical::medical.specialties-name'),
                 'type'     => 'text',
                 'validate' => 'required|max:120',
             ],

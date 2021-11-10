@@ -10,11 +10,15 @@ use Botble\Medical\Repositories\Caches\ServiceCacheDecorator;
 use Botble\Medical\Repositories\Eloquent\ServiceRepository;
 use Botble\Medical\Repositories\Interfaces\ServiceInterface;
 
-use Botble\Medical\Models\PrescriptionS;
+use Botble\Medical\Models\Prescriptions;
 use Botble\Medical\Repositories\Caches\PrescriptionCacheDecorator;
 use Botble\Medical\Repositories\Eloquent\PrescriptionRepository;
 use Botble\Medical\Repositories\Interfaces\PrescriptionInterface;
 
+use Botble\Medical\Models\Specialties;
+use Botble\Medical\Repositories\Caches\SpecialtiesCacheDecorator;
+use Botble\Medical\Repositories\Eloquent\SpecialtiesRepository;
+use Botble\Medical\Repositories\Interfaces\SpecialtiesInterface;
 
 use Botble\Base\Supports\Helper;
 use Illuminate\Support\Facades\Event;
@@ -37,7 +41,9 @@ class MedicalServiceProvider extends ServiceProvider
         $this->app->bind(PrescriptionInterface::class, function () {
             return new PrescriptionCacheDecorator(new PrescriptionRepository(new PrescriptionS));
         });
-
+        $this->app->bind(SpecialtiesInterface::class, function () {
+            return new SpecialtiesCacheDecorator(new SpecialtiesRepository(new Specialties));
+        });
         Helper::autoload(__DIR__ . '/../../helpers');
     }
 
@@ -80,8 +86,17 @@ class MedicalServiceProvider extends ServiceProvider
                 'icon'        => "fas fa-prescription-bottle-alt",
                 'url'         => route('prescription.index'),
                 'permissions' => ['prescriptions.index'],
+            ])
+            ->registerItem([
+                'id'          => 'cms-plugins-medical-specialties',
+                'priority'    => 2,
+                'parent_id'   => 'cms-plugins-medical',
+                'name'        => 'plugins/medical::medical.specialties',
+                'icon'        => "fas fa-book-medical",
+                'url'         => route('specialties.index'),
+                'permissions' => ['specialties.index'],
             ]);
-              
+            
         });
     }
 }

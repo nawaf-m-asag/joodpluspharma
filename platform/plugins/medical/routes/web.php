@@ -4,60 +4,36 @@ Route::group(['namespace' => 'Botble\Medical\Http\Controllers', 'middleware' => 
     Route::group(['prefix' => BaseHelper::getAdminPrefix(), 'middleware' => 'auth'], function () {
         Route::group(['prefix' => 'services', 'as' => 'service.'], function () {
    
-            Route::resource('', 'ServiceController')->parameters(['' => 'service']);
-                Route::get('/', [
-                    'as'         => 'index',
-                    'uses'       => 'ServiceController@index',
-                    'permission' => 'services.index',
-                ]);
-
+            Route::resource('', 'ServiceController')->parameters(['' => 'services']);
                 Route::delete('items/destroy', [
                     'as'         => 'deletes',
                     'uses'       => 'ServiceController@deletes',
-                    'permission' => 'services.edit',
+                    'permission' => 'service.destroy',
                 ]);
-                
-                Route::get('edit/{id}', [
-                    'as'         => 'edit',
-                    'uses'       => 'ServiceController@edit',
-                    'permission' => 'services.edit',
-                ]);
-                
-                Route::delete('items/destroy/{id}', [
-                    'as'         => 'destroy',
-                    'uses'       => 'ServiceController@destroy',
-                    'permission' => 'services.destroy',
-                ]);
+              
         });
 
         //////////////////////////////
         Route::group(['prefix' => 'prescriptions', 'as' => 'prescription.'], function () {
-   
         Route::resource('', 'PrescriptionController')->parameters(['' => 'prescription']);
-        Route::get('/', [
-            'as'         => 'index',
-            'uses'       => 'PrescriptionController@index',
-            'permission' => 'prescriptions.index',
-        ]);
 
         Route::delete('items/destroy', [
             'as'         => 'deletes',
             'uses'       => 'ServiceController@deletes',
-            'permission' => 'services.edit',
-        ]);
-        
-        Route::get('edit/{id}', [
-            'as'         => 'edit',
-            'uses'       => 'ServiceController@edit',
-            'permission' => 'services.edit',
-        ]);
-        
-        Route::delete('items/destroy/{id}', [
-            'as'         => 'destroy',
-            'uses'       => 'ServiceController@destroy',
             'permission' => 'services.destroy',
         ]);
    
+    });
+
+    Route::group(['prefix' => 'specialties', 'as' => 'specialties.'], function () {
+   
+        Route::resource('', 'SpecialtiesController')->parameters(['' => 'specialties']);
+        Route::delete('items/destroy', [
+            'as'         => 'deletes',
+            'uses'       => 'SpecialtiesController@deletes',
+            'permission' => 'specialties.destroy',
+        ]);
+           
     });
 });
 

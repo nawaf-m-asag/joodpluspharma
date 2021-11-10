@@ -12,4 +12,10 @@ return [
     'note'=>'Note',
     'file'=>'File',
     'address'=>'Address',
+    'specialties'=>'Specialties',
+    'specialties-name'=>"Specialties name",
+    'add-specialties-name'=>"Add Specialties name",
+    'specialties-create' => 'New Specialties',
+    'specialties-edit'   => 'Edit Specialties',
+
 ];

@@ -5,7 +5,7 @@ use Botble\Base\Models\BaseModel;
 
 use Botble\Base\Enums\BaseStatusEnum;
 use Botble\Base\Traits\EnumCastable;
-class Services extends BaseModel
+class Specialties extends BaseModel
 {
 
     use EnumCastable;
@@ -14,7 +14,7 @@ class Services extends BaseModel
      *
      * @var string
      */
-    protected $table = 'med_services';
+    protected $table = 'med_specialties';
 
     /**
      * @var array
