@@ -4,6 +4,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Fun;
+use App\Models\Area;
+use App\Models\City;
 use Illuminate\Support\Facades\DB;
 class Address extends Model
 {
@@ -27,7 +29,14 @@ class Address extends Model
             'is_default'
     ];
 
-
+    public function area()
+    {
+        return $this->belongsTo(Area::class, 'area_id', 'id')->withDefault();
+    }
+    public function city()
+    {
+        return $this->belongsTo(City::class, 'city_id', 'id')->withDefault();
+    }
    public static function  set_address($data)
     {
 
