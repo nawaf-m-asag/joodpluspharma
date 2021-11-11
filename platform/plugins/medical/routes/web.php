@@ -35,6 +35,17 @@ Route::group(['namespace' => 'Botble\Medical\Http\Controllers', 'middleware' => 
         ]);
            
     });
+
+    Route::group(['prefix' => 'doctors', 'as' => 'doctors.'], function () {
+   
+        Route::resource('', 'DoctorController')->parameters(['' => 'doctors']);
+        Route::delete('items/destroy', [
+            'as'         => 'deletes',
+            'uses'       => 'DoctorController@deletes',
+            'permission' => 'doctors.destroy',
+        ]);
+           
+    });
 });
 
 });

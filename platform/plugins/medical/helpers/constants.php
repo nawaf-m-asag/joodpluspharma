@@ -5,5 +5,9 @@ if (!defined('SERVICE_MODULE_SCREEN_NAME')) {
 }
 
 if (!defined('SPECIALTIES_MODULE_SCREEN_NAME')) {
-    define('SPECIALTIES_MODULE_SCREEN_NAME', 'Specialties');
+    define('SPECIALTIES_MODULE_SCREEN_NAME', 'specialties');
+}
+
+if (!defined('DOCTOR_MODULE_SCREEN_NAME')) {
+    define('DOCTOR_MODULE_SCREEN_NAME', 'doctors');
 }

@@ -10,7 +10,7 @@ use Botble\Medical\Repositories\Caches\ServiceCacheDecorator;
 use Botble\Medical\Repositories\Eloquent\ServiceRepository;
 use Botble\Medical\Repositories\Interfaces\ServiceInterface;
 
-use Botble\Medical\Models\Prescriptions;
+    use Botble\Medical\Models\Prescriptions;
 use Botble\Medical\Repositories\Caches\PrescriptionCacheDecorator;
 use Botble\Medical\Repositories\Eloquent\PrescriptionRepository;
 use Botble\Medical\Repositories\Interfaces\PrescriptionInterface;

@@ -17,5 +17,19 @@ return [
     'add-specialties-name'=>"Add Specialties name",
     'specialties-create' => 'New Specialties',
     'specialties-edit'   => 'Edit Specialties',
+    'doctors'=>'Doctors',
+    'doctor-name'=>"doctor name",
+    'add-doctor-name'=>"Add Doctor name",
+    'doctor-create' => 'New Doctor',
+    'doctor-edit'   => 'Edit Doctor',
+    'age'=>"Age",
+    'phone'=>"Phone",
+    'email' => 'Email',
+    'add-phone'=>"Add Phone Number",
+    'add-email' => 'Add Email',
+    'add-address' => 'Add Address',
+    'doctor-name'=>'Doctor Name',
+    'add-doctor-name'=>'Add Doctor Name'
+    
 
 ];
