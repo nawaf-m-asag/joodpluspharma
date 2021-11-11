@@ -20,6 +20,12 @@ use Botble\Medical\Repositories\Caches\SpecialtiesCacheDecorator;
 use Botble\Medical\Repositories\Eloquent\SpecialtiesRepository;
 use Botble\Medical\Repositories\Interfaces\SpecialtiesInterface;
 
+use Botble\Medical\Models\Doctors;
+use Botble\Medical\Repositories\Caches\DoctorCacheDecorator;
+use Botble\Medical\Repositories\Eloquent\DoctorRepository;
+use Botble\Medical\Repositories\Interfaces\DoctorInterface;
+
+
 use Botble\Base\Supports\Helper;
 use Illuminate\Support\Facades\Event;
 use Botble\Base\Traits\LoadAndPublishDataTrait;
@@ -43,6 +49,9 @@ class MedicalServiceProvider extends ServiceProvider
         });
         $this->app->bind(SpecialtiesInterface::class, function () {
             return new SpecialtiesCacheDecorator(new SpecialtiesRepository(new Specialties));
+        });
+        $this->app->bind(DoctorInterface::class, function () {
+            return new DoctorCacheDecorator(new DoctorRepository(new Doctors));
         });
         Helper::autoload(__DIR__ . '/../../helpers');
     }
@@ -95,6 +104,14 @@ class MedicalServiceProvider extends ServiceProvider
                 'icon'        => "fas fa-book-medical",
                 'url'         => route('specialties.index'),
                 'permissions' => ['specialties.index'],
+            ])->registerItem([
+                'id'          => 'cms-plugins-medical-doctors',
+                'priority'    => 2,
+                'parent_id'   => 'cms-plugins-medical',
+                'name'        => 'plugins/medical::medical.doctors',
+                'icon'        => "fas fa-user-md",
+                'url'         => route('doctors.index'),
+                'permissions' => ['doctors.index'],
             ]);
             
         });
