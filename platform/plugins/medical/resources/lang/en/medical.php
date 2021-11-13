@@ -23,13 +23,16 @@ return [
     'doctor-create' => 'New Doctor',
     'doctor-edit'   => 'Edit Doctor',
     'age'=>"Age",
+    'sex'=>"Sex",
     'phone'=>"Phone",
     'email' => 'Email',
     'add-phone'=>"Add Phone Number",
     'add-email' => 'Add Email',
     'add-address' => 'Add Address',
-    'doctor-name'=>'Doctor Name',
-    'add-doctor-name'=>'Add Doctor Name'
-    
+    'patient-name'=>'Patient Name',
+    'add-doctor-name'=>'Add Doctor Name',
+    'nursing'=>'Nursing',
+    'nursing-details'=>'Nursing Details'
+
 
 ];

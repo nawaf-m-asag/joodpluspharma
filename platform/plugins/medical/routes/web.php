@@ -46,6 +46,22 @@ Route::group(['namespace' => 'Botble\Medical\Http\Controllers', 'middleware' => 
         ]);
            
     });
+
+    Route::group(['prefix' => 'nursing', 'as' => 'nursing.'], function () {
+   
+        Route::resource('', 'NursingController')->parameters(['' => 'nursing']);
+        Route::delete('items/destroy', [
+            'as'         => 'deletes',
+            'uses'       => 'NursingController@deletes',
+            'permission' => 'nursing.destroy',
+        ]);
+        Route::get('items/details/{id}', [
+            'as'         => 'details',
+            'uses'       => 'NursingController@details',
+            'permission' => 'nursing.index',
+        ]);
+           
+    });
 });
 
 });

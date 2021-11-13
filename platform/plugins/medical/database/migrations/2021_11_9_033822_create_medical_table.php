@@ -38,6 +38,7 @@ class CreateMedicalTable extends Migration
             $table->string('p_age',255)->nullable();
             $table->string('p_sex', 255);
             $table->string('doctor_id', 255)->nullable();
+            $table->string('services_id', 255)->nullable();
             $table->string('address', 255)->nullable();
             $table->string('attachedFile', 255)->nullable();
             $table->string('user_id', 255)->nullable();

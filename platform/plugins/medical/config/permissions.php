@@ -68,10 +68,8 @@ return [
         'flag'        => 'specialties.deletes',
         'parent_flag' => 'specialties.index',
     ],
-
-    
-    //Doctors
-    [
+     //Doctors
+     [
         'name' => 'doctors',
         'flag' => 'doctors.index',
         'parent_flag' => 'medical.index',
@@ -90,5 +88,28 @@ return [
         'name'        => 'Delete',
         'flag'        => 'doctors.deletes',
         'parent_flag' => 'doctors.index',
+    ],
+    
+    
+    //Nursing
+    [
+        'name' => 'Nursing',
+        'flag' => 'nursing.index',
+        'parent_flag' => 'medical.index',
+    ],
+    [
+        'name'        => 'Create',
+        'flag'        => 'nursing.create',
+        'parent_flag' => 'nursing.index',
+    ],
+    [
+        'name'        => 'Edit',
+        'flag'        => 'nursing.edit',
+        'parent_flag' => 'nursing.index',
+    ],
+    [
+        'name'        => 'Delete',
+        'flag'        => 'nursing.deletes',
+        'parent_flag' => 'nursing.index',
     ],
 ];

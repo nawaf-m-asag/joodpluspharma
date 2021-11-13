@@ -3,9 +3,10 @@
 namespace Botble\Medical\Models;
 use Botble\Base\Models\BaseModel;
 use Botble\Medical\Models\Doctors;
-use Botble\Base\Enums\OrderStatusEnum;
 use Botble\Base\Traits\EnumCastable;
+use Botble\Ecommerce\Enums\OrderStatusEnum;
 use Botble\Ecommerce\Models\Customer;
+use Illuminate\Support\Facades\DB;
 class Nursing extends BaseModel
 {
 
@@ -47,4 +48,16 @@ class Nursing extends BaseModel
     protected $casts = [
         'status'  => OrderStatusEnum::class,
     ];
+    public function getAllSelectedServes()
+    {
+        $query= DB::table('med_selected_services as ss')->select('ms.name')->where('ss.nursing_servicrs_id',$this->id)
+        ->join('med_services as ms','ss.services_id','=','ms.id')->get();
+        $string="";
+        foreach ($query as $key => $value) {
+
+            $string=$string.'<span class="badge badge-success m-2">'.$value->name.'</span>';
+      
+        }
+        return $string;
+    }
 }

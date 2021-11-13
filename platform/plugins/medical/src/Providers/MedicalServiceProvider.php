@@ -26,6 +26,11 @@ use Botble\Medical\Repositories\Eloquent\DoctorRepository;
 use Botble\Medical\Repositories\Interfaces\DoctorInterface;
 
 
+use Botble\Medical\Models\Nursing;
+use Botble\Medical\Repositories\Caches\NursingCacheDecorator;
+use Botble\Medical\Repositories\Eloquent\NursingRepository;
+use Botble\Medical\Repositories\Interfaces\NursingInterface;
+
 use Botble\Base\Supports\Helper;
 use Illuminate\Support\Facades\Event;
 use Botble\Base\Traits\LoadAndPublishDataTrait;
@@ -53,6 +58,9 @@ class MedicalServiceProvider extends ServiceProvider
         $this->app->bind(DoctorInterface::class, function () {
             return new DoctorCacheDecorator(new DoctorRepository(new Doctors));
         });
+        $this->app->bind(NursingInterface::class, function () {
+            return new NursingCacheDecorator(new NursingRepository(new Nursing));
+        });
         Helper::autoload(__DIR__ . '/../../helpers');
     }
 
@@ -62,6 +70,7 @@ class MedicalServiceProvider extends ServiceProvider
             ->loadAndPublishConfigurations(['general', 'permissions'])
             ->loadRoutes(['web'])
             ->loadAndPublishTranslations()
+            ->loadAndPublishViews()
             ->loadMigrations()
             ->publishAssets();
 
@@ -98,7 +107,7 @@ class MedicalServiceProvider extends ServiceProvider
             ])
             ->registerItem([
                 'id'          => 'cms-plugins-medical-specialties',
-                'priority'    => 2,
+                'priority'    => 3,
                 'parent_id'   => 'cms-plugins-medical',
                 'name'        => 'plugins/medical::medical.specialties',
                 'icon'        => "fas fa-book-medical",
@@ -106,13 +115,22 @@ class MedicalServiceProvider extends ServiceProvider
                 'permissions' => ['specialties.index'],
             ])->registerItem([
                 'id'          => 'cms-plugins-medical-doctors',
-                'priority'    => 2,
+                'priority'    => 4,
                 'parent_id'   => 'cms-plugins-medical',
                 'name'        => 'plugins/medical::medical.doctors',
                 'icon'        => "fas fa-user-md",
                 'url'         => route('doctors.index'),
                 'permissions' => ['doctors.index'],
+            ])->registerItem([
+                'id'          => 'cms-plugins-medical-nursing',
+                'priority'    => 5,
+                'parent_id'   => 'cms-plugins-medical',
+                'name'        => 'plugins/medical::medical.nursing',
+                'icon'        => "fas fa-user-md",
+                'url'         => route('nursing.index'),
+                'permissions' => ['nursing.index'],
             ]);
+            
             
         });
     }
