@@ -462,7 +462,10 @@ public static function getVariant_ids($id){
     public static   function  find_discount_in_percentage($special_price, $price)
     {
         $diff_amount = $price - $special_price;
+        if($price!=0)
         return intval(($diff_amount * 100) / $price);
+        else
+        return 0;
     }
     public static   function  attr_value_ids($id)
     {

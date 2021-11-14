@@ -45,14 +45,15 @@ class CollectionsController extends Controller
     $filters['attribute_value_ids'] = (isset($request->attribute_value_ids)) ? $request->attribute_value_ids : null;
     $filters['product_type'] = (isset($request->top_rated_product) && $request->top_rated_product== 1) ? 'top_rated_product_including_all_products' : null;
 
-    $collections=Ec_product_collections::select('*');
+    $collections=DB::table('ec_product_collections as epc')
+    ->join('ec_product_collection_products as epcp','epcp.product_collection_id','=','epc.id')->select('epc.*')->distinct('epc.id');
     if(isset($section_id) && !empty($section_id)){
-      
-    $collections->where('id',$section_id);
+  
+    $collections->where('epc.id',$section_id);
     }
     $collections=$collections->where("status","published")->limit($limit)->offset($offset)->get();
     $collections_array= $collections->toarray();
- 
+    
     if(!empty($collections_array)){
       
         foreach ($collections as $key => $collection) {
@@ -70,7 +71,7 @@ class CollectionsController extends Controller
             ->where("p.status","published")->get();
             
         $total = 0;
-
+      
         $res= $query->toArray();
        
                 if (!empty($res)&&isset($res[$key]->product_ids)) {
@@ -78,7 +79,7 @@ class CollectionsController extends Controller
                     $product_ids = array_filter($product_ids);
                    
                     $pro_details = Ec_product::fetch_product_json_data($user_id, (isset($filters)) ? $filters : null, (isset($product_ids) && !empty($product_ids)) ? $product_ids : null, null, $p_limit, $p_offset, $p_sort, $p_order);
-                
+
                     $total=DB::table('ec_product_collection_products')->where('product_collection_id',$collection->id)->count();
                         $data[$key]['id']=strval($collection->id);
                         $data[$key]['title']=Fun::output_escaping($collection->name);
@@ -88,7 +89,7 @@ class CollectionsController extends Controller
                         $data[$key]['row_order']="0";
                         $data[$key]['categories']=null;
                         $data[$key]['product_type']="custom_products";
-                        $data[$key]['date_added']=$collection->created_at->format('Y-m-d H:i:s');
+                        $data[$key]['date_added']=$collection->created_at;
                         
                         $data[$key]['total']=strval($total);
                         $data[$key]['filters']=$pro_details['filters'];
