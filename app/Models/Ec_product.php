@@ -144,9 +144,7 @@ class Ec_product extends Model
         }
        
         
-        if ($limit != null || $offset != null) {
-            $products=$query->limit($limit)->offset($offset);
-        }
+       
         if (isset($filter) && !empty($filter['attribute_value_ids'])) {
             
             $str = explode(",",$filter['attribute_value_ids']);   // Ids should be in array and comma deleted EX: "1,2,3" => array(1,2,3)
@@ -163,9 +161,17 @@ class Ec_product extends Model
         //////////////////////////////////////////////////
         
      
-      $products=$query->where("p.status","published")->where("p.is_variation",0)->get();
-
-        $products= Ec_product::get_products_By_ids($products,$user_id);
+        $products=$query->where("p.status","published")->where("p.is_variation",0);
+        
+        
+        if ($limit != null || $offset != null) {
+        $products=$query->limit($limit)->offset($offset);
+         }   
+         
+         $total= $query->get();
+         $total=count($total);
+         $products=$products->get();
+        $products= Ec_product::get_products_By_ids($products,$user_id,$total);
 
         
         $products['search']=(isset($filter['search']) && !empty($filter['search'])) ? $filter['search'] :null;
@@ -174,17 +180,17 @@ class Ec_product extends Model
 
 
 
-public static function get_products_By_ids($products_ids,$user_id=null){
+public static function get_products_By_ids($products_ids,$user_id=null,$total=null){
  
 
             $data=[];
-            $total=0;
+           
            
             
         foreach ($products_ids as $key => $value) {
             
            
-            $total=$key+1;
+       
             $sales=Ec_product::getSalesCount($value->id);
             if($sales==0)
                 $sales=1;
@@ -211,7 +217,7 @@ public static function get_products_By_ids($products_ids,$user_id=null){
             $no_of_ratings=$review['no_of_ratings'];
             
         $data[$key]=[
-                    'total'=>"14",
+                    'total'=>"$total",
                     'sales'=>strval($sales),
                     'stock_type'=>null,
                     'id'=>strval($value->id),

@@ -51,7 +51,7 @@ class CollectionsController extends Controller
   
     $collections->where('epc.id',$section_id);
     }
-    $collections=$collections->where("status","published")->limit($limit)->offset($offset)->get();
+    $collections=$collections->where("epc.status","published")->limit($limit)->offset($offset)->get();
     $collections_array= $collections->toarray();
     
     if(!empty($collections_array)){
@@ -63,10 +63,9 @@ class CollectionsController extends Controller
             ->Join('ec_product_collection_products as epcp','epcp.product_collection_id','=','epc.id')
             ->Join('ec_products as p','p.id','=','epcp.product_id') 
             ->selectRaw('group_concat(DISTINCT(p.id)) as product_ids');
-            if(isset($section_id) && !empty($section_id)){
-      
-                $query->where('epc.id',$collection->id);
-                }
+
+            $query->where('epc.id',$collection->id);
+
              $query=$query->groupBy('epc.id')
             ->where("p.status","published")->get();
             
@@ -80,7 +79,7 @@ class CollectionsController extends Controller
                    
                     $pro_details = Ec_product::fetch_product_json_data($user_id, (isset($filters)) ? $filters : null, (isset($product_ids) && !empty($product_ids)) ? $product_ids : null, null, $p_limit, $p_offset, $p_sort, $p_order);
 
-                    $total=DB::table('ec_product_collection_products')->where('product_collection_id',$collection->id)->count();
+                    $total=DB::table('ec_product_collection_products')->where('product_collection_id',$collection->id)->get();
                         $data[$key]['id']=strval($collection->id);
                         $data[$key]['title']=Fun::output_escaping($collection->name);
                         $data[$key]['short_description']=Fun::output_escaping($collection->description);
@@ -91,7 +90,7 @@ class CollectionsController extends Controller
                         $data[$key]['product_type']="custom_products";
                         $data[$key]['date_added']=$collection->created_at;
                         
-                        $data[$key]['total']=strval($total);
+                        $data[$key]['total']=strval(count($total));
                         $data[$key]['filters']=$pro_details['filters'];
                         $data[$key]['product_details'] =$pro_details['product'];
                 }

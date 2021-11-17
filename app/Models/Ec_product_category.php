@@ -42,7 +42,7 @@ class Ec_product_category extends Model
 
     $categories= $query->orderBy($sort, $order)->get();
  
-    $count_res = Ec_product_category::count();  
+    $count_res =DB::table('ec_products')->count();  
 
     $i = 0;
         foreach ($categories as $p_cat) {
@@ -58,11 +58,11 @@ class Ec_product_category extends Model
             $categories[$i]->level ="$level";
             $categories[$i]->image = RvMedia::getImageUrl($p_cat->image, 'small', false, RvMedia::getDefaultImage());
             $categories[$i]->banner = RvMedia::getImageUrl($p_cat->image, null, RvMedia::getDefaultImage());
+            $categories[$i]->total =$count_res;
+            
             $i++;
         }
-        if(isset($categories[0])){
-			$categories[0]->total =$i;
-        }
+        
         
  
     return  $categories;
