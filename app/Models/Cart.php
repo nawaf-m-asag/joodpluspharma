@@ -188,13 +188,17 @@ class Cart extends Model
                         break;
                      }
                 }
-
+                $currency=Fun::fetch_details(['is_default' => 1], 'ec_currencies','exchange_rate,decimals');
+                $exchange_rate=$currency[0]->exchange_rate;
+                $decimals=$currency[0]->decimals;
+                $price=round(($data[$i]->price*$exchange_rate),$decimals);
+                $special_price=round(($data[$i]->special_price*$exchange_rate),$decimals);
 
             $prctg = (isset($data[$i]->tax_percentage) && intval($data[$i]->tax_percentage) > 0 && $data[$i]->tax_percentage != null) ? $data[$i]->tax_percentage : '0';
         
             if ((isset($data[$i]->is_prices_inclusive_tax) && $data[$i]->is_prices_inclusive_tax== 0) || (!isset($data[$i]->is_prices_inclusive_tax)) && $percentage > 0) {
-                $price_tax_amount = $data[$i]->price * ($prctg / 100);
-                $special_price_tax_amount = $data[$i]->special_price* ($prctg / 100);
+                $price_tax_amount =$price * ($prctg / 100);
+                $special_price_tax_amount = $special_price* ($prctg / 100);
             } else {
                 $price_tax_amount = 0;
                 $special_price_tax_amount = 0;
@@ -213,23 +217,25 @@ class Cart extends Model
             $variant_id[$i] =(string) $data[$i]->id;
             $quantity[$i] = intval($data[$i]->qty);
             if (floatval($data[$i]->special_price) > 0) {
-                $total[$i] = floatval($data[$i]->special_price + $special_price_tax_amount) * $data[$i]->qty;
+                $total[$i] = floatval($special_price + $special_price_tax_amount) * $data[$i]->qty;
             } else {
                 
-                $total[$i] =floatval($data[$i]->price+ $price_tax_amount) *$data[$i]->qty;
+                $total[$i] =floatval($price+ $price_tax_amount) *$data[$i]->qty;
             }
-            $data[$i]->special_price= $data[$i]->special_price+ $special_price_tax_amount;
-            $data[$i]->price= $data[$i]->price+ $price_tax_amount;
+            $data[$i]->special_price= $special_price+ $special_price_tax_amount;
+            $data[$i]->price= $price+ $price_tax_amount;
 
             $percentage[$i] = (isset($data[$i]->tax_percentage) && floatval($data[$i]->tax_percentage) > 0) ? $data[$i]->tax_percentage: 0;
         
             if ($percentage[$i] != NUll && $percentage[$i] > 0) {
-                $amount[$i] = round($total[$i] *  $percentage[$i] / 100, 2);
+                $amount[$i] = round($total[$i] *  $percentage[$i] / 100, $exchange_rate);
             
             } else {
                 $amount[$i] = 0;
                 $percentage[$i] = 0;
             }
+            $data[$i]->price=round($price,$exchange_rate);
+            $data[$i]->special_price=round($special_price,$exchange_rate);
 
         }
         
@@ -245,7 +251,7 @@ class Cart extends Model
         $overall_amt = $total;
         $data=(array)$data;
     // $data[0]->is_cod_allowed= $cod_allowed;
-        $data['sub_total'] =strval(round($total,2));
+        $data['sub_total'] =strval(round($total,$exchange_rate));
         $data['quantity'] = strval(array_sum($quantity));
         $data['tax_percentage'] = strval(array_sum($percentage));
         $data['tax_amount'] = strval(array_sum($amount));

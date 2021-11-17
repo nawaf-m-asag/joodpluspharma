@@ -57,6 +57,7 @@ class CollectionsController extends Controller
     if(!empty($collections_array)){
       
         foreach ($collections as $key => $collection) {
+           
             $query=null;
             $query=DB::
             table('ec_product_collections as epc')
@@ -68,23 +69,23 @@ class CollectionsController extends Controller
 
              $query=$query->groupBy('epc.id')
             ->where("p.status","published")->get();
-            
+           
         $total = 0;
       
         $res= $query->toArray();
-       
-                if (!empty($res)&&isset($res[$key]->product_ids)) {
-                    $product_ids = explode(',', $res[$key]->product_ids);
+    
+                if (!empty($res)&&isset($res[0]->product_ids)) {
+                    $product_ids = explode(',', $res[0]->product_ids);
                     $product_ids = array_filter($product_ids);
                    
                     $pro_details = Ec_product::fetch_product_json_data($user_id, (isset($filters)) ? $filters : null, (isset($product_ids) && !empty($product_ids)) ? $product_ids : null, null, $p_limit, $p_offset, $p_sort, $p_order);
-
+                  
                     $total=DB::table('ec_product_collection_products')->where('product_collection_id',$collection->id)->get();
                         $data[$key]['id']=strval($collection->id);
                         $data[$key]['title']=Fun::output_escaping($collection->name);
                         $data[$key]['short_description']=Fun::output_escaping($collection->description);
                         $data[$key]['style']=$collection->style;
-                        $data[$key]['product_ids']=$res[$key]->product_ids;
+                        $data[$key]['product_ids']=$res[0]->product_ids;
                         $data[$key]['row_order']="0";
                         $data[$key]['categories']=null;
                         $data[$key]['product_type']="custom_products";

@@ -366,13 +366,18 @@ public static function get_products_By_ids($products_ids,$user_id=null,$total=nu
             $product_images=json_decode($value->images);
 
             $variants_data[$key]=Ec_product::getVariant_ids($value->id);
+            $currency=Fun::fetch_details(['is_default' => 1], 'ec_currencies','exchange_rate,decimals');
+            $exchange_rate=$currency[0]->exchange_rate;
+            $decimals=$currency[0]->decimals;
+            $price=round(($value->price*$exchange_rate),$decimals);
+            $sale_price=round(($value->sale_price*$exchange_rate),$decimals);
             $variants_data[$key]+=[
 
                 'id'=>strval($value->id),
                 'product_id'=>strval($id), 
                 'attribute_set'=>null,
-                "price"=>strval($value->price),
-                "special_price"=>($value->sale_price>0)?strval($value->sale_price):"0",
+                "price"=>strval($price),
+                "special_price"=>($sale_price>0)?strval($sale_price):"0",
                 "sku"=> $value->sku,
                 "images"=>Ec_product::getVariantsImages($product_images,null),
                 "availability"=>"1",
