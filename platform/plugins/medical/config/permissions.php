@@ -112,4 +112,21 @@ return [
         'flag'        => 'nursing.deletes',
         'parent_flag' => 'nursing.index',
     ],
+
+     //Maintenance
+     [
+        'name' => 'Maintenance',
+        'flag' => 'Maintenance.index',
+        'parent_flag' => 'medical.index',
+     ],
+    [
+        'name'        => 'Edit',
+        'flag'        => 'maintenance.edit',
+        'parent_flag' => 'maintenance.index',
+    ],
+    [
+        'name'        => 'Delete',
+        'flag'        => 'maintenance.deletes',
+        'parent_flag' => 'maintenance.index',
+    ],
 ];

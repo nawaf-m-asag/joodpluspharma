@@ -62,6 +62,22 @@ Route::group(['namespace' => 'Botble\Medical\Http\Controllers', 'middleware' => 
         ]);
            
     });
+
+    Route::group(['prefix' => 'maintenance', 'as' => 'maintenance.'], function () {
+   
+        Route::resource('', 'MaintenanceController')->parameters(['' => 'maintenance']);
+        Route::delete('items/destroy', [
+            'as'         => 'deletes',
+            'uses'       => 'MaintenanceController@deletes',
+            'permission' => 'maintenance.destroy',
+        ]);
+        Route::get('items/details/{id}', [
+            'as'         => 'details',
+            'uses'       => 'MaintenanceController@details',
+            'permission' => 'maintenance.index',
+        ]);
+           
+    });
 });
 
 });

@@ -69,7 +69,19 @@ class CreateMedicalTable extends Migration
             $table->timestamps();
         });
         
-        
+        Schema::create('med_maintenance', function (Blueprint $table) {
+            $table->id();
+            $table->string('side_name', 255);
+            $table->string('applicant_name',255)->nullable();
+            $table->string('phone', 255);
+            $table->string('address', 255)->nullable();
+            $table->string('device_name', 255)->nullable();
+            $table->string('descrip_defect', 255)->nullable();
+            $table->string('file', 255)->nullable();
+            $table->string('user_id', 255)->nullable();
+            $table->string('status', 60)->default('pending');
+            $table->timestamps();
+        });
         
     }
 
@@ -86,5 +98,6 @@ class CreateMedicalTable extends Migration
         Schema::dropIfExists('selected_services');
         Schema::dropIfExists('doctors');
         Schema::dropIfExists('specialties');
+        Schema::dropIfExists('med_maintenance');
     }
 }

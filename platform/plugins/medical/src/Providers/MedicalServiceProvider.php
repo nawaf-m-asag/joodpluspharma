@@ -31,6 +31,11 @@ use Botble\Medical\Repositories\Caches\NursingCacheDecorator;
 use Botble\Medical\Repositories\Eloquent\NursingRepository;
 use Botble\Medical\Repositories\Interfaces\NursingInterface;
 
+use Botble\Medical\Models\Maintenance;
+use Botble\Medical\Repositories\Caches\MaintenanceCacheDecorator;
+use Botble\Medical\Repositories\Eloquent\MaintenanceRepository;
+use Botble\Medical\Repositories\Interfaces\MaintenanceInterface;
+
 use Botble\Base\Supports\Helper;
 use Illuminate\Support\Facades\Event;
 use Botble\Base\Traits\LoadAndPublishDataTrait;
@@ -61,6 +66,10 @@ class MedicalServiceProvider extends ServiceProvider
         $this->app->bind(NursingInterface::class, function () {
             return new NursingCacheDecorator(new NursingRepository(new Nursing));
         });
+        $this->app->bind(MaintenanceInterface::class, function () {
+            return new MaintenanceCacheDecorator(new MaintenanceRepository(new Maintenance));
+        });
+
         Helper::autoload(__DIR__ . '/../../helpers');
     }
 
@@ -129,6 +138,14 @@ class MedicalServiceProvider extends ServiceProvider
                 'icon'        => "fas fa-user-md",
                 'url'         => route('nursing.index'),
                 'permissions' => ['nursing.index'],
+            ])->registerItem([
+                'id'          => 'cms-plugins-medical-maintenance',
+                'priority'    => 6,
+                'parent_id'   => 'cms-plugins-medical',
+                'name'        => 'plugins/medical::medical.maintenance',
+                'icon'        => "fas fa-tools",
+                'url'         => route('maintenance.index'),
+                'permissions' => ['maintenance.index'],
             ]);
             
             

@@ -11,3 +11,6 @@ if (!defined('SPECIALTIES_MODULE_SCREEN_NAME')) {
 if (!defined('DOCTOR_MODULE_SCREEN_NAME')) {
     define('DOCTOR_MODULE_SCREEN_NAME', 'doctors');
 }
+if (!defined('MAINTENANCE_MODULE_SCREEN_NAME')) {
+    define('MAINTENANCE_MODULE_SCREEN_NAME', 'maintenance');
+}

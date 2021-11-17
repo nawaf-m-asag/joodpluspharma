@@ -32,7 +32,13 @@ return [
     'patient-name'=>'Patient Name',
     'add-doctor-name'=>'Add Doctor Name',
     'nursing'=>'Nursing',
-    'nursing-details'=>'Nursing Details'
+    'nursing-details'=>'Nursing Details',
+    'maintenance'=>'Maintenance',
+    'maintenance-details'=>'Nursing Details',
+    'side-name'=>'Side Name',
+    'applicant-name'=>'Applicant Name',
+    'device-name'=>'Device Name',
+    'descrip-defect'=>'Descrip Defect',
 
 
 ];
