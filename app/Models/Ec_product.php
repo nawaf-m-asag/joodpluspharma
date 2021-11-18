@@ -161,15 +161,15 @@ class Ec_product extends Model
         //////////////////////////////////////////////////
         
      
-        $products=$query->where("p.status","published")->where("p.is_variation",0);
-        
-        
+        $query=$query->where("p.status","published")->where("p.is_variation",0);
+        $products=$query;
+        $total= $query->get();
+        $total=count($total);
         if ($limit != null || $offset != null) {
         $products=$query->limit($limit)->offset($offset);
          }   
          
-         $total= $query->get();
-         $total=count($total);
+        
          $products=$products->get();
         $products= Ec_product::get_products_By_ids($products,$user_id,$total);
 
@@ -407,7 +407,7 @@ public static function getVariant_ids($id){
         ->join('ec_product_attributes as pa','pa.id','=','pvi.attribute_id')
         ->join('ec_product_attribute_sets as pas','pas.id','=','pa.attribute_set_id')
         ->where('pv.product_id',$id)
-        ->selectRaw('pv.product_id,group_concat(pa.id) as variant_ids , group_concat(pa.title) as variant_values,group_concat(pas.title) as attr_name')
+        ->selectRaw('pv.product_id,group_concat(DISTINCT(pa.id)) as variant_ids , group_concat(DISTINCT(pa.title)) as variant_values,group_concat(DISTINCT(pas.title)) as attr_name')
        ->groupBy('pv.product_id')
       ->get();
 

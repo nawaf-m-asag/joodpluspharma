@@ -113,9 +113,10 @@ class SettingsController extends Controller
                 if(isset($general_settings['system_settings']))
                 {
                    
-                        $currency=Fun::fetch_details(['is_default' => 1], 'ec_currencies', 'symbol');
+                        $currency=Fun::fetch_details(['is_default' => 1], 'ec_currencies', 'symbol,is_prefix_symbol,decimals');
                         $general_settings['system_settings'][0]['currency']=isset($currency[0]->symbol)?$currency[0]->symbol:'';
-                   
+                        $general_settings['system_settings'][0]['is_prefix_symbol']=isset($currency[0]->is_prefix_symbol)?$currency[0]->is_prefix_symbol:0;
+                        $general_settings['system_settings'][0]['decimals']=isset($currency[0]->decimals)?$currency[0]->decimals:0;
                 }
                 $this->response['data'] = $general_settings;
             } else {

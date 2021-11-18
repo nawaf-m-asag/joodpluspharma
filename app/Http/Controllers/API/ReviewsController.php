@@ -25,8 +25,8 @@ class ReviewsController extends Controller
         $total= Ec_review::where("status","published")->where("product_id",$product_id)->count();
 
         if($total!=0){
-                $reviews= Ec_review::limit($limit)->offset($offset)->where("status","published")->where("product_id",$product_id)->orderBy("created_at",'DESC')->get();
-                $no_of_rating= Ec_review::where("status","published")->where("comment",'!=',"")->where("product_id",$product_id)->count();
+                $reviews= Ec_review::limit($limit)->offset($offset)->where("comment",'!=',null)->where("comment",'!=',"")->where("status","published")->where("product_id",$product_id)->orderBy("created_at",'DESC')->get();
+                $no_of_rating= Ec_review::where("status","published")->where("product_id",$product_id)->count();
                 $data=Ec_review::get_reviews_json_data($reviews);
             if(!$reviews->isEmpty()){
                 $this->response['message'] = 'Rating retrieved successfully';
@@ -35,7 +35,6 @@ class ReviewsController extends Controller
                 $this->response['total_images'] ="0";
                 $this->response['data'] =$data;
                 $this->response['error'] = false;     
-
             }
         }
         else{
@@ -60,7 +59,7 @@ class ReviewsController extends Controller
           $user_id =$request->user_id;
           $product_id =$request->product_id;
           $rating =$request->rating;
-          $comment = isset($request->comment)? $request->comment:null;
+          $comment = isset($request->comment)&&!empty($request->comment)? $request->comment:"";
          
         if ($validator->fails()) {
             $response['error'] = true;
@@ -68,37 +67,28 @@ class ReviewsController extends Controller
             $response['data'] = array();
             return response()->json($response);
         } else {
-           
-            $res = DB::table('ec_products as p')
-            ->join('ec_order_product as eop','eop.product_id','=','p.id')
-            ->join('ec_orders as eo','eop.order_id','=','eo.id')
-            ->where('eo.user_id',$user_id)
-            ->where('p.id',$product_id)
-            ->where('eo.status','completed')
-            ->limit(1)->get()->toArray();
-           
-            if (empty($res)) {
-                
-                $response['error'] = true;
-                $response['message'] = 'You cannot review as the product is not purchased yet!';
-                $response['data'] = array();
-                return response()->json($response);
-            }
-     
-            $data=[
+            
+           $data=[
                 'customer_id'=>$user_id,    
                 'product_id'=>$product_id,
                 'star'=>$rating,
                 'comment'=>$comment,
                 ];
                 
-      
-            $ec_wish_lists=Ec_review::create($data);
+            $count= Ec_review::where('product_id',$product_id)->where('customer_id',$user_id)->count();
+            if($count==0){
+                Ec_review::create($data);
+            }        
+            else{
+                Ec_review::where('product_id',$product_id)->where('customer_id',$user_id)->update($data);
+               
+            }
+          
             $total= Ec_review::where("status","published")->where("product_id",$product_id)->count();
 
-            $reviews= Ec_review::limit(25)->offset(0)->where("status","published")->where("product_id",$product_id)->where("comment",'!=',"")->orderBy("created_at")->get();
+            $reviews= Ec_review::limit(25)->offset(0)->where("status","published")->where("product_id",$product_id)->where("comment",'!=',null)->orderBy("created_at")->get();
             $rating_data['product_rating']=Ec_review::get_reviews_json_data($reviews);
-            $rating_data['no_of_rating']= Ec_review::where("status","published")->where("comment",'!=',"")->where("product_id",$product_id)->count();
+            $rating_data['no_of_rating']= Ec_review::where("status","published")->where("product_id",$product_id)->count();
             $response['error'] = false;
             $response['message'] = 'Product Rated Successfully';
             $response['data'] = $rating_data;
