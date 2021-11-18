@@ -41,6 +41,11 @@ use Botble\Medical\Repositories\Caches\ConsultingCacheDecorator;
 use Botble\Medical\Repositories\Eloquent\ConsultingRepository;
 use Botble\Medical\Repositories\Interfaces\ConsultingInterface;
 
+use Botble\Medical\Models\Examinations;
+use Botble\Medical\Repositories\Caches\ExaminationsCacheDecorator;
+use Botble\Medical\Repositories\Eloquent\ExaminationsRepository;
+use Botble\Medical\Repositories\Interfaces\ExaminationsInterface;
+
 use Botble\Base\Supports\Helper;
 use Illuminate\Support\Facades\Event;
 use Botble\Base\Traits\LoadAndPublishDataTrait;
@@ -77,7 +82,9 @@ class MedicalServiceProvider extends ServiceProvider
         $this->app->bind(ConsultingInterface::class, function () {
             return new ConsultingCacheDecorator(new ConsultingRepository(new Consulting));
         });
-
+        $this->app->bind(ExaminationsInterface::class, function () {
+            return new ExaminationsCacheDecorator(new ExaminationsRepository(new Examinations));
+        });
         Helper::autoload(__DIR__ . '/../../helpers');
     }
 
@@ -143,7 +150,7 @@ class MedicalServiceProvider extends ServiceProvider
                 'priority'    => 5,
                 'parent_id'   => 'cms-plugins-medical',
                 'name'        => 'plugins/medical::medical.nursing',
-                'icon'        => "fas fa-med",
+                'icon'        => "fas fa-user-nurse",
                 'url'         => route('nursing.index'),
                 'permissions' => ['nursing.index'],
             ])->registerItem([
@@ -159,9 +166,17 @@ class MedicalServiceProvider extends ServiceProvider
                 'priority'    => 7,
                 'parent_id'   => 'cms-plugins-medical',
                 'name'        => 'plugins/medical::medical.consulting',
-                'icon'        => "fas fa-stethoscope",
+                'icon'        => "fas fa-comment-medical",
                 'url'         => route('consulting.index'),
                 'permissions' => ['consulting.index'],
+            ])->registerItem([
+                'id'          => 'cms-plugins-medical-examinations',
+                'priority'    => 8,
+                'parent_id'   => 'cms-plugins-medical',
+                'name'        => 'plugins/medical::medical.examinations',
+                'icon'        => "fas fa-microscope",
+                'url'         => route('examinations.index'),
+                'permissions' => ['examinations.index'],
             ]);
             
             

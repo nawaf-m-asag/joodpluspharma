@@ -146,4 +146,21 @@ return [
         'flag'        => 'consulting.deletes',
         'parent_flag' => 'consulting.index',
     ],
+
+    //examinations
+    [
+        'name' => 'Examinations',
+        'flag' => 'examinations.index',
+        'parent_flag' => 'medical.index',
+     ],
+    [
+        'name'        => 'Edit',
+        'flag'        => 'examinations.edit',
+        'parent_flag' => 'examinations.index',
+    ],
+    [
+        'name'        => 'Delete',
+        'flag'        => 'examinations.deletes',
+        'parent_flag' => 'examinations.index',
+    ],
 ];

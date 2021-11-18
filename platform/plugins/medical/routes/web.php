@@ -94,6 +94,26 @@ Route::group(['namespace' => 'Botble\Medical\Http\Controllers', 'middleware' => 
         ]);
            
     });
+
+    //Examinations Route
+    Route::group(['prefix' => 'examinations', 'as' => 'examinations.'], function () {
+   
+        Route::resource('', 'ExaminationsController')->parameters(['' => 'examinations']);
+        Route::delete('items/destroy', [
+            'as'         => 'deletes',
+            'uses'       => 'ExaminationsController@deletes',
+            'permission' => 'examinations.destroy',
+        ]);
+        Route::get('items/details/{id}', [
+            'as'         => 'details',
+            'uses'       => 'ExaminationsController@details',
+            'permission' => 'examinations.index',
+        ]);
+           
+    });
+
+
+    
 });
 
 });

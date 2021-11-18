@@ -46,6 +46,10 @@ return [
     'operations'=>'Operations',
     'medicines'=>'Medicines Use',
     'desc_situation'=>"Describe Situation",
-    'consulting-details'=>'Consulting Details'
+    'consulting-details'=>'Consulting Details',
+    'examinations'=>'Examinations',
+    'examinations-details'=>'Examinations Details',
+    'lap_name'=>'Lap Name',
+    'required_checks'=>'Required Checks'
 
 ];

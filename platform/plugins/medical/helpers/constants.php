@@ -17,4 +17,7 @@ if (!defined('MAINTENANCE_MODULE_SCREEN_NAME')) {
 if (!defined('CONSULTING_MODULE_SCREEN_NAME')) {
     define('CONSULTING_MODULE_SCREEN_NAME', 'consulting');
 }
+if (!defined('EXAMINATIONS_MODULE_SCREEN_NAME')) {
+    define('EXAMINATIONS_MODULE_SCREEN_NAME', 'examinations');
+}
 
