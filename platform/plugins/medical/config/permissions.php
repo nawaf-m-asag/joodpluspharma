@@ -129,4 +129,21 @@ return [
         'flag'        => 'maintenance.deletes',
         'parent_flag' => 'maintenance.index',
     ],
+
+    //Consulting
+    [
+        'name' => 'Consulting',
+        'flag' => 'consulting.index',
+        'parent_flag' => 'medical.index',
+     ],
+    [
+        'name'        => 'Edit',
+        'flag'        => 'consulting.edit',
+        'parent_flag' => 'consulting.index',
+    ],
+    [
+        'name'        => 'Delete',
+        'flag'        => 'consulting.deletes',
+        'parent_flag' => 'consulting.index',
+    ],
 ];

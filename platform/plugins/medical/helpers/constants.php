@@ -14,3 +14,7 @@ if (!defined('DOCTOR_MODULE_SCREEN_NAME')) {
 if (!defined('MAINTENANCE_MODULE_SCREEN_NAME')) {
     define('MAINTENANCE_MODULE_SCREEN_NAME', 'maintenance');
 }
+if (!defined('CONSULTING_MODULE_SCREEN_NAME')) {
+    define('CONSULTING_MODULE_SCREEN_NAME', 'consulting');
+}
+

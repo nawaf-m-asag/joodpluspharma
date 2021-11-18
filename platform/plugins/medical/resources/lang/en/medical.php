@@ -39,6 +39,13 @@ return [
     'applicant-name'=>'Applicant Name',
     'device-name'=>'Device Name',
     'descrip-defect'=>'Descrip Defect',
-
+    'consulting'=>'Consulting',
+    'con_type'=>'Consulting Type',
+    'female_status'=>'Female Status',
+    'chronic_diseases'=>'Chronic Diseases',
+    'operations'=>'Operations',
+    'medicines'=>'Medicines Use',
+    'desc_situation'=>"Describe Situation",
+    'consulting-details'=>'Consulting Details'
 
 ];

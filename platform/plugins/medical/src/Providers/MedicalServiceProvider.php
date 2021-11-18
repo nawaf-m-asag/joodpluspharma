@@ -36,6 +36,11 @@ use Botble\Medical\Repositories\Caches\MaintenanceCacheDecorator;
 use Botble\Medical\Repositories\Eloquent\MaintenanceRepository;
 use Botble\Medical\Repositories\Interfaces\MaintenanceInterface;
 
+use Botble\Medical\Models\Consulting;
+use Botble\Medical\Repositories\Caches\ConsultingCacheDecorator;
+use Botble\Medical\Repositories\Eloquent\ConsultingRepository;
+use Botble\Medical\Repositories\Interfaces\ConsultingInterface;
+
 use Botble\Base\Supports\Helper;
 use Illuminate\Support\Facades\Event;
 use Botble\Base\Traits\LoadAndPublishDataTrait;
@@ -68,6 +73,9 @@ class MedicalServiceProvider extends ServiceProvider
         });
         $this->app->bind(MaintenanceInterface::class, function () {
             return new MaintenanceCacheDecorator(new MaintenanceRepository(new Maintenance));
+        });
+        $this->app->bind(ConsultingInterface::class, function () {
+            return new ConsultingCacheDecorator(new ConsultingRepository(new Consulting));
         });
 
         Helper::autoload(__DIR__ . '/../../helpers');
@@ -135,7 +143,7 @@ class MedicalServiceProvider extends ServiceProvider
                 'priority'    => 5,
                 'parent_id'   => 'cms-plugins-medical',
                 'name'        => 'plugins/medical::medical.nursing',
-                'icon'        => "fas fa-user-md",
+                'icon'        => "fas fa-med",
                 'url'         => route('nursing.index'),
                 'permissions' => ['nursing.index'],
             ])->registerItem([
@@ -146,6 +154,14 @@ class MedicalServiceProvider extends ServiceProvider
                 'icon'        => "fas fa-tools",
                 'url'         => route('maintenance.index'),
                 'permissions' => ['maintenance.index'],
+            ])->registerItem([
+                'id'          => 'cms-plugins-medical-consulting',
+                'priority'    => 7,
+                'parent_id'   => 'cms-plugins-medical',
+                'name'        => 'plugins/medical::medical.consulting',
+                'icon'        => "fas fa-stethoscope",
+                'url'         => route('consulting.index'),
+                'permissions' => ['consulting.index'],
             ]);
             
             

@@ -71,7 +71,7 @@ class MaintenanceTable extends TableAbstract
                 return $item->status->toHtml();
             })
             ->addColumn('operations', function ($item) {
-                return $this->getOperations('service.edit', 'service.destroy', $item);
+                return $this->getOperations(null, 'maintenance.destroy', $item);
             });
 
             

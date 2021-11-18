@@ -78,6 +78,22 @@ Route::group(['namespace' => 'Botble\Medical\Http\Controllers', 'middleware' => 
         ]);
            
     });
+
+    Route::group(['prefix' => 'consulting', 'as' => 'consulting.'], function () {
+   
+        Route::resource('', 'ConsultingController')->parameters(['' => 'consulting']);
+        Route::delete('items/destroy', [
+            'as'         => 'deletes',
+            'uses'       => 'ConsultingController@deletes',
+            'permission' => 'consulting.destroy',
+        ]);
+        Route::get('items/details/{id}', [
+            'as'         => 'details',
+            'uses'       => 'ConsultingController@details',
+            'permission' => 'consulting.index',
+        ]);
+           
+    });
 });
 
 });
