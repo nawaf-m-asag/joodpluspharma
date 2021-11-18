@@ -15,6 +15,39 @@ class CreateMedicalTable extends Migration
      */
     public function up()
     {
+        Schema::create('med_consulting', function (Blueprint $table) {
+            $table->id();
+            $table->string('con_type', 255);
+            $table->string('specialty_id',255);
+            $table->string('doctor_id', 255);
+            $table->string('p_name', 255);
+            $table->string('p_age', 255)->nullable();
+            $table->string('p_sex', 255)->nullable();
+            $table->string('female_status', 255)->nullable();
+            $table->string('chronic_diseases', 255)->nullable();
+            $table->string('operations', 255)->nullable();
+            $table->string('medicines', 255)->nullable();
+            $table->string('desc_situation', 255)->nullable();
+            $table->string('file', 255)->nullable();
+            $table->string('user_id', 255)->nullable();
+            $table->string('status', 60)->default('pending');
+            $table->timestamps();
+        });
+        Schema::create('med_examinations', function (Blueprint $table) {
+            $table->id();
+            $table->string('p_name', 255);
+            $table->string('p_age',255);
+            $table->string('p_sex', 255);
+            $table->string('d_name', 255);
+            $table->string('address', 255)->nullable();
+            $table->string('lap_name', 255)->nullable();
+            $table->string('required_checks', 255)->nullable();
+            $table->string('file', 255)->nullable();
+            $table->string('user_id', 255)->nullable();
+            $table->string('status', 60)->default('pending');
+            $table->timestamps();
+        });
+        
         Schema::create('med_services', function (Blueprint $table) {
             $table->id();
             $table->string('name', 120);
@@ -99,5 +132,7 @@ class CreateMedicalTable extends Migration
         Schema::dropIfExists('doctors');
         Schema::dropIfExists('specialties');
         Schema::dropIfExists('med_maintenance');
+        Schema::dropIfExists('med_consulting');
+        Schema::dropIfExists('med_examinations');
     }
 }
