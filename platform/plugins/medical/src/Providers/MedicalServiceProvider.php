@@ -46,6 +46,11 @@ use Botble\Medical\Repositories\Caches\ExaminationsCacheDecorator;
 use Botble\Medical\Repositories\Eloquent\ExaminationsRepository;
 use Botble\Medical\Repositories\Interfaces\ExaminationsInterface;
 
+use Botble\Medical\Models\Laboratories;
+use Botble\Medical\Repositories\Caches\LaboratoriesCacheDecorator;
+use Botble\Medical\Repositories\Eloquent\LaboratoriesRepository;
+use Botble\Medical\Repositories\Interfaces\LaboratoriesInterface;
+
 use Botble\Base\Supports\Helper;
 use Illuminate\Support\Facades\Event;
 use Botble\Base\Traits\LoadAndPublishDataTrait;
@@ -84,6 +89,9 @@ class MedicalServiceProvider extends ServiceProvider
         });
         $this->app->bind(ExaminationsInterface::class, function () {
             return new ExaminationsCacheDecorator(new ExaminationsRepository(new Examinations));
+        });
+        $this->app->bind(LaboratoriesInterface::class, function () {
+            return new LaboratoriesCacheDecorator(new LaboratoriesRepository(new Laboratories));
         });
         Helper::autoload(__DIR__ . '/../../helpers');
     }
@@ -177,6 +185,15 @@ class MedicalServiceProvider extends ServiceProvider
                 'icon'        => "fas fa-microscope",
                 'url'         => route('examinations.index'),
                 'permissions' => ['examinations.index'],
+            ])
+            ->registerItem([
+                'id'          => 'cms-plugins-medical-laboratories',
+                'priority'    => 8,
+                'parent_id'   => 'cms-plugins-medical',
+                'name'        => 'plugins/medical::medical.laboratories',
+                'icon'        => "fas fa-vial",
+                'url'         => route('laboratories.index'),
+                'permissions' => ['laboratories.index'],
             ]);
             
             

@@ -163,4 +163,27 @@ return [
         'flag'        => 'examinations.deletes',
         'parent_flag' => 'examinations.index',
     ],
+
+
+    //Laboratories
+    [
+        'name' => 'laboratories',
+        'flag' => 'laboratories.index',
+        'parent_flag' => 'medical.index',
+    ],
+    [
+        'name'        => 'Create',
+        'flag'        => 'laboratories.create',
+        'parent_flag' => 'laboratories.index',
+    ],
+    [
+        'name'        => 'Edit',
+        'flag'        => 'laboratories.edit',
+        'parent_flag' => 'laboratories.index',
+    ],
+    [
+        'name'        => 'Delete',
+        'flag'        => 'laboratories.deletes',
+        'parent_flag' => 'laboratories.index',
+    ],
 ];

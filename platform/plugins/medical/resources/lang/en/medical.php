@@ -49,7 +49,11 @@ return [
     'consulting-details'=>'Consulting Details',
     'examinations'=>'Examinations',
     'examinations-details'=>'Examinations Details',
-    'lap_name'=>'Lap Name',
-    'required_checks'=>'Required Checks'
+    'lab_name'=>'Lab Name',
+    'required_checks'=>'Required Checks',
+    'laboratories'=>'Laboratories',
+    'add-lab-name'=>"Add Laboratory Name",
+    'Laboratories-create' => 'New Laboratory',
+    'Laboratories-edit'   => 'Edit Laboratory',
 
 ];

@@ -20,4 +20,7 @@ if (!defined('CONSULTING_MODULE_SCREEN_NAME')) {
 if (!defined('EXAMINATIONS_MODULE_SCREEN_NAME')) {
     define('EXAMINATIONS_MODULE_SCREEN_NAME', 'examinations');
 }
+if (!defined('LABORATORIES_MODULE_SCREEN_NAME')) {
+    define('LABORATORIES_MODULE_SCREEN_NAME', 'laboratories');
+}
 

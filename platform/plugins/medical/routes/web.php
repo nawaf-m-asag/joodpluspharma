@@ -111,9 +111,17 @@ Route::group(['namespace' => 'Botble\Medical\Http\Controllers', 'middleware' => 
         ]);
            
     });
-
-
-    
+    //Laboratories
+    Route::group(['prefix' => 'laboratories', 'as' => 'laboratories.'], function () {
+   
+        Route::resource('', 'LaboratoriesController')->parameters(['' => 'laboratories']);
+        Route::delete('items/destroy', [
+            'as'         => 'deletes',
+            'uses'       => 'LaboratoriesController@deletes',
+            'permission' => 'laboratories.destroy',
+        ]);
+           
+    });
 });
 
 });
