@@ -15,6 +15,15 @@ class CreateMedicalTable extends Migration
      */
     public function up()
     {
+        Schema::create('med_laboratories', function (Blueprint $table) {
+            $table->id();
+            $table->string('lab_name', 255);
+            $table->string('address',255);
+            $table->string('phone', 255);
+            $table->string('email', 255);;
+            $table->string('status', 60)->default('published');
+            $table->timestamps();
+        });
         Schema::create('med_consulting', function (Blueprint $table) {
             $table->id();
             $table->string('con_type', 255);
@@ -40,7 +49,7 @@ class CreateMedicalTable extends Migration
             $table->string('p_sex', 255);
             $table->string('d_name', 255);
             $table->string('address', 255)->nullable();
-            $table->string('lap_name', 255)->nullable();
+            $table->string('lab_id', 255)->nullable();
             $table->string('required_checks', 255)->nullable();
             $table->string('file', 255)->nullable();
             $table->string('user_id', 255)->nullable();
@@ -134,5 +143,7 @@ class CreateMedicalTable extends Migration
         Schema::dropIfExists('med_maintenance');
         Schema::dropIfExists('med_consulting');
         Schema::dropIfExists('med_examinations');
+        Schema::dropIfExists('med_laboratories');
+        
     }
 }
