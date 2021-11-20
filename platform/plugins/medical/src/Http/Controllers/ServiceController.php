@@ -14,6 +14,7 @@ use Botble\Base\Events\UpdatedContentEvent;
 use Botble\Base\Http\Responses\BaseHttpResponse;
 use Botble\Medical\Forms\ServiceForm;
 use Botble\Base\Forms\FormBuilder;
+use Botble\Medical\Models\Services;
 use Botble\Base\Http\Controllers\Controller;
 
 class ServiceController extends BaseController
@@ -163,6 +164,22 @@ class ServiceController extends BaseController
         return $response->setMessage(trans('core/base::notices.delete_success_message'));
     }
 
-
+    public function getServices(Request $request)
+    {
+        $service=Services::select('id','name')->where('status','published')->get()->toArray();
+        if(!empty($service)){
+            $this->response['error'] = false;
+            $this->response['message']="Service(s) retrieved successfully!";
+            $this->response['data'] = $service;
+            
+        }
+        else{
+            $this->response['error'] = false;
+            $this->response['message']="Services is empty!";
+            $this->response['data'] = [];
+        }
+        return response()->json($this->response);
+       
+    }
 
 }

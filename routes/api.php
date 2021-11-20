@@ -69,6 +69,8 @@ Route::post('payment_bank_transfer_description',App\Http\Controllers\API\Payment
 Route::post('get_shipping_method',App\Http\Controllers\API\ShippingController::class . '@getShippingMethod');
 Route::post('get_brands',App\Http\Controllers\API\BrandController::class . '@getBrands');
 
+Route::post('get_services',Botble\Medical\Http\Controllers\ServiceController::class . '@getServices');
+
 
     
    
