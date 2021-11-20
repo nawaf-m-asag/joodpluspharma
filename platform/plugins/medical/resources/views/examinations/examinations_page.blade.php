@@ -20,8 +20,8 @@
             <td>{{$examinations->p_sex}}</td>
         </tr>   
         <tr>
-            <td>{{trans('plugins/medical::medical.lap_name')}}</td>
-            <td>{{$examinations->lap_name}}</td>
+            <td>{{trans('plugins/medical::medical.lab_name')}}</td>
+            <td>{{$examinations->lab->lab_name}}</td>
         </tr> 
         <tr>
             <td>{{trans('plugins/medical::medical.address')}}</td>

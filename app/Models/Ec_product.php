@@ -334,7 +334,7 @@ public static function get_products_By_ids($products_ids,$user_id=null,$total=nu
        ->join('ec_product_variation_items as pvi','pvi.variation_id','=','pv.id')->orderBy('pa.id')
        ->join('ec_product_attributes as pa','pa.id','=','pvi.attribute_id')
        ->join('ec_product_attribute_sets as pas','pas.id','=','pa.attribute_set_id')->distinct('p.id')
-       ->selectRaw('group_concat(DISTINCT(pa.id)) as ids , group_concat(DISTINCT(pa.title)) as value,pas.title as attr_name,pas.title as name')
+       ->selectRaw('group_concat(DISTINCT(pa.id)) as ids , group_concat(DISTINCT(pa.title)) as value, group_concat(DISTINCT(pa.color)) as color,pas.title as attr_name,pas.title as name')
         ->groupBy('pas.title')
         ->where('pv.configurable_product_id',$id)->get();
 
@@ -399,6 +399,7 @@ public static function getVariant_ids($id){
 
         $json_opj['variant_ids']=null;
         $json_opj['variant_values']=null;
+        $json_opj['variant_values_colors']=null;
         $json_opj['attr_name']=null;
         $json_opj['variant_ids']=null;
 
@@ -407,7 +408,7 @@ public static function getVariant_ids($id){
         ->join('ec_product_attributes as pa','pa.id','=','pvi.attribute_id')
         ->join('ec_product_attribute_sets as pas','pas.id','=','pa.attribute_set_id')
         ->where('pv.product_id',$id)
-        ->selectRaw('pv.product_id,group_concat(DISTINCT(pa.id)) as variant_ids , group_concat(DISTINCT(pa.title)) as variant_values,group_concat(DISTINCT(pas.title)) as attr_name')
+        ->selectRaw('pv.product_id,group_concat(DISTINCT(pa.id)) as variant_ids , group_concat(DISTINCT(pa.title)) as variant_values, group_concat(DISTINCT(pa.color)) as color,group_concat(DISTINCT(pas.title)) as attr_name')
        ->groupBy('pv.product_id')
       ->get();
 
@@ -417,6 +418,7 @@ public static function getVariant_ids($id){
 
             $json_opj['variant_ids']=$value->variant_ids;
             $json_opj['variant_values']=$value->variant_values;
+            $json_opj['variant_values_colors']=$value->color;
             $json_opj['attr_name']=$value->attr_name;
       }
 
@@ -507,7 +509,7 @@ public static function getVariant_ids($id){
        ->join('ec_product_variation_items as pvi','pvi.variation_id','=','pv.id')->orderBy('pa.id')
        ->join('ec_product_attributes as pa','pa.id','=','pvi.attribute_id')
        ->join('ec_product_attribute_sets as pas','pas.id','=','pa.attribute_set_id')
-       ->selectRaw('group_concat(DISTINCT(pa.id)) as attribute_values_id, group_concat(DISTINCT(pa.title)ORDER BY pa.id) as attribute_values,pas.title as name')
+       ->selectRaw('group_concat(DISTINCT(pa.id)) as attribute_values_id, group_concat(DISTINCT(pa.title)ORDER BY pa.id) as attribute_values,group_concat(DISTINCT(pa.color)ORDER BY pa.id) as attribute_values_colors,pas.title as name')
         ->groupBy('pas.title')
         ->where(function( $output)use($ids){
             foreach ($ids as $key => $value) {

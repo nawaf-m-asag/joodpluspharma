@@ -52,8 +52,8 @@ class ExaminationsTable extends TableAbstract
                 return Html::link(route('examinations.details', $item->id), $item->p_name);
             })
 
-            ->editColumn('lap_name', function ($item) {
-                return $item->lap_name;
+            ->editColumn('lab_id', function ($item) {
+                return $item->lab->lab_name;
             })
             ->editColumn('d_name', function ($item) {
                 return $item->d_name;
@@ -88,7 +88,7 @@ class ExaminationsTable extends TableAbstract
             'id',
             'p_name',
             'user_id',
-            'lap_name',
+            'lab_id',
             'd_name',
             'created_at',
             'status'
@@ -115,8 +115,8 @@ class ExaminationsTable extends TableAbstract
                 'title' =>trans('plugins/medical::medical.doctor-name'),
                 'class' => 'text-left',
             ],
-            'lap_name' => [
-                'title' =>trans('plugins/medical::medical.doctor-name'),
+            'lab_id' => [
+                'title' =>trans('plugins/medical::medical.lab_name'),
                 'class' => 'text-left',
             ],
             'user_id' => [

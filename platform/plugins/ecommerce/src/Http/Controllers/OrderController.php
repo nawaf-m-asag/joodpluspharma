@@ -1095,7 +1095,7 @@ class OrderController extends BaseController
    
     $res=$this->sendNotification($fcm_ids,[
         'title' => " حالة الطلب رقم (".$id.")",
-        'body' =>"  مرحباً  "." ".$res[0]->name." لقد تم ".$message,  
+        'body' =>"  مرحباً "." ".$res[0]->name." لقد تم ".$message,  
         'type' => "order",
     ]);
     }

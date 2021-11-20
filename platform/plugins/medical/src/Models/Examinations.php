@@ -5,6 +5,7 @@ use Botble\Base\Models\BaseModel;
 use Botble\Base\Traits\EnumCastable;
 use Botble\Ecommerce\Enums\OrderStatusEnum;
 use Botble\Ecommerce\Models\Customer;
+use Botble\Medical\Models\Laboratories;
 class Examinations extends BaseModel
 {
 
@@ -26,7 +27,7 @@ class Examinations extends BaseModel
             'p_sex',
             'd_name',
             'address',
-            'lap_name',
+            'lab_id',
             'required_checks',
             'user_id',
             'file',
@@ -42,6 +43,10 @@ class Examinations extends BaseModel
     public function user()
     {
         return $this->belongsTo(Customer::class, 'user_id', 'id')->withDefault();
+    }
+    public function lab()
+    {
+        return $this->belongsTo(Laboratories::class, 'lab_id', 'id')->withDefault();
     }
   
     protected $casts = [

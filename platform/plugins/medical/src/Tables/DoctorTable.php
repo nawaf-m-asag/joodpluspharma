@@ -60,10 +60,10 @@ class DoctorTable extends TableAbstract
                 return $item->email;
             })
             ->editColumn('phone', function ($item) {
-                return $item->email;
+                return $item->phone;
             })
             ->editColumn('address', function ($item) {
-                return $item->email;
+                return $item->address;
             })
             ->editColumn('specialty_id', function ($item) {
                 return $item->specialty->name;
