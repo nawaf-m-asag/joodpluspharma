@@ -53,7 +53,7 @@ return [
     'required_checks'=>'Required Checks',
     'laboratories'=>'Laboratories',
     'add-lab-name'=>"Add Laboratory Name",
-    'Laboratories-create' => 'New Laboratory',
-    'Laboratories-edit'   => 'Edit Laboratory',
+    'laboratories-create' => 'New Laboratory',
+    'laboratories-edit'   => 'Edit Laboratory',
 
 ];

@@ -12,7 +12,7 @@ use Botble\Base\Events\CreatedContentEvent;
 use Botble\Base\Events\DeletedContentEvent;
 use Botble\Base\Events\UpdatedContentEvent;
 use Botble\Base\Http\Responses\BaseHttpResponse;
-use Botble\Medical\Forms\laboratoriesForm;
+use Botble\Medical\Forms\LaboratoriesForm;
 use Botble\Base\Forms\FormBuilder;
 use Botble\Base\Http\Controllers\Controller;
 
@@ -67,7 +67,7 @@ class LaboratoriesController extends BaseController
 
         event(new CreatedContentEvent(LABORATORIES_MODULE_SCREEN_NAME, $request, $laboratories));
         return $response
-            ->setPreviousUrl(route('Laboratories.index'))
+            ->setPreviousUrl(route('laboratories.index'))
             ->setNextUrl('#')
             ->setMessage(trans('core/base::notices.create_success_message'));
     }

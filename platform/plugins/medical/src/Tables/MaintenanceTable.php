@@ -54,7 +54,7 @@ class MaintenanceTable extends TableAbstract
             })
 
             ->editColumn('applicant_name', function ($item) {
-                return $item->side_name;
+                return $item->applicant_name;
             })
             ->editColumn('file', function ($item) {
                 $color=empty($item->file)?"btn-warning":"btn-success";
