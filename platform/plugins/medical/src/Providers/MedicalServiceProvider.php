@@ -198,5 +198,8 @@ class MedicalServiceProvider extends ServiceProvider
             
             
         });
+        $this->app->booted(function () {
+            $this->app->register(HookServiceProvider::class);
+        });
     }
 }

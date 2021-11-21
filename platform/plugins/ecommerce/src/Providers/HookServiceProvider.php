@@ -325,7 +325,7 @@ class HookServiceProvider extends ServiceProvider
         ) {
             $attributes = [
                 'class'    => 'badge badge-success menu-item-count pending-orders',
-                'style'    => 'display: none;',
+                'style'    => 'display: none;left:20px; right:unset',
             ];
 
             return Html::tag('span', '', $attributes)->toHtml();
