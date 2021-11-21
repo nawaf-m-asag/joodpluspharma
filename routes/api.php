@@ -70,6 +70,7 @@ Route::post('get_shipping_method',App\Http\Controllers\API\ShippingController::c
 Route::post('get_brands',App\Http\Controllers\API\BrandController::class . '@getBrands');
 
 Route::post('get_services',Botble\Medical\Http\Controllers\ServiceController::class . '@getServices');
+Route::post('get_doctors',Botble\Medical\Http\Controllers\DoctorController::class . '@getDoctors');
 
 
     

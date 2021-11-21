@@ -15,7 +15,8 @@ use Botble\Base\Http\Responses\BaseHttpResponse;
 use Botble\Medical\Forms\DoctorForm;
 use Botble\Base\Forms\FormBuilder;
 use Botble\Base\Http\Controllers\Controller;
-
+use Illuminate\Support\Facades\Validator;
+use Botble\Medical\Models\Doctors;
 class DoctorController extends BaseController
 {
     /**
@@ -163,6 +164,29 @@ class DoctorController extends BaseController
         return $response->setMessage(trans('core/base::notices.delete_success_message'));
     }
 
+    public function getDoctors(Request $request){
 
+        $validator = Validator::make($request->all(), [
+            'id'=>'nullable|integer',  
+            'specialty_id'=>'nullable|integer',   
+          ]);
 
+          if ($validator->fails()) {
+            $this->response['error'] = true;
+            $this->response['message'] = $validator->errors()->first();
+        } else{
+           $query=Doctors::select('id','name','specialty_id','phone','email','address')->where('status','published');
+            if(isset($request->id)&&!empty($request->id)){
+                $query->where('id',$request->id);
+            }
+            if(isset($request->specialty_id)&&!empty($request->specialty_id)){
+                $query->where('specialty_id',$request->specialty_id);
+            }
+            $query=$query->get();
+            $this->response['error'] = false;
+            $this->response['message'] = "Doctor(s) retrieved successfully!";
+            $this->response['data']= $query;
+            return response()->json($this->response);
+        }
+    }
 }
