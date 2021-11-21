@@ -105,7 +105,7 @@ class PrescriptionController extends BaseController
         
         $validator = Validator::make($request->all(), [
             'user_id'=>'required|integer',  
-            'notes'=>'nullable|integer',   
+            'notes'=>'nullable|string',   
             'address_id'=>'required|integer',
             'image_file'=>'required_without:file',
             'file'=>'required_without:image_file'

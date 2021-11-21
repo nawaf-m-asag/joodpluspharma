@@ -74,7 +74,8 @@ Route::post('get_doctors',Botble\Medical\Http\Controllers\DoctorController::clas
 Route::post('get_specialties',Botble\Medical\Http\Controllers\SpecialtiesController::class . '@getSpecialties');
 Route::post('get_laboratories',Botble\Medical\Http\Controllers\LaboratoriesController::class . '@getLaboratories');
 Route::post('set_prescription',Botble\Medical\Http\Controllers\PrescriptionController::class . '@setPrescription');
-    
+Route::post('set_maintenance',Botble\Medical\Http\Controllers\MaintenanceController::class . '@setMaintenance');
+   
    
 
 

@@ -15,6 +15,9 @@ use Botble\Base\Forms\FormBuilder;
 use Botble\Base\Http\Controllers\Controller;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Validator;
+use Botble\Medical\Models\Maintenance;
+use RvMedia;
 class MaintenanceController extends BaseController
 {
     /**
@@ -106,5 +109,41 @@ class MaintenanceController extends BaseController
         return view('plugins/medical::maintenance.maintenance_page')->with($data);
           
      }
-
+    public function setMaintenance(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'side_name'=>'required|string',
+            'applicant_name'=>'required|string',
+            'device_name'=>'required|string',
+            'descrip_defect'=>'required|string',
+            'phone'=>'required|string',
+            'user_id'=>'required|integer',   
+            'address'=>'required|string',
+            'file'=>'nullable'
+          ]);
+         
+        if ($validator->fails()) {
+            $this->response['error'] = true;
+            $this->response['message'] = $validator->errors()->first();
+            $this->response['data']=[];
+           
+        }
+        else{
+            if(isset($request->file)&&!empty($request->file)){
+                $file= RvMedia::handleUpload($request->file('file'), 0, 'maintenance');
+                if(!$file['error']&&!empty($_FILES['file']['name']) && isset($_FILES['file']['name'])){
+                    $request->file=$file['data']['url'];
+                }  
+            }
+            $data=$request->input();
+            $data['file']=isset($request->file)&&!empty($request->file)?$request->file:null;
+           
+            $prescription = Maintenance::create((array)$data);
+            $this->response['error'] = false;
+            $this->response['message'] = "Maintenance added successfully!";
+            $this->response['data']=$prescription;
+        }
+       
+        return response()->json($this->response);
+    }
 }
