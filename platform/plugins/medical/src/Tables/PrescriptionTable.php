@@ -36,7 +36,7 @@ class PrescriptionTable extends TableAbstract
 
         $this->repository = $prescriptionRepository;
 
-        if (!Auth::user()->hasAnyPermission(['services.edit', 'services.destroy'])) {
+        if (!Auth::user()->hasAnyPermission(['prescription.edit', 'prescription.destroy'])) {
             $this->hasOperations = false;
             $this->hasActions = false;
         }
@@ -47,6 +47,7 @@ class PrescriptionTable extends TableAbstract
      */
     public function ajax()
     {
+        
         $data = $this->table
             ->eloquent($this->query())
             ->editColumn('user_id', function ($item) {
@@ -62,13 +63,14 @@ class PrescriptionTable extends TableAbstract
                 return $item->notes;
             })
             ->editColumn('file', function ($item) {
-                $color=empty($item->file)?"btn-warning":"btn-success";
-                $download=empty($item->file)?"":"download";
-                return '<a '.$download.' href="'.$item->file.'" class="btn '.$color.' pl-4 pr-4"><i class="fas fa-cloud-download-alt"></i></a>';
+                $file=RvMedia::getImageUrl($item->file,null, false,false);
+                $color=empty($file)?"btn-warning":"btn-success";
+                $download=empty($file)?"":"download";
+                return '<a '.$download.' href="'.$file.'" class="btn '.$color.' pl-4 pr-4"><i class="fas fa-cloud-download-alt"></i></a>';
             })
-            ->editColumn('image_file', function ($item) {
+            ->editColumn('image_file', function ($item) {     
                 $url=RvMedia::getImageUrl($item->image_file, null, false, RvMedia::getDefaultImage());
-                $data=Html::image(RvMedia::getImageUrl($item->image_file, 'thumb', false, RvMedia::getDefaultImage()),
+                $data=Html::image(RvMedia::getImageUrl($item->image_file,null, false, RvMedia::getDefaultImage()),
                     $item->user_id, ['width' => 50]);
                 return "<a href=$url>$data</a>";
                 
@@ -80,7 +82,7 @@ class PrescriptionTable extends TableAbstract
                 return $item->status->toHtml();
             })
             ->addColumn('operations', function ($item) {
-                return $this->getOperations(null, 'service.destroy',$item);
+                return $this->getOperations(null, 'prescriptions.destroy',$item);
             });
 
             
@@ -160,7 +162,7 @@ class PrescriptionTable extends TableAbstract
      */
     public function bulkActions(): array
     {
-        return $this->addDeleteAction('services.deletes', 'services.deletes', parent::bulkActions());
+        return $this->addDeleteAction(route('prescriptions.deletes'), 'prescriptions.deletes', parent::bulkActions());
     }
 
     /**

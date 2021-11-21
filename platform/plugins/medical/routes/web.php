@@ -14,13 +14,13 @@ Route::group(['namespace' => 'Botble\Medical\Http\Controllers', 'middleware' => 
         });
 
         //////////////////////////////
-        Route::group(['prefix' => 'prescriptions', 'as' => 'prescription.'], function () {
-        Route::resource('', 'PrescriptionController')->parameters(['' => 'prescription']);
+        Route::group(['prefix' => 'prescriptions', 'as' => 'prescriptions.'], function () {
+        Route::resource('', 'PrescriptionController')->parameters(['' => 'prescriptions']);
 
         Route::delete('items/destroy', [
             'as'         => 'deletes',
-            'uses'       => 'ServiceController@deletes',
-            'permission' => 'services.destroy',
+            'uses'       => 'prescriptionController@deletes',
+            'permission' => 'prescriptions.destroy',
         ]);
    
     });

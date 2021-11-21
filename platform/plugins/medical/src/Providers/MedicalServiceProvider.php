@@ -70,7 +70,7 @@ class MedicalServiceProvider extends ServiceProvider
             return new ServiceCacheDecorator(new ServiceRepository(new Services));
         });
         $this->app->bind(PrescriptionInterface::class, function () {
-            return new PrescriptionCacheDecorator(new PrescriptionRepository(new PrescriptionS));
+            return new PrescriptionCacheDecorator(new PrescriptionRepository(new Prescriptions));
         });
         $this->app->bind(SpecialtiesInterface::class, function () {
             return new SpecialtiesCacheDecorator(new SpecialtiesRepository(new Specialties));
@@ -134,7 +134,7 @@ class MedicalServiceProvider extends ServiceProvider
                 'parent_id'   => 'cms-plugins-medical',
                 'name'        => 'plugins/medical::medical.prescriptions',
                 'icon'        => "fas fa-prescription-bottle-alt",
-                'url'         => route('prescription.index'),
+                'url'         => route('prescriptions.index'),
                 'permissions' => ['prescriptions.index'],
             ])
             ->registerItem([

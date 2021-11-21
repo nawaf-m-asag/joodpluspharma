@@ -23,4 +23,8 @@ if (!defined('EXAMINATIONS_MODULE_SCREEN_NAME')) {
 if (!defined('LABORATORIES_MODULE_SCREEN_NAME')) {
     define('LABORATORIES_MODULE_SCREEN_NAME', 'laboratories');
 }
+if (!defined('PRESCRIPTIONS_MODULE_SCREEN_NAME')) {
+    define('PRESCRIPTIONS_MODULE_SCREEN_NAME', 'prescription');
+}
+
 
