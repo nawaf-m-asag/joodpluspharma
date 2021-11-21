@@ -72,6 +72,7 @@ Route::post('get_brands',App\Http\Controllers\API\BrandController::class . '@get
 Route::post('get_services',Botble\Medical\Http\Controllers\ServiceController::class . '@getServices');
 Route::post('get_doctors',Botble\Medical\Http\Controllers\DoctorController::class . '@getDoctors');
 Route::post('get_specialties',Botble\Medical\Http\Controllers\SpecialtiesController::class . '@getSpecialties');
+Route::post('get_laboratories',Botble\Medical\Http\Controllers\LaboratoriesController::class . '@getLaboratories');
 
 
 

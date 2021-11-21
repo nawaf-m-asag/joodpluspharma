@@ -15,7 +15,7 @@ use Botble\Base\Http\Responses\BaseHttpResponse;
 use Botble\Medical\Forms\LaboratoriesForm;
 use Botble\Base\Forms\FormBuilder;
 use Botble\Base\Http\Controllers\Controller;
-
+use Botble\Medical\Models\Laboratories;
 class LaboratoriesController extends BaseController
 {
     /**
@@ -163,6 +163,21 @@ class LaboratoriesController extends BaseController
         return $response->setMessage(trans('core/base::notices.delete_success_message'));
     }
 
-
+    public function getLaboratories(Request $request)
+    {
+        $laboratories=Laboratories::select('id','lab_name','phone','email','address',)->where('status','published')->get()->toArray();
+        if(!empty($laboratories)){
+            $this->response['error'] = false;
+            $this->response['message']="Laboratories retrieved successfully!";
+            $this->response['data'] = $laboratories;
+            
+        }
+        else{
+            $this->response['error'] = false;
+            $this->response['message']="Laboratories is empty!";
+            $this->response['data'] = [];
+        }
+        return response()->json($this->response);
+    }
 
 }
