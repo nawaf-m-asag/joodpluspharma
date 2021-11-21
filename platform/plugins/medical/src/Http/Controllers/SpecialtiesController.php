@@ -15,7 +15,7 @@ use Botble\Base\Http\Responses\BaseHttpResponse;
 use Botble\Medical\Forms\SpecialtiesForm;
 use Botble\Base\Forms\FormBuilder;
 use Botble\Base\Http\Controllers\Controller;
-
+use Botble\Medical\Models\Specialties;
 class SpecialtiesController extends BaseController
 {
     /**
@@ -161,6 +161,22 @@ class SpecialtiesController extends BaseController
         }
 
         return $response->setMessage(trans('core/base::notices.delete_success_message'));
+    }
+
+    public function getSpecialties(Request $request){
+        $specialties=Specialties::select('id','name')->where('status','published')->get()->toArray();
+        if(!empty($specialties)){
+            $this->response['error'] = false;
+            $this->response['message']="Specialties retrieved successfully!";
+            $this->response['data'] = $specialties;
+            
+        }
+        else{
+            $this->response['error'] = false;
+            $this->response['message']="Specialties is empty!";
+            $this->response['data'] = [];
+        }
+        return response()->json($this->response);
     }
 
 
