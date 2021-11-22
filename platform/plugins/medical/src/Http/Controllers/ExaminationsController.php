@@ -15,6 +15,9 @@ use Botble\Base\Forms\FormBuilder;
 use Botble\Base\Http\Controllers\Controller;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Validator;
+use Botble\Medical\Models\Examinations;
+use RvMedia;
 class ExaminationsController extends BaseController
 {
     /**
@@ -107,4 +110,44 @@ class ExaminationsController extends BaseController
           
      }
 
+
+     public function setExamination(Request $request)
+     {
+         $validator = Validator::make($request->all(), [
+             'p_name'=>'required|string',
+             'p_sex'=>'required|string',
+             'p_age'=>'required|string',
+             'address'=>'required|string',
+             'lab_id'=>'required|string',
+             'required_checks'=>'required|string',
+             'd_name'=>'required|string',
+             'user_id'=>'required|integer',   
+             'file'=>'nullable'
+           ]);
+          
+         if ($validator->fails()) {
+             $this->response['error'] = true;
+             $this->response['message'] = $validator->errors()->first();
+             $this->response['data']=[];
+            
+         }
+         else{
+             if(isset($request->file)&&!empty($request->file)){
+                 $file= RvMedia::handleUpload($request->file('file'), 0, 'consulting');
+                 if(!$file['error']&&!empty($_FILES['file']['name']) && isset($_FILES['file']['name'])){
+                     $file=$file['data']['url'];
+                 }  
+             }
+             $data=$request->input();
+             $data['file']=isset($file)&&!empty($file)?$file:null;
+             Examinations::create((array)$data);
+
+             unset($data['uploaded_file']);
+             $this->response['error'] = false;
+             $this->response['message'] = "Examination added successfully!";
+             $this->response['data']=$data;
+         }
+        
+         return response()->json($this->response);
+     }
 }
