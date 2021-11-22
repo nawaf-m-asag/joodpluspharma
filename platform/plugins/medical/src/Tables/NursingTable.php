@@ -146,7 +146,7 @@ class NursingTable extends TableAbstract
      */
     public function bulkActions(): array
     {
-        return $this->addDeleteAction('nursing.deletes', 'nursing.deletes', parent::bulkActions());
+        return $this->addDeleteAction(route('nursing.deletes'), 'nursing.deletes', parent::bulkActions());
     }
 
     /**

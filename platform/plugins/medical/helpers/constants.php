@@ -26,5 +26,7 @@ if (!defined('LABORATORIES_MODULE_SCREEN_NAME')) {
 if (!defined('PRESCRIPTIONS_MODULE_SCREEN_NAME')) {
     define('PRESCRIPTIONS_MODULE_SCREEN_NAME', 'prescription');
 }
-
+if (!defined('NURSING_MODULE_SCREEN_NAME')) {
+    define('NURSING_MODULE_SCREEN_NAME', 'nursing');
+}
 
