@@ -15,6 +15,9 @@ use Botble\Base\Forms\FormBuilder;
 use Botble\Base\Http\Controllers\Controller;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Validator;
+use Botble\Medical\Models\Consulting;
+use RvMedia;
 class ConsultingController extends BaseController
 {
     /**
@@ -106,5 +109,51 @@ class ConsultingController extends BaseController
         return view('plugins/medical::consulting.consulting_page')->with($data);
           
      }
+
+
+     public function setConsulting(Request $request)
+     {
+         $validator = Validator::make($request->all(), [
+             'con_type'=>'required|string',
+             'specialty_id'=>'required|string',
+             'doctor_id'=>'required|string',
+             'p_name'=>'required|string',
+             'p_sex'=>'required|string',
+             'p_age'=>'required|string',
+             'female_status'=>'nullable|string',
+             'chronic_diseases'=>'nullable|string',
+             'operations'=>'nullable|string',
+             'medicines'=>'nullable|string',
+             'desc_situation'=>'nullable|string',
+             'user_id'=>'required|integer',   
+             'file'=>'nullable'
+           ]);
+          
+         if ($validator->fails()) {
+             $this->response['error'] = true;
+             $this->response['message'] = $validator->errors()->first();
+             $this->response['data']=[];
+            
+         }
+         else{
+             if(isset($request->file)&&!empty($request->file)){
+                 $file= RvMedia::handleUpload($request->file('file'), 0, 'consulting');
+                 if(!$file['error']&&!empty($_FILES['file']['name']) && isset($_FILES['file']['name'])){
+                     $file=$file['data']['url'];
+                 }  
+             }
+             $data=$request->input();
+             $data['file']=isset($file)&&!empty($file)?$file:null;
+             $nursing = Consulting::create((array)$data);
+
+             unset($data['uploaded_file']);
+             $this->response['error'] = false;
+             $this->response['message'] = "Consulting added successfully!";
+             $this->response['data']=$data;
+         }
+        
+         return response()->json($this->response);
+     }
+
 
 }
