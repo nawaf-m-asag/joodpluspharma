@@ -144,7 +144,7 @@ class ConsultingController extends BaseController
              }
              $data=$request->input();
              $data['file']=isset($file)&&!empty($file)?$file:null;
-             $nursing = Consulting::create((array)$data);
+             Consulting::create((array)$data);
 
              unset($data['uploaded_file']);
              $this->response['error'] = false;

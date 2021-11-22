@@ -172,11 +172,12 @@ class Cart extends Model
         $percentage = array();
         $amount = array();
         $cod_allowed = 1;
-
+        $currency=Fun::fetch_details(['is_default' => 1], 'ec_currencies','exchange_rate,decimals');
+        $exchange_rate=isset($currency[0]->exchange_rate)?$currency[0]->exchange_rate:1;
+        $decimals=isset($currency[0]->decimals)?$currency[0]->decimals:0;
         foreach ($data as $i => $value) {
             $data[$i]->tax_percentage=Cart::get_tax_percentage($value->id);
            
-        //  dd( $data[$i]->tax_percentage);
             //use to get first image in array it is defulte
             $product_images=json_decode( $data[$i]->images);
                 $default_imag=null;
@@ -188,9 +189,6 @@ class Cart extends Model
                         break;
                      }
                 }
-                $currency=Fun::fetch_details(['is_default' => 1], 'ec_currencies','exchange_rate,decimals');
-                $exchange_rate=$currency[0]->exchange_rate;
-                $decimals=$currency[0]->decimals;
                 $price=round(($data[$i]->price*$exchange_rate),$decimals);
                 $special_price=round(($data[$i]->special_price*$exchange_rate),$decimals);
 

@@ -63,9 +63,10 @@ class NursingTable extends TableAbstract
                 return $item->doctor->name;
             })
             ->editColumn('attachedFile', function ($item) {
-                $color=empty($item->attachedFile)?"btn-warning":"btn-success";
-                $download=empty($item->attachedFile)?"":"download";
-                return '<a '.$download.' href="'.$item->attachedFile.'" class="btn '.$color.' pl-4 pr-4"><i class="fas fa-cloud-download-alt"></i></a>';
+                $attachedFile=RvMedia::getImageUrl($item->attachedFile,null, false,false);
+                $color=empty($attachedFile)?"btn-warning":"btn-success";
+                $download=empty($attachedFile)?"":"download";
+                return '<a '.$download.' href="'.$attachedFile.'" class="btn '.$color.' pl-4 pr-4"><i class="fas fa-cloud-download-alt"></i></a>';
             })
             ->editColumn('created_at', function ($item) {
                 return BaseHelper::formatDate($item->created_at);
