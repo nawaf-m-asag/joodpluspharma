@@ -80,4 +80,4 @@ Route::post('set_consulting',Botble\Medical\Http\Controllers\ConsultingControlle
 Route::post('set_examination',Botble\Medical\Http\Controllers\ExaminationsController::class . '@setExamination');
 
 
-    
+

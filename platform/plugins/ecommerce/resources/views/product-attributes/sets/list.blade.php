@@ -59,7 +59,7 @@
                         <input type="text" class="form-control" value="{{ $attribute['slug'] }}">
                     </div>
                     <div class="swatch-value">
-                        <input type="text" class="form-control input-color-picker" value="{{ $attribute['color'] }}">
+                        <input type="color" class="form-control" value="{{ $attribute['color'] }}">
                     </div>
                     <div class="swatch-image">
                         <div class="image-box-container">

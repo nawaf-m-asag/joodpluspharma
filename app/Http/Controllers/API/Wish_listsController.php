@@ -33,52 +33,27 @@ class Wish_listsController extends Controller
                 $customer_id = (isset($request->user_id) && !empty(trim($request->user_id))) ? $request->user_id: null;
                 // $res = $this->db->select('(select count(id) from favorites where user_id=' . $_POST['user_id'] . ') as total, f.*')->where('user_id', $_POST['user_id'])->limit($limit, $offset)->get('favorites f')->result_array();
     
-                $query=DB::table('ec_products as p')
-       
-                ->leftJoin('ec_product_category_product as cp','cp.product_id','=','p.id')
-                    ->leftJoin('ec_product_categories as c',function($query){
-        
-                        $query->on('c.id','=', DB::raw('(SELECT cp2.category_id FROM ec_product_category_product as cp2 WHERE p.id = cp2.product_id LIMIT 1)'));
-                })->Join('ec_wish_lists as ewl','ewl.product_id','=','p.id')
-                ->where('ewl.customer_id',$customer_id)
-                ->leftJoin('ec_taxes as tax','p.tax_id','=','tax.id')
-                ->select([DB::raw('DISTINCT(p.id)'),
-                'p.name as product_name',
-                'p.tax_id',
-                'p.quantity',
-                'p.description as short_description',
-                'p.sku',
-                'c.id as category_id',
-                'p.content as description',
-                'p.order',
-                'c.name as category_name',
-                'p.status',
-                'p.content',
-                'p.images',
-                'tax.percentage',
-                'p.is_variation',
-               'ewl.id as wish_lists_id',
-               'p.with_storehouse_management'
-                
-               ]
-            )->orderBy('ewl.id','DESC')->get();
-            
-                
-                
-        
-    
-                // $total = $q->num_rows();
-                $total = 0;
+                $query=DB::table('ec_wish_lists')
+                ->where('customer_id',$customer_id)
+                ->groupBy('customer_id')
+                ->selectRaw('group_concat(DISTINCT(product_id)) as product_ids,group_concat(DISTINCT(id)) as ids');
+                $total=$query;
+                $total=$total->count();
+                $query=$query->get();
                 $res= $query->toarray();
-               
                $data=[];
                
                 if (!empty($res)) {
-                    $pro_details = Ec_product::get_products_By_ids($query,$customer_id);
+                    $product_ids = explode(',', $res[0]->product_ids);
+                    $product_ids = array_filter($product_ids);
+                    $ids = explode(',', $res[0]->ids);
+                    $ids = array_filter($ids);
+                    //$pro_details = Ec_product::get_products_By_ids($query,$customer_id,$total);
+                    $pro_details = Ec_product::fetch_product_json_data($customer_id,null,$product_ids, null, $request->limit, $request->offset, null, null);
+                  
                     $total=$pro_details['total'];
-
                     foreach ($pro_details['product'] as $key => $value) {
-                        $id=$res[$key]->wish_lists_id;
+                        $id=$ids[$key];
                         $data[$key]['id'] ="$id";
                         $data[$key]['user_id'] = $customer_id;
                         $data[$key]['product_id']=$pro_details['product'][$key]['id'];
