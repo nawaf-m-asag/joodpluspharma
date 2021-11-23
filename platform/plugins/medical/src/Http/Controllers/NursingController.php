@@ -104,8 +104,7 @@ class NursingController extends BaseController
     public function details($id)
     {
         $data['nursing'] = $this->nursingRepository->findOrFail($id);
-    
-
+        $data['nursing']->attachedFile=RvMedia::getImageUrl($data['nursing']->attachedFile,null, false,false);
         page_title()->setTitle(trans('plugins/medical::medical.nursing-details'));
         return view('plugins/medical::nursing.nursing_page')->with($data);
           

@@ -104,7 +104,7 @@ class MaintenanceController extends BaseController
     {
         $data['maintenance'] = $this->maintenanceRepository->findOrFail($id);
     
-
+        $data['maintenance']->file=RvMedia::getImageUrl($data['maintenance']->file,null, false,false);
         page_title()->setTitle(trans('plugins/medical::medical.maintenance-details'));
         return view('plugins/medical::maintenance.maintenance_page')->with($data);
           

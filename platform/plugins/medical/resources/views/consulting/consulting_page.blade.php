@@ -53,8 +53,8 @@
         </tr> 
         <tr>
             @php
-                $color=empty($item->file)?"btn-warning":"btn-success";
-                $download=empty($item->file)?"":"download";
+                $color=empty($consulting->file)?"btn-warning":"btn-success";
+                $download=empty($consulting->file)?"":"download";
             @endphp
             <td>{{trans('plugins/medical::medical.file')}}</td>
             <td><a href="{{$consulting->file}}" {{$download}} class="btn {{$color}} pl-4 pr-4"><i class="fas fa-cloud-download-alt"></i></a></td>

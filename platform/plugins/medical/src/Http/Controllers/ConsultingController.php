@@ -104,6 +104,7 @@ class ConsultingController extends BaseController
     {
         $data['consulting'] = $this->consultingRepository->findOrFail($id);
     
+        $data['consulting']->file=RvMedia::getImageUrl($data['consulting']->file,null, false,false);
 
         page_title()->setTitle(trans('plugins/medical::medical.consulting-details'));
         return view('plugins/medical::consulting.consulting_page')->with($data);

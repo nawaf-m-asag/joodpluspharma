@@ -104,7 +104,7 @@ class ExaminationsController extends BaseController
     {
         $data['examinations'] = $this->examinationsRepository->findOrFail($id);
     
-
+        $data['examinations']->file=RvMedia::getImageUrl($data['examinations']->file,null, false,false);
         page_title()->setTitle(trans('plugins/medical::medical.examinations-details'));
         return view('plugins/medical::examinations.examinations_page')->with($data);
           
