@@ -45,11 +45,15 @@
     </div>
     @if (is_plugin_active('ecommerce'))
         <div class="ps-search--mobile">
-            <form class="ps-form--search-mobile" action="{{ route('public.products') }}" method="get">
-                <div class="form-group--nest">
-                    <input class="form-control" name="q" value="{{ request()->query('q') }}" type="text" placeholder="{{ __('Search something...') }}">
+            <form class="ps-form--quick-search ps-form--search-mobile" action="{{ route('public.products') }}" data-ajax-url="{{ route('public.ajax.search-products') }}" method="get">
+                <div class="form-group--nest w-100">
+                    <input id="input-search-m" class="form-control" name="q" value="{{ request()->query('q') }}" type="text" placeholder="{{ __('Search something...') }}">
+                    <div  class="spinner-icon" style="left: 70px !important;">
+                        <i class="fa fa-spin fa-spinner"></i>
+                    </div>
                     <button type="submit"><i class="icon-magnifier"></i></button>
                 </div>
+                <div class="ps-panel--search-result"></div>
             </form>
         </div>
     @endif

@@ -198,11 +198,15 @@
         @if (is_plugin_active('ecommerce'))
             <div class="ps-panel--sidebar" id="search-sidebar" style="display: none">
                 <div class="ps-panel__header">
-                    <form class="ps-form--search-mobile" action="{{ route('public.products') }}" method="get">
+                    <form class="ps-form--search-mobile" action="{{ route('public.products') }}" data-ajax-url="{{ route('public.ajax.search-products') }}" method="get" method="get">
                         <div class="form-group--nest">
-                            <input class="form-control" name="q" value="{{ request()->query('q') }}" type="text" placeholder="{{ __('Search something...') }}">
+                            <input  id="input-search-slider" class="form-control" name="q" value="{{ request()->query('q') }}" type="text" placeholder="{{ __('Search something...') }}">
+                            <div  class="spinner-icon pt-1" style="left: 70px !important; top: 22px !important;">
+                                <i class="fa fa-spin fa-spinner"></i>
+                            </div>
                             <button type="submit"><i class="icon-magnifier"></i></button>
                         </div>
+                        <div class="ps-panel--search-result"></div>
                     </form>
                 </div>
                 <div class="navigation__content"></div>
