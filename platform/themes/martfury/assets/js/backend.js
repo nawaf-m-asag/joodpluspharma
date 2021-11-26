@@ -1250,7 +1250,7 @@
             $('.ps-form--quick-search .spinner-icon').show();
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(function () {
-              var form = $('.ps-form--quick-search');
+              var form = $('.header__center .ps-form--quick-search ');
               $.ajax({
                 type: 'GET',
                 url: form.data('ajax-url'),
@@ -1315,10 +1315,10 @@
             $('.ps-search--mobile .spinner-icon').show();
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(function () {
-              var form = $('.ps-form--search-mobile');
+              var form = $('.ps-search--mobile .ps-form--search-mobile');
               $.ajax({
                 type: 'GET',
-                url: form.data('ajax-url-m'),
+                url: form.data('ajax-url'),
                 data: form.serialize(),
                 success: function success(res) {
                   if (!res.error && res.data !== '') {

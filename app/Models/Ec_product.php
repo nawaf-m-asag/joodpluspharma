@@ -334,7 +334,7 @@ public static function get_products_By_ids($products_ids,$user_id=null,$total=nu
        ->join('ec_product_variation_items as pvi','pvi.variation_id','=','pv.id')->orderBy('pa.id')
        ->join('ec_product_attributes as pa','pa.id','=','pvi.attribute_id')
        ->join('ec_product_attribute_sets as pas','pas.id','=','pa.attribute_set_id')->distinct('p.id')
-       ->selectRaw('group_concat(DISTINCT(pa.id)) as ids , group_concat(DISTINCT(pa.title)) as value, group_concat(DISTINCT(pa.color)) as color ,pas.title as attr_name,pas.title as name')
+       ->selectRaw('group_concat(DISTINCT(pa.id)ORDER BY pa.id) as ids , group_concat(DISTINCT(pa.title)ORDER BY pa.id) as value, group_concat(DISTINCT(pa.color)ORDER BY pa.id) as color ,pas.title as attr_name,pas.title as name')
         ->groupBy('pas.title')
         ->where('pv.configurable_product_id',$id)->get();
 
