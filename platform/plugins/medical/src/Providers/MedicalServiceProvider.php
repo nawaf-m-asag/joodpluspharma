@@ -100,7 +100,7 @@ class MedicalServiceProvider extends ServiceProvider
     {
         $this->setNamespace('plugins/medical')
             ->loadAndPublishConfigurations(['general', 'permissions'])
-            ->loadRoutes(['web'])
+            ->loadRoutes(['web','customer'])
             ->loadAndPublishTranslations()
             ->loadAndPublishViews()
             ->loadMigrations()
