@@ -5,6 +5,7 @@ return [
     'create'                               => 'منتج جديد',
     'edit'                                 => 'تحرير المنتج - :name',
     'form'                                 => [
+        'minimum_order_quantity'             =>' الحد الادنى لكمية الطلب جملة',
         'wholesale_price'                    =>'سعر الجملة',
         'name'                               => 'الاسم',
         'name_placeholder'                   => 'اسم المنتج (بحد أقصى 120 حرفًا)',
