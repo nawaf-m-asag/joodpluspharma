@@ -54,6 +54,14 @@ class CustomerTable extends TableAbstract
 
                 return Html::link(route('customers.edit', $item->id), $item->name);
             })
+            ->editColumn('type', function ($item) {
+                if ($item->type==1 ) {
+                    return trans('plugins/ecommerce::customer.Joomla_customer');
+                }
+                else{
+                    return trans('plugins/ecommerce::customer.retail_customer');
+                }
+            })
             ->editColumn('email', function ($item) {
                 return $item->email;
             })
@@ -80,6 +88,7 @@ class CustomerTable extends TableAbstract
             'name',
             'email',
             'avatar',
+            'type',
             'created_at',
         ]);
 
@@ -103,6 +112,10 @@ class CustomerTable extends TableAbstract
             ],
             'email'      => [
                 'title' => trans('plugins/ecommerce::customer.name'),
+                'class' => 'text-left',
+            ],
+            'type'      => [
+                'title' => trans('plugins/ecommerce::customer.type'),
                 'class' => 'text-left',
             ],
             'created_at' => [

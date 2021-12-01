@@ -36,6 +36,7 @@ class Customer extends Authenticatable
         'email',
         'password',
         'avatar',
+        'type',
         'phone',
         'dob',
     ];
