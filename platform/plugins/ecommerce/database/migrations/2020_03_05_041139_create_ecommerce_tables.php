@@ -82,6 +82,7 @@ class CreateEcommerceTables extends Migration
             $table->tinyInteger('sale_type')->default(0);
             $table->double('price')->unsigned()->nullable();
             $table->double('sale_price')->unsigned()->nullable();
+            $table->double('wholesale_price')->default(0);
             $table->timestamp('start_date')->nullable();
             $table->timestamp('end_date')->nullable();
             $table->float('length')->nullable();

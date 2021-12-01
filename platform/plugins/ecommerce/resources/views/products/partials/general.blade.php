@@ -4,7 +4,7 @@
            class="detect-schedule hidden"
            name="sale_type">
 
-    <div class="col-md-4">
+    <div class="col-md-3">
         <div class="form-group @if ($errors->has('sku')) has-error @endif">
             <label class="text-title-field">{{ trans('plugins/ecommerce::products.sku') }}</label>
             {!! Form::text('sku', old('sku', $product ? $product->sku : null), ['class' => 'next-input', 'id' => 'sku', 'data-counter' => 30]) !!}
@@ -20,7 +20,7 @@
         @endif
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-3">
         <div class="form-group">
             <label class="text-title-field">{{ trans('plugins/ecommerce::products.form.price') }}</label>
             <div class="next-input--stylized">
@@ -33,7 +33,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
         <div class="form-group">
             <label class="text-title-field">
                 <span>{{ trans('plugins/ecommerce::products.form.price_sale') }}</span>
@@ -47,6 +47,19 @@
                 <input name="sale_price"
                        class="next-input input-mask-number sale-price next-input--invisible"
                        value="{{ old('sale_price', $product ? $product->sale_price : ($originalProduct->sale_price ?? null)) }}"
+                       type="text">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label class="text-title-field">{{ trans('plugins/ecommerce::products.form.wholesale_price') }}</label>
+            <div class="next-input--stylized">
+                <span class="next-input-add-on next-input__add-on--before">{{ get_application_currency()->symbol }}</span>
+                <input name="wholesale_price"
+                       class="next-input input-mask-number regular-price next-input--invisible"
+                       step="any"
+                       value="{{ old('wholesale_price', $product ? $product->wholesale_price : ($originalProduct->wholesale_price ?? 0)) }}"
                        type="text">
             </div>
         </div>
