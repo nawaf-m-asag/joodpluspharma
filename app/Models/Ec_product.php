@@ -40,7 +40,8 @@ class Ec_product extends Model
         'p.images',
         'tax.percentage',
         'p.is_variation',
-        'p.with_storehouse_management'
+        'p.with_storehouse_management',
+        'p.minimum_order_quantity',
         ]
     );
     
@@ -184,9 +185,11 @@ public static function get_products_By_ids($products_ids,$user_id=null,$total=nu
  
 
             $data=[];
-           
-           
-            
+        if($user_id!=null)   {
+            $customers=DB::table('ec_customers')->where('id',$user_id)->get();
+            $customers_type= isset($customers[0]->type)?$customers[0]->type:0; 
+        }
+ 
         foreach ($products_ids as $key => $value) {
             
            
@@ -215,7 +218,11 @@ public static function get_products_By_ids($products_ids,$user_id=null,$total=nu
             $review= Ec_review::starTotalByID($value->id);
             $rating=$review['rating'];
             $no_of_ratings=$review['no_of_ratings'];
-            
+            $minimum_order_quantity=1;
+
+            if($customers_type!=0&&isset($value->minimum_order_quantity)){
+                $minimum_order_quantity=$value->minimum_order_quantity;
+            }
         $data[$key]=[
                     'total'=>"$total",
                     'sales'=>strval($sales),
@@ -231,7 +238,7 @@ public static function get_products_By_ids($products_ids,$user_id=null,$total=nu
                     "slug"=>$value->sku,
                     "description"=>($value->content!=null)?Fun::output_escaping($value->content):" ",
                     "total_allowed_quantity"=>($value->with_storehouse_management==1)?strval($value->quantity):"12",
-        /*static*/  "minimum_order_quantity"=>"1",
+        /*static*/  "minimum_order_quantity"=>strval($minimum_order_quantity),
         /*static*/  "quantity_step_size"=>"1",
         /*static*/  'cod_allowed'=>"0",
                     'row_order'=>"$value->order",
@@ -255,7 +262,7 @@ public static function get_products_By_ids($products_ids,$user_id=null,$total=nu
                     "tax_percentage"=>strval(round($value->percentage)),
         /*static*/  "review_images"=>Ec_review::get_review_images($value->id),
                     "attributes"=> $attributes,
-                    "variants"=>Ec_product::getVariants($value->id,null,$user_id),
+                    "variants"=>Ec_product::getVariants($value->id,null,$user_id,$customers_type),
                     "min_max_price"=>Ec_product::getMin_max_price($value->id,$value->percentage),
                     "is_purchased"=> true,
                     "is_favorite"=>Ec_wish_list::is_favorite($value->id,$user_id),
@@ -341,7 +348,7 @@ public static function get_products_By_ids($products_ids,$user_id=null,$total=nu
         return $attributes;
     }
 
-    public static function getVariants($id,$variants_id=null,$user_id=null)
+    public static function getVariants($id,$variants_id=null,$user_id=null,$customers_type=0)
     {
       $variants=  DB::table('ec_products as p')
         ->join('ec_product_variations as pv','p.id','=','pv.product_id')
@@ -369,10 +376,17 @@ public static function get_products_By_ids($products_ids,$user_id=null,$total=nu
             $currency=Fun::fetch_details(['is_default' => 1], 'ec_currencies','exchange_rate,decimals');
             $exchange_rate=$currency[0]->exchange_rate;
             $decimals=$currency[0]->decimals;
-            $price=round(($value->price*$exchange_rate),$decimals);
-            $sale_price=round(($value->sale_price*$exchange_rate),$decimals);
-            $variants_data[$key]+=[
+            if($customers_type==1&&$value->wholesale_price>0){
+                $price=round(($value->wholesale_price*$exchange_rate),$decimals);
+                $sale_price=0;
+            }
+            else{
+                $price=round(($value->price*$exchange_rate),$decimals);
+                $sale_price=round(($value->sale_price*$exchange_rate),$decimals);
+            }
 
+            $variants_data[$key]+=[
+            
                 'id'=>strval($value->id),
                 'product_id'=>strval($id), 
                 'attribute_set'=>null,

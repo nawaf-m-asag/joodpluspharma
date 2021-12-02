@@ -73,6 +73,8 @@ class CustomerController extends Controller
             'longitude'=>'nullable',
             'password'=>'required',
             'pincode'=>'nullable',
+            'type'=>'nullable|numeric',
+            'stor_name'=>'nullable|string'
         ],[
             'email.unique'=> 'The email is already registered . Please login', 
             'mobile.unique'=>'The mobile number is already registered . Please login',
@@ -119,7 +121,9 @@ class CustomerController extends Controller
                 'friends_code'=>(isset($request->friends_code)  && !empty(trim($request->friends_code))) ? $request->friends_code :null,
                 'ip_address' => Ec_customer::getIp(),
                 'created_on' =>time(),
-                'active' => 1
+                'active' => 1,
+                'type'=>(isset($request->type)  && !empty(trim($request->type))) ? $request->type :0,
+                'stor_name'=>(isset($request->stor_name)  && !empty(trim($request->stor_name))) ? $request->stor_name :0,
             ];
             //dd($additional_data);
             $query=Ec_customer::create($additional_data);
@@ -172,7 +176,10 @@ class CustomerController extends Controller
         'longitude'=>'nullable',
         'pincode'=>'nullable',
         'referral_code',
-        'image'=>'nullable'
+        'image'=>'nullable',
+        'type'=>'nullable|numeric',
+        'stor_name'=>'nullable|string'
+
     ],[
         'email.unique'=> 'The email is already registered . Please login', 
        ]
@@ -254,6 +261,12 @@ class CustomerController extends Controller
                if (isset($request->pincode) && !empty($request->pincode)) {
                    $set['pincode'] = $request->pincode;
                }
+               if (isset($request->type) && !empty($request->type)) {
+                    $set['type'] = $request->type;
+                }
+                if (isset($request->stor_name) && !empty($request->stor_name)) {
+                    $set['stor_name'] = $request->stor_name;
+                }
                if (isset($request->latitude) && !empty($request->latitude)) {
                    $set['latitude'] = $request->latitude;
                }

@@ -122,6 +122,11 @@ class Cart extends Model
     }
     public static function get_cart_total($user_id, $product_variant_id = false, $is_saved_for_later = '0', $address_id = '')
     {
+
+        if($user_id!=null)   {
+            $customers=DB::table('ec_customers')->where('id',$user_id)->get();
+            $customers_type= isset($customers[0]->type)?$customers[0]->type:0; 
+        }
         
         $query=DB::table('ec_products as p')
         ->leftJoin('cart','cart.product_variant_id','=','p.id')
@@ -143,6 +148,7 @@ class Cart extends Model
         'p.sale_price as special_price',
         'p.content as description',
         'p.images',
+        'p.wholesale_price'
         ]
          )->where('p.status',"published");
         if ($product_variant_id == true) {
@@ -189,9 +195,14 @@ class Cart extends Model
                         break;
                      }
                 }
+                if($data[$i]->wholesale_price>0&&$customers_type==1){
+                    $price=round(($data[$i]->wholesale_price*$exchange_rate),$decimals);
+                    $special_price=0;
+                }
+                else{
                 $price=round(($data[$i]->price*$exchange_rate),$decimals);
                 $special_price=round(($data[$i]->special_price*$exchange_rate),$decimals);
-
+                }
             $prctg = (isset($data[$i]->tax_percentage) && intval($data[$i]->tax_percentage) > 0 && $data[$i]->tax_percentage != null) ? $data[$i]->tax_percentage : '0';
         
             if ((isset($data[$i]->is_prices_inclusive_tax) && $data[$i]->is_prices_inclusive_tax== 0) || (!isset($data[$i]->is_prices_inclusive_tax)) && $percentage > 0) {

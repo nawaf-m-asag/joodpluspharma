@@ -32,7 +32,9 @@ class Ec_customer extends Model
         'pincode',
         'ip_address',
         'created_on',
-        'active'
+        'active',
+        'type',
+        'stor_name'
     ];
 
 
@@ -48,7 +50,7 @@ class Ec_customer extends Model
     }
     public static function get_customer_data_by_id($customer_id=null,$phone=null,$email=null)
     {
-        $user_details =DB::table('ec_customers as ec')->selectRaw('ec.id,ec.ip_address,ec.name as username,ec.email,ec.phone as mobile,ec.avatar as image,ec.balance,ec.activation_selector,ec.activation_code,ec.forgotten_password_selector,ec.forgotten_password_code,ec.forgotten_password_time,ec.remember_selector,ec.remember_code,ec.created_on,ec.last_login,ec.active,ec.company,ec.address,ec.bonus,ec.dob,ec.country_code,c.name as city_name,a.name as area_name,ec.street,ec.pincode,ec.apikey,ec.referral_code,ec.friends_code,ec.fcm_id,ec.latitude,ec.longitude,ec.created_at');
+        $user_details =DB::table('ec_customers as ec')->selectRaw('ec.id,ec.ip_address,ec.name as username,ec.email,ec.phone as mobile,ec.avatar as image,ec.balance,ec.activation_selector,ec.activation_code,ec.forgotten_password_selector,ec.forgotten_password_code,ec.forgotten_password_time,ec.remember_selector,ec.remember_code,ec.created_on,ec.last_login,ec.active,ec.company,ec.address,ec.bonus,ec.dob,ec.country_code,c.name as city_name,a.name as area_name,ec.street,ec.pincode,ec.apikey,ec.referral_code,ec.friends_code,ec.fcm_id,ec.latitude,ec.longitude,ec.created_at,ec.type.ec.stor_name');
         if($customer_id!=null)
         $user_details->where('ec.id',$customer_id);
         if($phone!=null)
