@@ -85,17 +85,6 @@
 </div>
 
 <hr/>
-<div class="col-md-4 form-group">
-    <label class="text-title-field">{{ trans('plugins/ecommerce::products.form.minimum_order_quantity') }}</label>
-    <div class="next-input--stylized">
-        <input name="minimum_order_quantity"
-               class="next-input input-mask-number next-input--invisible"
-               step="any"
-               value="{{ old('minimum_order_quantity', $product ? $product->minimum_order_quantity : ($originalProduct->minimum_order_quantity ?? 1)) }}"
-               type="text">
-    </div>
-</div>
-<hr/>
 <div class="form-group">
     <div class="storehouse-management">
         <div class="mt5">

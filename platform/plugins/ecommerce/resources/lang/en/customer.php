@@ -8,6 +8,7 @@ return [
     'type'                  =>  'نوع العميل',
     'Joomla_customer'       =>  ' عميل جملة',
     'retail_customer'       =>  'عميل تجزئة',
+    'stor_name'             =>'اسم الصيدلية',
     'email_placeholder'     => 'مثل: example@gmail.com',
     'password'              => 'كلمة المرور',
     'change_password'       => 'تغيير كلمة المرور؟',

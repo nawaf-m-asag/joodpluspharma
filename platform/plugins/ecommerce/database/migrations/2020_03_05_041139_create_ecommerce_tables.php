@@ -301,6 +301,7 @@ class CreateEcommerceTables extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('stor_name')->nullable();
             $table->integer('type')->default(0);
             $table->string('password');
             $table->string('avatar', 255)->nullable();

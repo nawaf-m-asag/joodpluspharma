@@ -62,6 +62,9 @@ class CustomerTable extends TableAbstract
                     return trans('plugins/ecommerce::customer.retail_customer');
                 }
             })
+            ->editColumn('stor_name', function ($item) {
+                return $item->stor_name;
+            })
             ->editColumn('email', function ($item) {
                 return $item->email;
             })
@@ -89,6 +92,7 @@ class CustomerTable extends TableAbstract
             'email',
             'avatar',
             'type',
+            'stor_name',
             'created_at',
         ]);
 
@@ -116,6 +120,10 @@ class CustomerTable extends TableAbstract
             ],
             'type'      => [
                 'title' => trans('plugins/ecommerce::customer.type'),
+                'class' => 'text-left',
+            ],
+            'stor_name'      => [
+                'title' => trans('plugins/ecommerce::customer.stor_name'),
                 'class' => 'text-left',
             ],
             'created_at' => [

@@ -140,6 +140,10 @@ class ProductForm extends FormAbstract
                 'label_attr' => ['class' => 'control-label'],
                 'choices'    => $brands,
             ])
+            ->add('minimum_order_quantity', 'text', [
+                'label'      => trans('plugins/ecommerce::products.form.minimum_order_quantity'),
+                'default_value' => 1,
+            ])
             ->add('product_collections[]', 'multiCheckList', [
                 'label'      => trans('plugins/ecommerce::products.form.collections'),
                 'label_attr' => ['class' => 'control-label'],
