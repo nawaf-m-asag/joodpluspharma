@@ -272,6 +272,7 @@ class ProductRepository extends RepositoriesAbstract implements ProductInterface
 
         $params = array_merge([
             'condition' => [
+                'ec_products.product_type' =>0,
                 'status'       => BaseStatusEnum::PUBLISHED,
                 'is_variation' => 0,
             ],
@@ -304,6 +305,7 @@ class ProductRepository extends RepositoriesAbstract implements ProductInterface
                 'value_in' => [],
             ],
             'condition'  => [
+                'ec_products.product_type' =>0,
                 'ec_products.status'       => BaseStatusEnum::PUBLISHED,
                 'ec_products.is_variation' => 0,
             ],
@@ -361,6 +363,7 @@ class ProductRepository extends RepositoriesAbstract implements ProductInterface
 
         $params = array_merge([
             'condition' => [
+                'ec_products.product_type' =>0,
                 'status'       => BaseStatusEnum::PUBLISHED,
                 'is_variation' => 0,
             ],
@@ -464,6 +467,7 @@ class ProductRepository extends RepositoriesAbstract implements ProductInterface
                 'value_in' => [],
             ],
             'condition'   => [
+                'ec_products.product_type' =>0,
                 'ec_products.status'       => BaseStatusEnum::PUBLISHED,
                 'ec_products.is_variation' => 0,
             ],
@@ -519,6 +523,7 @@ class ProductRepository extends RepositoriesAbstract implements ProductInterface
         $params = array_merge([
             'brand_id'  => null,
             'condition' => [
+                'ec_products.product_type' =>0,
                 'status'       => BaseStatusEnum::PUBLISHED,
                 'is_variation' => 0,
             ],
@@ -558,6 +563,7 @@ class ProductRepository extends RepositoriesAbstract implements ProductInterface
                 'value_in' => [],
             ],
             'condition'  => [
+                'ec_products.product_type' =>0,
                 'ec_products.status'       => BaseStatusEnum::PUBLISHED,
                 'ec_products.is_variation' => 0,
             ],
@@ -616,6 +622,7 @@ class ProductRepository extends RepositoriesAbstract implements ProductInterface
                 'value_in' => [],
             ],
             'condition'   => [
+                'ec_products.product_type' =>0,
                 'ec_products.status'       => BaseStatusEnum::PUBLISHED,
                 'ec_products.is_variation' => 0,
             ],
@@ -672,6 +679,7 @@ class ProductRepository extends RepositoriesAbstract implements ProductInterface
 
         $params = array_merge([
             'condition' => [
+                'ec_products.product_type' =>0,
                 'ec_products.status'       => BaseStatusEnum::PUBLISHED,
                 'ec_products.is_variation' => 0,
             ],

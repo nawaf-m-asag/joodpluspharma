@@ -63,6 +63,8 @@ Route::group([
 
     Route::get('register', 'RegisterController@showRegistrationForm')->name('register');
     Route::post('register', 'RegisterController@register')->name('register.post');
+    Route::get('register_by_phone', 'RegisterController@showRegistrationFormByPhone')->name('register_by_phone');
+    Route::post('register_by_phone', 'RegisterController@register_by_phone')->name('register_by_phone.post');
 
     Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail')->name('password.request');
     Route::post('password/reset', 'ResetPasswordController@reset')->name('password.reset.post');

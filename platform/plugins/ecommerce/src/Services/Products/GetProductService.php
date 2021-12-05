@@ -153,6 +153,7 @@ class GetProductService
 
         if (!empty($conditions)) {
             $params['condition'] = array_merge([
+                'ec_products.product_type' =>0,
                 'ec_products.status'       => BaseStatusEnum::PUBLISHED,
                 'ec_products.is_variation' => 0,
             ], $conditions);

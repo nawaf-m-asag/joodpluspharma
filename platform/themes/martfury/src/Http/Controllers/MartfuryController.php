@@ -310,6 +310,7 @@ class MartfuryController extends PublicController
 
         $product = get_products([
             'condition' => [
+                'ec_products.product_type' =>0,
                 'ec_products.id'     => $id,
                 'ec_products.status' => BaseStatusEnum::PUBLISHED,
             ],
@@ -410,6 +411,7 @@ class MartfuryController extends PublicController
 
         $reviews = $reviewRepository->advancedGet([
             'condition' => [
+                'ec_products.product_type' =>0,
                 'status'     => BaseStatusEnum::PUBLISHED,
                 'product_id' => $id,
             ],
@@ -550,6 +552,7 @@ class MartfuryController extends PublicController
 
         $categories = $productCategoryRepository->advancedGet([
             'condition' => [
+                'ec_products.product_type' =>0,
                 'status' => BaseStatusEnum::PUBLISHED,
                 ['id', 'IN', $categoryIds],
             ],

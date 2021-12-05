@@ -140,6 +140,11 @@ class ProductForm extends FormAbstract
                 'label_attr' => ['class' => 'control-label'],
                 'choices'    => $brands,
             ])
+            ->add('product_type', 'customSelect', [
+                'label'      => trans('plugins/ecommerce::products.form.product_type.title'),
+                'label_attr' => ['class' => 'control-label'],
+                'choices'    => ['0'=> trans('plugins/ecommerce::products.form.retail'),'1'=> trans('plugins/ecommerce::products.form.Joomla'),'2'=> trans('plugins/ecommerce::products.form.retail_and_Joomla')],
+            ])
             ->add('minimum_order_quantity', 'text', [
                 'label'      => trans('plugins/ecommerce::products.form.minimum_order_quantity'),
                 'default_value' => 1,

@@ -5,6 +5,9 @@ return [
     'create'                               => 'منتج جديد',
     'edit'                                 => 'تحرير المنتج - :name',
     'form'                                 => [
+        'Joomla'                             =>'جملة',
+        'retail'                             =>'تجزئة',
+        'retail_and_Joomla'                  =>'جملة وتجزئة',
         'minimum_order_quantity'             =>' الحد الادنى لكمية الطلب جملة',
         'wholesale_price'                    =>'سعر الجملة',
         'name'                               => 'الاسم',

@@ -69,6 +69,7 @@ class Product extends BaseModel
         'status',
         'views',
         'stock_status',
+        'product_type'
     ];
 
     /**

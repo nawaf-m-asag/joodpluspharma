@@ -285,6 +285,7 @@ class PublicProductController
         if ($variationDefault) {
             $productVariation = $this->productRepository->getProductVariations($product->id, [
                 'condition' => [
+                    'product_type' =>0,
                     'ec_product_variations.id' => $variationDefault->id,
                     'ec_products.status'       => BaseStatusEnum::PUBLISHED,
                 ],
@@ -549,6 +550,7 @@ class PublicProductController
         if ($variation) {
             $product = $this->productRepository->getProductVariations($id, [
                 'condition' => [
+                    'product_type' =>0,
                     'ec_product_variations.id' => $variation->id,
                     'ec_products.status'       => BaseStatusEnum::PUBLISHED,
                 ],
@@ -604,6 +606,7 @@ class PublicProductController
         } else {
             $originalProduct = $this->productRepository->advancedGet([
                 'condition' => [
+                    'product_type' =>0,
                     'ec_products.id'     => $id,
                     'ec_products.status' => BaseStatusEnum::PUBLISHED,
                 ],

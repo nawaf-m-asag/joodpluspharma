@@ -79,6 +79,21 @@ class RegisterController extends Controller
         return Theme::scope('ecommerce.customers.register', [], 'plugins/ecommerce::themes.customers.register')
             ->render();
     }
+    public function showRegistrationFormByPhone()
+    {
+        SeoHelper::setTitle(__('Register'));
+
+        Theme::breadcrumb()->add(__('Home'), route('public.index'))->add(__('Register'), route('customer.register_by_phone'));
+
+        if (!session()->has('url.intended')) {
+            if (!in_array(url()->previous(), [route('customer.login'), route('customer.register_by_phone')])) {
+                session(['url.intended' => url()->previous()]);
+            }
+        }
+
+        return Theme::scope('ecommerce.customers.register_by_phone', [], 'plugins/ecommerce::themes.customers.register_by_phone')
+            ->render();
+    }
 
     /**
      * Handle a registration request for the application.
@@ -125,6 +140,27 @@ class RegisterController extends Controller
         return $response->setNextUrl($this->redirectPath())->setMessage(__('Registered successfully!'));
     }
 
+    public function register_by_phone(Request $request, BaseHttpResponse $response)
+    {
+       
+        $validator = Validator::make($request->all(), [
+            'name'     => 'required|max:255',
+            'email'    => 'required_without:phone|email|max:255|unique:ec_customers',
+            'password' => 'required|min:6',
+            'phone'    => 'required_without:email|max:255|unique:ec_customers'
+        ]);
+        if ($validator->fails()) {
+            return  $validator->errors()->first();;
+        }
+   
+        event(new Registered($customer = $this->create($request->input())));
+     
+        $customer->confirmed_at = now();
+        $this->customerRepository->createOrUpdate($customer);
+        $this->guard()->login($customer);
+        return $response->setNextUrl($this->redirectPath())->setMessage(__('Registered successfully!'));
+    }
+
     /**
      * Get a validator for an incoming registration request.
      *
@@ -135,8 +171,9 @@ class RegisterController extends Controller
     {
         $rules = [
             'name'     => 'required|max:255',
-            'email'    => 'required|email|max:255|unique:ec_customers',
+            'email'    => 'required_without:phone|email|max:255|unique:ec_customers',
             'password' => 'required|min:6|confirmed',
+            'phone'    => 'required_without:email|max:255|unique:ec_customers'
         ];
 
         if (setting('enable_captcha') && is_plugin_active('captcha')) {
@@ -177,8 +214,9 @@ class RegisterController extends Controller
     {
         return $this->customerRepository->create([
             'name'     => $data['name'],
-            'email'    => $data['email'],
+            'email'    => isset($data['email'])?$data['email']:null,
             'password' => bcrypt($data['password']),
+            'phone'    => isset($data['phone'])?$data['phone']:null
         ]);
     }
 
@@ -228,6 +266,7 @@ class RegisterController extends Controller
         $this->customerRepository->createOrUpdate($customer);
 
         $this->guard()->login($customer);
+
 
         return $response
             ->setNextUrl(route('customer.overview'))
