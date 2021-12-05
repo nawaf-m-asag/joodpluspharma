@@ -11,9 +11,9 @@
                     <br>
                 @endif
                 <div class="form-group">
-                    <input class="form-control" name="email" type="email" value="{{ old('email') }}" placeholder="{{ __('Your Email') }}">
-                    @if ($errors->has('email'))
-                        <span class="text-danger">{{ $errors->first('email') }}</span>
+                    <input class="form-control" name="username" type="text" value="{{ old('username') }}" placeholder="{{ __('Your Username') }}">
+                    @if ($errors->has('username'))
+                        <span class="text-danger">{{ $errors->first('username') }}</span>
                     @endif
                 </div>
                 <div class="form-group form-forgot">
@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 <div class="form-group submit">
-                    <button class="ps-btn ps-btn--fullwidth" type="submit">{{ __('Login') }}</button>
+                    <button class="ps-btn ps-btn--fullwidth" name="login" type="submit">{{ __('Login') }}</button>
                 </div>
 
                 <div class="form-group">
