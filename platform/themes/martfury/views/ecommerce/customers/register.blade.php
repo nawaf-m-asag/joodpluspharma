@@ -2,18 +2,6 @@
     <div class="container">
         
         <form class="ps-form--account ps-tab-root" method="POST" action="{{ route('customer.register.post') }}">
-            <div class="row">
-                <div class="col-6">
-                    <div class="form-group submit">
-                        <a class="ps-btn ps-btn--fullwidth @if (Route::currentRouteName() == 'customer.register')   @endif" href="{{ route('customer.register') }}" >{{ __('Sign up By Email') }}</a>
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="form-group submit">
-                        <a class="ps-btn ps-btn--fullwidth @if (Route::currentRouteName() == 'customer.register_by_phone') active  @endif" href="{{ route('customer.register_by_phone') }}">{{ __('Sign up By Phone') }}</a>
-                    </div>
-                </div>
-            </div>
             @csrf
             <div class="ps-form__content">
                 <h4>{{ __('Register An Account') }}</h4>
@@ -104,6 +92,10 @@
                 @endif
                 <div class="form-group submit">
                     <button class="ps-btn ps-btn--fullwidth" type="submit">{{ __('Sign up') }}</button>
+                </div>
+                <span class="d-block text-center my-4 text-muted">— or —</span>
+                <div class="form-group submit">
+                    <a class="ps-btn ps-btn--fullwidth" href="{{ route('customer.register_by_phone') }}" >{{ __('Sign up By Phone') }}</a>
                 </div>
 
                 <div class="form-group">
