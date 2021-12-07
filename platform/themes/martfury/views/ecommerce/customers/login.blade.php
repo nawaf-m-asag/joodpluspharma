@@ -11,7 +11,7 @@
                     <br>
                 @endif
                 <div class="form-group">
-                    <input class="form-control" name="username" type="text" value="{{ old('username') }}" placeholder="{{ __('Your Username') }}">
+                    <input class="form-control" name="username" type="text" value="{{ old('username') }}" placeholder="{{ __('User Name') }}">
                     @if ($errors->has('username'))
                         <span class="text-danger">{{ $errors->first('username') }}</span>
                     @endif

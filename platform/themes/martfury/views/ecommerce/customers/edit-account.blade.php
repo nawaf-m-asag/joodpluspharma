@@ -23,13 +23,13 @@
                     {!! Form::error('dob', $errors) !!}
                     <div class="form-group @if ($errors->has('email')) has-error @endif">
                         <label for="email">{{ __('Email') }}:</label>
-                        <input id="email" type="text" class="form-control" disabled="disabled" value="{{ auth('customer')->user()->email }}" name="email">
+                        <input id="email" type="text" class="form-control" @if (auth('customer')->user()->email!='') disabled="disabled" @endif  value="{{ auth('customer')->user()->email }}" name="email">
                     </div>
                     {!! Form::error('email', $errors) !!}
         
                     <div class="form-group @if ($errors->has('phone')) has-error @endif">
                         <label for="phone">{{ __('Phone') }}</label>
-                        <input type="text" class="form-control" name="phone" id="phone" placeholder="{{ __('Phone') }}" value="{{ auth('customer')->user()->phone }}">
+                        <input id="phone" type="text" class="form-control" @if (auth('customer')->user()->phone!='') disabled="disabled" @endif  value="{{ auth('customer')->user()->phone }}" name="phone">
                     </div>
                     {!! Form::error('phone', $errors) !!}
                 </div>

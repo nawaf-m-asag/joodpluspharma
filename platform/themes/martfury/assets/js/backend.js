@@ -1413,22 +1413,23 @@
  
 
     $(".sendOTP").click(function(){
-      const phoneNumber = $("[name=phone]").val();
       const name = $("[name=name]").val();
       const password = $("[name=password]").val();
       const password_confirmation = $("[name=password_confirmation]").val();
- 
-    if(name==''){
+     const phone= $("[name=phone]").val();
+      const phoneNumber= $("[class=iti__selected-dial-code]").text()+$("[name=phone]").val();
+
+    if(name===''){
         window.showAlert('alert-danger',"Please enter name");
-          return
+        return false;
       }
-    if(password==''){
+    if(password===''){
         window.showAlert('alert-danger',"Please enter password");
-          return
+          return false;
       }
-    if(isNaN(phoneNumber)){
+    if(isNaN(phone)){
       window.showAlert('alert-danger',"Please enter valid phone number");
-        return
+        return false;
     }
     else{
       var data={'mobile':phoneNumber}
@@ -1437,7 +1438,7 @@
         data:data,
         type: 'POST',
         success: function success(res) {
-          if (res.error==true) {
+          if (res.error===true) {
             window.showAlert('alert-danger', res.message);
             window.location.href = 'login';
             return false;
@@ -1471,7 +1472,7 @@
           // ...
         }).catch((error) => {
           // Error; SMS not sent
-          window.showAlert('alert-danger',error.message);
+          window.showAlert('alert-danger',error);
         });
 
       
@@ -1482,33 +1483,32 @@
       const post_name = $("[name=name]").val();
       const post_password = $("[name=password]").val();
       const data_post={'phone':post_phoneNumber,'name':post_name,'password':post_password}
-      const code = $("[name=verify_otp]").val();
 
+      const code = $("[id=first]").val()+$("[id=second]").val()+$("[id=third]").val()+$("[id=fourth]").val()+$("[id=fifth]").val()+$("[id=sixth]").val();
+    
       confirmationResult.confirm(code).then((result) => {
         // User signed in successfully.
         const user = result.user;
-        
         $.ajax({
           url: '/register_by_phone',
           data: data_post,
           type: 'POST',
           
           success: function success(res) {
-            window.showAlert('alert-success','تم تسجيل الحساب');
+            window.showAlert('alert-success',res.message);
             window.location.href='/';
           },
           error: function error(res) {
-            window.showAlert('alert-danger', res);
+           window.showAlert('alert-danger',res.message);
           }
         });
         // ...
       }).catch((error) => {
-        window.showAlert('alert-danger','حصلت مشكلة اثناء تسجيل الحساب');
+        window.showAlert('alert-danger',error);
       });
     
     
     })
-
   })(jQuery);
   /******/ })()
   ;

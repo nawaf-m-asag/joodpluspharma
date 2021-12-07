@@ -95,7 +95,7 @@
                 </div>
                 <span class="d-block text-center my-4 text-muted">— or —</span>
                 <div class="form-group submit">
-                    <a class="ps-btn ps-btn--fullwidth" href="{{ route('customer.register_by_phone') }}" >{{ __('Sign up By Phone') }}</a>
+                    <a class="ps-btn ps-btn--fullwidth" style="color:#fff" href="{{ route('customer.register_by_phone') }}" >{{ __('Sign up By Phone') }}</a>
                 </div>
 
                 <div class="form-group">
