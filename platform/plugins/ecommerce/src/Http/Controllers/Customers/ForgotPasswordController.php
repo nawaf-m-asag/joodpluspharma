@@ -50,6 +50,18 @@ class ForgotPasswordController extends Controller
             'plugins/ecommerce::themes.customers.passwords.email')
             ->render();
     }
+    public function showLinkRequestFormPhone()
+    {
+        SeoHelper::setTitle(__('Forgot Password'));
+
+        Theme::breadcrumb()
+            ->add(__('Home'), route('public.index'))
+            ->add(__('Login'), route('customer.password.reset.phone'));
+
+        return Theme::scope('ecommerce.customers.passwords.phone', [],
+            'plugins/ecommerce::themes.customers.passwords.phone')
+            ->render();
+    }
 
     /**
      * Get the broker to be used during password reset.
