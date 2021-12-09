@@ -1411,12 +1411,11 @@
       }
     });
  
-
     $(".sendOTP").click(function(){
       const name = $("[name=name]").val();
       const password = $("[name=password]").val();
       const password_confirmation = $("[name=password_confirmation]").val();
-     const phone= $("[name=phone]").val();
+     var phone= $("[name=phone]").val();
       const phoneNumber= $("[class=iti__selected-dial-code]").text()+$("[name=phone]").val();
 
     if(name===''){
@@ -1474,7 +1473,7 @@
           // Error; SMS not sent
           window.showAlert('alert-danger',error);
         });
-
+        
       
     })
 
@@ -1497,6 +1496,105 @@
           success: function success(res) {
             window.showAlert('alert-success',res.message);
             window.location.href='/';
+          },
+          error: function error(res) {
+           window.showAlert('alert-danger',res.message);
+          }
+        });
+        // ...
+      }).catch((error) => {
+        window.showAlert('alert-danger',error);
+      });
+    
+    
+    })
+
+
+
+    var phone= null;
+    ///rest
+    $(".sendOTPReset").click(function(){
+      const password = $("[name=password]").val();
+      const password_confirmation = $("[name=password_confirmation]").val();
+       phone= $("[name=phone]").val();
+      const phoneNumber= $("[class=iti__selected-dial-code]").text()+$("[name=phone]").val();
+    if(password===''){
+        window.showAlert('alert-danger',"Please enter password");
+          return false;
+      }
+    if(isNaN(phone)){
+      window.showAlert('alert-danger',"Please enter valid phone number");
+        return false;
+    }
+    else{
+      var data={'mobile':phone}
+      $.ajax({
+        url: '/api/verify_user',
+        data:data,
+        type: 'POST',
+        success: function success(res) {
+          if (res.error===false) {
+            window.showAlert('alert-danger','رقم الهاتف غير موجود');
+           return false;
+          }
+
+        },
+        error: function error(res) {
+          window.showAlert('alert-danger', res.message);
+    
+          return false;
+        }
+
+        
+      });
+    }
+    if(password_confirmation!=password){
+      window.showAlert('alert-danger',"كلمة المرور غير متطابقة");
+        return
+    } 
+    
+    const reset_appVerifier = window.recaptchaVerifier;
+    firebase.auth().signInWithPhoneNumber(phoneNumber, reset_appVerifier)
+        .then((confirmationResult) => {
+          // SMS sent. Prompt user to type the code from the message, then sign the
+          // user in with confirmationResult.confirm(code).
+          window.confirmationResult = confirmationResult;
+          $(".divResetPhone").attr('style', 'display: none !important');
+          $("#recaptcha-container").attr('style', 'display: none !important');
+          // now show otp field
+    
+          $(".otp-div").attr('style', 'display: block !important');
+          window.showAlert('alert-success','سيتم ارسال كود التحقق الى هاتفك');
+          // ...
+        }).catch((error) => {
+          // Error; SMS not sent
+          window.showAlert('alert-danger',error);
+        });
+    })
+    $("#verifyOTPReset").click(function(){
+      const post_phoneNumber = phone;//$("[name=phone]").val();
+      const post_password = $("[name=password]").val();
+      const password_confirmation = $("[name=password_confirmation]").val();
+      const data_post={'phone':post_phoneNumber,'password':post_password,'password_confirmation':password_confirmation,'token': $('meta[name="csrf-token"]').attr('content')}
+
+      const code = $("[id=first]").val()+$("[id=second]").val()+$("[id=third]").val()+$("[id=fourth]").val()+$("[id=fifth]").val()+$("[id=sixth]").val();
+    
+      confirmationResult.confirm(code).then((result) => {
+        // User signed in successfully.
+        const user = result.user;
+        //alert(user);
+        $.ajax({
+          url: '/password/reset/phone',
+          data: data_post,
+          type: 'POST',
+          headers: 
+          {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          },
+          success: function success(res) {
+            window.showAlert('alert-success','تم تغيير كلمة المرور');
+            window.location.href='login';
+
           },
           error: function error(res) {
            window.showAlert('alert-danger',res.message);

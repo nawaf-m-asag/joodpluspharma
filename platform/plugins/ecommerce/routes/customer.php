@@ -68,7 +68,9 @@ Route::group([
 
     Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail')->name('password.request');
     Route::post('password/reset', 'ResetPasswordController@reset')->name('password.reset.post');
+    Route::post('password/reset/phone', 'ResetPasswordController@resetPhone')->name('password.reset.post.phone');
     Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm')->name('password.reset');
+    Route::get('password/reset/phone', 'ForgotPasswordController@showLinkRequestFormPhone')->name('password.reset.phone');
     Route::get('password/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.reset.update');
 
     Route::get('verify', 'RegisterController@getVerify')

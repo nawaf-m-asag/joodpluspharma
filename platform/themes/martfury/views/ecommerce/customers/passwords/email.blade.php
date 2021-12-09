@@ -14,7 +14,10 @@
                 <div class="form-group submit">
                     <button class="ps-btn ps-btn--fullwidth" type="submit">{{ __('Send Password Reset Link') }}</button>
                 </div>
-
+                <span class="d-block text-center my-4 text-muted">— or —</span>
+                <div class="form-group submit">
+                    <a class="ps-btn ps-btn--fullwidth" style="color:#fff" href="{{ route('customer.password.reset.phone') }}" >{{ __('Reset Passwor By Phone') }}</a>
+                </div>
                 @if (session('status'))
                     <div class="text-success">
                         {{ session('status') }}

@@ -71,7 +71,6 @@ class ResetPasswordController extends Controller
         )
             ->render();
     }
-
     /**
      * Get the broker to be used during password reset.
      *
