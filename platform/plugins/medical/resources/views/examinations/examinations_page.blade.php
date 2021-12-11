@@ -25,7 +25,7 @@
         </tr> 
         <tr>
             <td>{{trans('plugins/medical::medical.address')}}</td>
-            <td>{{$examinations->address}}</td>
+            <td>{{$examinations->getFullAddressAttribute()}}</td>
         </tr>
         <tr>
             <td>{{trans('plugins/medical::medical.required_checks')}}</td>

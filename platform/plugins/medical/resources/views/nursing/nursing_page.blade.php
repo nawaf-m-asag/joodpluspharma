@@ -25,7 +25,7 @@
         </tr>   
         <tr>
             <td>{{trans('plugins/medical::medical.address')}}</td>
-            <td>{{$nursing->address}}</td>
+            <td>{{$nursing->getFullAddressAttribute()}}</td>
         </tr> 
         <tr>
             <td>{{trans('plugins/medical::medical.user-name')}}</td>

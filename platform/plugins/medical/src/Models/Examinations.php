@@ -6,6 +6,9 @@ use Botble\Base\Traits\EnumCastable;
 use Botble\Ecommerce\Enums\OrderStatusEnum;
 use Botble\Ecommerce\Models\Customer;
 use Botble\Medical\Models\Laboratories;
+use App\Models\Address;
+use App\Models\Area;
+use App\Models\City;
 class Examinations extends BaseModel
 {
 
@@ -48,7 +51,19 @@ class Examinations extends BaseModel
     {
         return $this->belongsTo(Laboratories::class, 'lab_id', 'id')->withDefault();
     }
-  
+    public function Address()
+    {
+        return $this->belongsTo(Address::class, 'address','id')->withDefault();
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getFullAddressAttribute()
+    {
+        return $this->Address->city->name.', '. $this->Address->area->name.' , '.$this->Address->address . ', ' . $this->Address->mobile.', ' . $this->Address->state;
+    }
     protected $casts = [
         'status'  => OrderStatusEnum::class,
     ];
