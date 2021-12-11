@@ -122,7 +122,7 @@ class PrescriptionController extends BaseController
                 $image_file= RvMedia::handleUpload($request->file('image_file'), 0, 'prescription');
                 if(!$image_file['error']&&!empty($_FILES['image_file']['name']) && isset($_FILES['image_file']['name'])){
                     $request->image_file=$image_file['data']['url'];
-                    $data['image_file']=isset($request->image_file)&&!empty($request->image_file)?$request->image_file:null;
+                   
 
                 }  
                
@@ -131,12 +131,12 @@ class PrescriptionController extends BaseController
                 $file= RvMedia::handleUpload($request->file('file'), 0, 'prescription');
                 if(!$file['error']&&!empty($_FILES['file']['name']) && isset($_FILES['file']['name'])){
                     $request->file=$file['data']['url'];
-                    $data['file']=isset($request->file)&&!empty($request->file)?$request->file:null;
-
                 }  
             }
+         
             $data=$request->input();
-
+            $data['image_file']=isset($request->image_file)&&!empty($request->image_file)?$request->image_file:null;
+            $data['file']=isset($request->file)&&!empty($request->file)?$request->file:null;
             $prescription = Prescriptions::create((array)$data);
             $this->response['error'] = false;
             $this->response['message'] = "Prescription added successfully!";

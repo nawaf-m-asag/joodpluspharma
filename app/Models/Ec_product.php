@@ -160,7 +160,7 @@ class Ec_product extends Model
     
       
         //////////////////////////////////////////////////
-        
+        $customers_type=0;
         if($user_id!=null)   {
             $customers=DB::table('ec_customers')->where('id',$user_id)->get();
             $customers_type= isset($customers[0]->type)?$customers[0]->type:0; 
@@ -199,6 +199,7 @@ public static function get_products_By_ids($products_ids,$user_id=null,$total=nu
  
 
             $data=[];
+        $customers_type=0;
         if($user_id!=null)   {
             $customers=DB::table('ec_customers')->where('id',$user_id)->get();
             $customers_type= isset($customers[0]->type)?$customers[0]->type:0; 
