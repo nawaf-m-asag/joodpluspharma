@@ -229,7 +229,7 @@ class Ec_Order extends Model
                    
                
               DB::table('ec_order_product')->insert($product_variant_data[$i]);
-              
+              Ec_Order::supQuantity( $product_variant[$i]->id,$quantity[$i]);
               $product_variant_data_json[$i] = [
                 'user_id' => $data['user_id'],
                 'order_id' => $last_order_id->id,
@@ -503,5 +503,11 @@ class Ec_Order extends Model
         else{
             return "0";
         }
+    }
+    public static function supQuantity($id,$quantity){
+        Ec_product::where('id',$id)->where('with_storehouse_management',1)
+        ->update([
+        'quantity'=> DB::raw("quantity-$quantity")
+        ]);
     }
 }
