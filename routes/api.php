@@ -54,9 +54,13 @@ Route::post('remove_from_favorites',App\Http\Controllers\API\Wish_listsControlle
     Route::post('verify_user',App\Http\Controllers\API\CustomerController::class . '@getVerifyUser');
     Route::post('register_user',App\Http\Controllers\API\CustomerController::class . '@getRegisterUser');
     Route::post('update_user',App\Http\Controllers\API\CustomerController::class . '@update_user');
+    Route::post('validate_refer_code',App\Http\Controllers\API\CustomerController::class . '@validate_refer_code');
     Route::post('reset_password',App\Http\Controllers\API\CustomerController::class . '@reset_password');
     //get_notifications
     Route::post('get_notifications',App\Http\Controllers\API\NotificationsController::class . '@getNotification');
+    
+Route::post('update_fcm',App\Http\Controllers\API\CustomerController::class . '@_registerToken');
+
 
 Route::post('login',App\Http\Controllers\API\CustomerController::class . '@getLoginUser');
 Route::post('get_setting',App\Http\Controllers\API\SettingsController::class . '@getSetting');

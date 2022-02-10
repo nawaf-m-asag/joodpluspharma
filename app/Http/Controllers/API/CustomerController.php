@@ -73,7 +73,7 @@ class CustomerController extends Controller
             'longitude'=>'nullable',
             'password'=>'required',
             'pincode'=>'nullable',
-            'type'=>'nullable|numeric',
+            'customer_type'=>'nullable',
             'stor_name'=>'nullable|string'
         ],[
             'email.unique'=> 'The email is already registered . Please login', 
@@ -122,7 +122,7 @@ class CustomerController extends Controller
                 'ip_address' => Ec_customer::getIp(),
                 'created_on' =>time(),
                 'active' => 1,
-                'type'=>(isset($request->type)  && !empty(trim($request->type))) ? $request->type :0,
+                'type'=>(isset($request->customer_type)  && !empty(trim($request->customer_type))) ? $request->customer_type :0,
                 'stor_name'=>(isset($request->stor_name)  && !empty(trim($request->stor_name))) ? $request->stor_name :0,
             ];
             //dd($additional_data);
@@ -164,10 +164,11 @@ class CustomerController extends Controller
          //if (!$this->verify_token()) {
              //   return false;
        //   }
+       
        $validator = Validator::make($request->all(), [
         'user_id'=>'required|numeric',
         'username'=>'nullable|string',
-        'email'=>'nullable|email|unique:ec_customers,email',     
+        'email'=>'nullable|email',     
         'dob'=>'nullable',
         'city'=>'nullable|numeric',
         'area'=>'nullable|numeric',
@@ -177,7 +178,7 @@ class CustomerController extends Controller
         'pincode'=>'nullable',
         'referral_code',
         'image'=>'nullable',
-        'type'=>'nullable|numeric',
+        'customer_type'=>'nullable',
         'stor_name'=>'nullable|string'
 
     ],[
@@ -261,8 +262,8 @@ class CustomerController extends Controller
                if (isset($request->pincode) && !empty($request->pincode)) {
                    $set['pincode'] = $request->pincode;
                }
-               if (isset($request->type) && !empty($request->type)) {
-                    $set['type'] = $request->type;
+               if (isset($request->customer_type) && !empty($request->customer_type)) {
+                    $set['type'] = $request->customer_type;
                 }
                 if (isset($request->stor_name) && !empty($request->stor_name)) {
                     $set['stor_name'] = $request->stor_name;

@@ -161,19 +161,21 @@ class Ec_product extends Model
       
         //////////////////////////////////////////////////
         $customers_type=0;
-        if($user_id!=null)   {
-            $customers=DB::table('ec_customers')->where('id',$user_id)->get();
-            $customers_type= isset($customers[0]->type)?$customers[0]->type:0; 
-            if($customers_type==0){
-                $query=$query->where("p.product_type",0)->orWhere("p.product_type",2);
-            }
-            else if($customers_type==1){
-                $query=$query->where("p.product_type",1)->orWhere("p.product_type",2);
-            }
-          
+        $customers=DB::table('ec_customers')->where('id',$user_id)->get();
+        $customers_type= isset($customers[0]->type)?$customers[0]->type:0; 
+        if($user_id!=null&&$customers_type==1)   {
+                 if($customers_type==1){
+                $query->where(function($query) {
+                    $query->where("p.product_type",1)
+                          ->orWhere("p.product_type",2);
+                });
+            }   
         }
         else{
-            $query=$query->where("p.product_type",0);
+            $query->where(function($query) {
+                $query->where("p.product_type",0)
+                      ->orWhere("p.product_type",2);
+            });
         }
 
         $query=$query->where("p.status","published")->where("p.is_variation",0);
