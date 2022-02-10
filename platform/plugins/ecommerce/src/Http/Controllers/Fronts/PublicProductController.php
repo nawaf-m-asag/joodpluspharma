@@ -604,7 +604,7 @@ class PublicProductController
         } else {
             $originalProduct = $this->productRepository->advancedGet([
                 'condition' => [
-                    'product_type' =>0,
+                    ['ec_products.product_type', 'IN',[0,2]],
                     'ec_products.id'     => $id,
                     'ec_products.status' => BaseStatusEnum::PUBLISHED,
                 ],
